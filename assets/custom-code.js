@@ -1545,10 +1545,11 @@
         })
         .then(function (result) {
           if (result.ok && result.data.success) {
-            showMessage(message, 'success', result.data.message || STORE_COPY.common.messages.submitSuccess);
-            // Reset form after successful order
+            // Reset form first (updateHomeState clears the message area)
             form.reset();
             updateHomeState();
+            // Show success AFTER reset so it doesn't get wiped
+            showMessage(message, 'success', result.data.message || STORE_COPY.common.messages.submitSuccess);
           } else {
             showMessage(message, 'error', result.data.error || repairText(STORE_COPY.common.messages.fallback));
           }
