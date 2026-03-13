@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curio Admin | لوحة الطلبات</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0a1a;
+      --bg-2: #18102a;
+      --surface: rgba(255,255,255,0.06);
+      --surface-hover: rgba(255,255,255,0.1);
+      --surface-strong: rgba(255,255,255,0.12);
+      --ink: #f0eaf8;
+      --ink-soft: #9b8fb0;
+      --line: rgba(255,255,255,0.08);
+      --red: #e5424d;
+      --yellow: #f5cb48;
+      --blue: #457b9d;
+      --green: #1e9f62;
+      --orange: #e8853d;
+      --purple: #8b5cf6;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── Login Screen ─── */
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .login-box {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-box h1 {
+      font-family: 'Changa', sans-serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .login-box p {
+      color: var(--ink-soft);
+      margin-bottom: 24px;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-size: 16px;
+      font-family: 'Tajawal', sans-serif;
+      margin-bottom: 16px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .login-box button {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-box button:hover { background: #3a6a88; }
+    .login-error {
+      color: var(--red);
+      font-size: 14px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ─── Dashboard Layout ─── */
+    .dashboard { display: none; }
+    .dashboard.active { display: block; }
+    .login-screen.hidden { display: none; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .topbar h1 {
+      font-family: 'Changa', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .topbar h1 span { color: var(--blue); }
+    .btn-logout {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--surface-hover); color: var(--ink); }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      min-width: 120px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .stat-card:hover, .stat-card.active {
+      background: var(--surface-strong);
+      border-color: var(--blue);
+    }
+    .stat-card .count {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: 'Changa', sans-serif;
+      line-height: 1;
+    }
+    .stat-card .label {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    /* Status colors */
+    .status-PENDING { color: var(--orange); }
+    .status-CONFIRMED { color: var(--blue); }
+    .status-PROCESSING { color: var(--purple); }
+    .status-SHIPPED { color: var(--yellow); }
+    .status-DELIVERED { color: var(--green); }
+    .status-CANCELLED { color: var(--red); }
+    .status-RETURNED { color: var(--red); }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .badge-PENDING { background: rgba(232,133,61,0.15); color: var(--orange); }
+    .badge-CONFIRMED { background: rgba(69,123,157,0.15); color: var(--blue); }
+    .badge-PROCESSING { background: rgba(139,92,246,0.15); color: var(--purple); }
+    .badge-SHIPPED { background: rgba(245,203,72,0.15); color: var(--yellow); }
+    .badge-DELIVERED { background: rgba(30,159,98,0.15); color: var(--green); }
+    .badge-CANCELLED { background: rgba(229,66,77,0.15); color: var(--red); }
+    .badge-RETURNED { background: rgba(229,66,77,0.1); color: #f87171; }
+
+    /* Search & filters */
+    .toolbar {
+      padding: 0 24px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-size: 15px;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .search-input::placeholder { color: var(--ink-soft); }
+    .btn-refresh {
+      padding: 12px 20px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn-refresh:hover { background: #3a6a88; }
+
+    /* Orders table */
+    .orders-wrap {
+      padding: 0 24px 24px;
+      overflow-x: auto;
+    }
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    .orders-table th {
+      text-align: right;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--ink-soft);
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .orders-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      vertical-align: top;
+    }
+    .orders-table tr:hover td {
+      background: var(--surface);
+    }
+    .orders-table tr { cursor: pointer; }
+    .order-num {
+      font-weight: 700;
+      font-family: 'Changa', sans-serif;
+      color: var(--blue);
+    }
+    .order-phone {
+      direction: ltr;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .order-total {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .order-date {
+      color: var(--ink-soft);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .order-product {
+      font-size: 13px;
+      max-width: 180px;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 24px;
+    }
+    .pagination button {
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      transition: all 0.2s;
+    }
+    .pagination button:hover:not(:disabled) { background: var(--surface-hover); }
+    .pagination button:disabled { opacity: 0.3; cursor: default; }
+    .pagination .page-info { color: var(--ink-soft); font-size: 14px; }
+
+    /* ─── Order Detail Modal ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 640px;
+      padding: 32px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: var(--surface-hover); }
+    .modal h2 {
+      font-family: 'Changa', sans-serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .detail-item {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+    .detail-item .detail-label {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+    }
+    .detail-item .detail-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .detail-item.full { grid-column: 1 / -1; }
+
+    .items-list {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .items-list h3 {
+      font-size: 14px;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .item-row:last-child { border-bottom: none; }
+
+    /* Action buttons */
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .btn-action {
+      padding: 10px 18px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+      color: white;
+    }
+    .btn-action:hover { filter: brightness(1.15); }
+    .btn-action:disabled { opacity: 0.4; cursor: default; filter: none; }
+    .btn-confirm { background: var(--blue); }
+    .btn-ship { background: var(--purple); }
+    .btn-deliver { background: var(--green); }
+    .btn-cancel { background: var(--red); }
+    .btn-return { background: #991b1b; }
+
+    /* Tracking + notes */
+    .modal-field {
+      margin-bottom: 16px;
+    }
+    .modal-field label {
+      display: block;
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+    }
+    .modal-field input,
+    .modal-field textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+    }
+    .modal-field textarea { min-height: 80px; resize: vertical; }
+    .modal-field input:focus,
+    .modal-field textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .btn-save-field {
+      padding: 8px 14px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 13px;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .btn-save-field:hover { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--green);
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 14px;
+      z-index: 300;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { background: var(--red); }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--ink-soft);
+    }
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--ink-soft);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-bar { padding: 16px; }
+      .stat-card { min-width: 90px; padding: 10px 14px; }
+      .stat-card .count { font-size: 22px; }
+      .toolbar { padding: 0 16px 12px; }
+      .orders-wrap { padding: 0 16px 16px; }
+      .topbar { padding: 12px 16px; }
+      .modal { padding: 24px 20px; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Login Screen ─── -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>Curio Admin</h1>
+    <p>دخل كود الدخول</p>
+    <input type="password" id="loginKey" placeholder="كود الأدمين" autocomplete="off">
+    <button id="loginBtn" onclick="tryLogin()">دخول</button>
+    <div class="login-error" id="loginError">الكود غير صحيح</div>
+  </div>
+</div>
+
+<!-- ─── Dashboard ─── -->
+<div class="dashboard" id="dashboard">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-right">
+      <h1>Curio <span>Admin</span></h1>
+    </div>
+    <button class="btn-logout" onclick="logout()">خروج</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-card active" data-status="" onclick="filterByStatus(this, '')">
+      <div class="count" id="statAll">-</div>
+      <div class="label">الكل</div>
+    </div>
+    <div class="stat-card" data-status="PENDING" onclick="filterByStatus(this, 'PENDING')">
+      <div class="count status-PENDING" id="statPending">-</div>
+      <div class="label">في الانتظار</div>
+    </div>
+    <div class="stat-card" data-status="CONFIRMED" onclick="filterByStatus(this, 'CONFIRMED')">
+      <div class="count status-CONFIRMED" id="statConfirmed">-</div>
+      <div class="label">مأكد</div>
+    </div>
+    <div class="stat-card" data-status="PROCESSING" onclick="filterByStatus(this, 'PROCESSING')">
+      <div class="count status-PROCESSING" id="statProcessing">-</div>
+      <div class="label">قيد التحضير</div>
+    </div>
+    <div class="stat-card" data-status="SHIPPED" onclick="filterByStatus(this, 'SHIPPED')">
+      <div class="count status-SHIPPED" id="statShipped">-</div>
+      <div class="label">مشحون</div>
+    </div>
+    <div class="stat-card" data-status="DELIVERED" onclick="filterByStatus(this, 'DELIVERED')">
+      <div class="count status-DELIVERED" id="statDelivered">-</div>
+      <div class="label">تم التوصيل</div>
+    </div>
+    <div class="stat-card" data-status="CANCELLED" onclick="filterByStatus(this, 'CANCELLED')">
+      <div class="count status-CANCELLED" id="statCancelled">-</div>
+      <div class="label">ملغي</div>
+    </div>
+    <div class="stat-card" data-status="RETURNED" onclick="filterByStatus(this, 'RETURNED')">
+      <div class="count status-RETURNED" id="statReturned">-</div>
+      <div class="label">مرجع</div>
+    </div>
+  </div>
+
+  <!-- Search & refresh -->
+  <div class="toolbar">
+    <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="debounceSearch()">
+    <button class="btn-refresh" onclick="loadOrders()">تحديث</button>
+  </div>
+
+  <!-- Orders table -->
+  <div class="orders-wrap">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الزبون</th>
+          <th>الهاتف</th>
+          <th>الولاية</th>
+          <th>المنتج</th>
+          <th>المجموع</th>
+          <th>الحالة</th>
+          <th>التاريخ</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody">
+        <tr><td colspan="8" class="loading">جاري التحميل...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ─── Order Detail Modal ─── -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Config ─────────────────────────────────────────────
+var API = 'https://stirring-marigold-3dd8e9.netlify.app';
+var adminKey = '';
+var currentStatus = '';
+var currentSearch = '';
+var currentPage = 1;
+var searchTimer = null;
+var allOrders = []; // cached for stats
+
+// Status labels in Darija
+var STATUS_LABELS = {
+  PENDING: 'في الانتظار',
+  CONFIRMED: 'مأكد',
+  PROCESSING: 'قيد التحضير',
+  SHIPPED: 'مشحون',
+  DELIVERED: 'تم التوصيل',
+  CANCELLED: 'ملغي',
+  RETURNED: 'مرجع'
+};
+
+// ─── Auth ───────────────────────────────────────────────
+
+function tryLogin() {
+  var key = document.getElementById('loginKey').value.trim();
+  if (!key) return;
+
+  adminKey = key;
+
+  // Test the key by fetching orders
+  fetch(API + '/api/orders?limit=1', {
+    headers: { 'X-Admin-Key': key }
+  })
+    .then(function(r) {
+      if (r.status === 401) throw new Error('bad key');
+      return r.json();
+    })
+    .then(function() {
+      // Key works — save and show dashboard
+      sessionStorage.setItem('curio-admin-key', key);
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('dashboard').classList.add('active');
+      loadOrders();
+    })
+    .catch(function() {
+      document.getElementById('loginError').style.display = 'block';
+      adminKey = '';
+    });
+}
+
+function logout() {
+  adminKey = '';
+  sessionStorage.removeItem('curio-admin-key');
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginKey').value = '';
+  document.getElementById('loginError').style.display = 'none';
+}
+
+// Auto-login from session
+(function() {
+  var saved = sessionStorage.getItem('curio-admin-key');
+  if (saved) {
+    adminKey = saved;
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboard').classList.add('active');
+    loadOrders();
+  }
+  // Enter key on login
+  document.getElementById('loginKey').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryLogin();
+  });
+})();
+
+// ─── Load Orders ────────────────────────────────────────
+
+function loadOrders() {
+  var params = new URLSearchParams();
+  params.set('page', currentPage);
+  params.set('limit', '50');
+  if (currentStatus) params.set('status', currentStatus);
+  if (currentSearch) params.set('search', currentSearch);
+
+  document.getElementById('ordersBody').innerHTML =
+    '<tr><td colspan="8" class="loading">جاري التحميل...</td></tr>';
+
+  fetch(API + '/api/orders?' + params.toString(), {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) {
+      if (r.status === 401) { logout(); throw new Error('unauthorized'); }
+      return r.json();
+    })
+    .then(function(data) {
+      allOrders = data.orders;
+      renderOrders(data.orders);
+      renderPagination(data.pagination);
+      loadStats();
+    })
+    .catch(function(err) {
+      if (err.message !== 'unauthorized') {
+        document.getElementById('ordersBody').innerHTML =
+          '<tr><td colspan="8" class="empty">صار مشكل في تحميل الطلبات</td></tr>';
+      }
+    });
+}
+
+// Load stats (all orders, no filter) to show counts
+function loadStats() {
+  fetch(API + '/api/orders?limit=1', {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      // We need counts per status — fetch all with no filter
+      return fetch(API + '/api/orders?limit=500', {
+        headers: { 'X-Admin-Key': adminKey }
+      });
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var counts = { PENDING: 0, CONFIRMED: 0, PROCESSING: 0, SHIPPED: 0, DELIVERED: 0, CANCELLED: 0, RETURNED: 0 };
+      data.orders.forEach(function(o) {
+        if (counts[o.status] !== undefined) counts[o.status]++;
+      });
+      var total = data.orders.length;
+
+      document.getElementById('statAll').textContent = total;
+      document.getElementById('statPending').textContent = counts.PENDING;
+      document.getElementById('statConfirmed').textContent = counts.CONFIRMED;
+      document.getElementById('statProcessing').textContent = counts.PROCESSING;
+      document.getElementById('statShipped').textContent = counts.SHIPPED;
+      document.getElementById('statDelivered').textContent = counts.DELIVERED;
+      document.getElementById('statCancelled').textContent = counts.CANCELLED;
+      document.getElementById('statReturned').textContent = counts.RETURNED;
+    })
+    .catch(function() {});
+}
+
+// ─── Render Orders Table ────────────────────────────────
+
+function renderOrders(orders) {
+  var body = document.getElementById('ordersBody');
+
+  if (!orders || orders.length === 0) {
+    body.innerHTML = '<tr><td colspan="8" class="empty">ماكاش طلبات</td></tr>';
+    return;
+  }
+
+  var html = '';
+  orders.forEach(function(o) {
+    var products = o.items.map(function(item) {
+      return item.product.name + (item.quantity > 1 ? ' x' + item.quantity : '');
+    }).join(', ');
+
+    var date = new Date(o.createdAt);
+    var dateStr = date.toLocaleDateString('ar-DZ', { day: 'numeric', month: 'short' })
+      + ' ' + date.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+
+    html += '<tr onclick="openOrder(' + o.orderNumber + ')">' +
+      '<td class="order-num">' + o.orderNumber + '</td>' +
+      '<td>' + escapeHtml(o.customerName) + '</td>' +
+      '<td class="order-phone">' + o.customerPhone + '</td>' +
+      '<td>' + escapeHtml(o.wilayaName) + '</td>' +
+      '<td class="order-product">' + escapeHtml(products) + '</td>' +
+      '<td class="order-total">' + formatDA(o.total) + '</td>' +
+      '<td><span class="badge badge-' + o.status + '">' + (STATUS_LABELS[o.status] || o.status) + '</span></td>' +
+      '<td class="order-date">' + dateStr + '</td>' +
+      '</tr>';
+  });
+
+  body.innerHTML = html;
+}
+
+// ─── Pagination ─────────────────────────────────────────
+
+function renderPagination(p) {
+  if (!p || p.pages <= 1) {
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  document.getElementById('pagination').innerHTML =
+    '<button ' + (p.page <= 1 ? 'disabled' : '') + ' onclick="goPage(' + (p.page - 1) + ')">السابق</button>' +
+    '<span class="page-info">صفحة ' + p.page + ' من ' + p.pages + ' (' + p.total + ' طلب)</span>' +
+    '<button ' + (p.page >= p.pages ? 'disabled' : '') + ' onclick="goPage(' + (p.page + 1) + ')">التالي</button>';
+}
+
+function goPage(n) {
+  currentPage = n;
+  loadOrders();
+}
+
+// ─── Filters ────────────────────────────────────────────
+
+function filterByStatus(el, status) {
+  currentStatus = status;
+  currentPage = 1;
+
+  // Update active card
+  document.querySelectorAll('.stat-card').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+
+  loadOrders();
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function() {
+    currentSearch = document.getElementById('searchInput').value.trim();
+    currentPage = 1;
+    loadOrders();
+  }, 400);
+}
+
+// ─── Order Detail Modal ─────────────────────────────────
+
+function openOrder(orderNumber) {
+  var overlay = document.getElementById('modalOverlay');
+  var content = document.getElementById('modalContent');
+  overlay.classList.add('active');
+  content.innerHTML = '<div class="loading">جاري التحميل...</div>';
+
+  fetch(API + '/api/orders/' + orderNumber, {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(order) {
+      renderOrderDetail(order);
+    })
+    .catch(function() {
+      content.innerHTML = '<div class="empty">صار مشكل في تحميل تفاصيل الطلب</div>';
+    });
+}
+
+function renderOrderDetail(order) {
+  var content = document.getElementById('modalContent');
+
+  var date = new Date(order.createdAt);
+  var dateStr = date.toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' })
+    + ' — ' + date.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+
+  var deliveryInfo = order.deliveryType === 'HOME'
+    ? (order.address || 'لا يوجد عنوان')
+    : (order.officeName || '') + (order.officeCommune ? ' — ' + order.officeCommune : '');
+
+  var itemsHtml = '';
+  order.items.forEach(function(item) {
+    itemsHtml +=
+      '<div class="item-row">' +
+        '<span>' + escapeHtml(item.product.name) + (item.quantity > 1 ? ' &times; ' + item.quantity : '') + '</span>' +
+        '<span>' + formatDA(item.unitPrice * item.quantity) + '</span>' +
+      '</div>';
+  });
+  itemsHtml +=
+    '<div class="item-row">' +
+      '<span>التوصيل (' + (order.deliveryType === 'HOME' ? 'للدار' : 'للمكتب') + ')</span>' +
+      '<span>' + formatDA(order.deliveryPrice) + '</span>' +
+    '</div>' +
+    '<div class="item-row" style="font-weight:800; font-size:16px;">' +
+      '<span>المجموع</span>' +
+      '<span>' + formatDA(order.total) + '</span>' +
+    '</div>';
+
+  var html =
+    '<h2>طلب #' + order.orderNumber + ' <span class="badge badge-' + order.status + '">' + (STATUS_LABELS[order.status] || order.status) + '</span></h2>' +
+
+    '<div class="detail-grid">' +
+      '<div class="detail-item"><div class="detail-label">الزبون</div><div class="detail-value">' + escapeHtml(order.customerName) + '</div></div>' +
+      '<div class="detail-item"><div class="detail-label">الهاتف</div><div class="detail-value" style="direction:ltr;text-align:right">' + order.customerPhone + '</div></div>' +
+      '<div class="detail-item"><div class="detail-label">الولاية</div><div class="detail-value">' + escapeHtml(order.wilayaName) + ' (' + order.wilayaCode + ')</div></div>' +
+      '<div class="detail-item"><div class="detail-label">نوع التوصيل</div><div class="detail-value">' + (order.deliveryType === 'HOME' ? 'للدار' : 'للمكتب (Stop Desk)') + '</div></div>' +
+      '<div class="detail-item full"><div class="detail-label">' + (order.deliveryType === 'HOME' ? 'العنوان' : 'المكتب') + '</div><div class="detail-value">' + escapeHtml(deliveryInfo) + '</div></div>' +
+      '<div class="detail-item"><div class="detail-label">التاريخ</div><div class="detail-value" style="font-size:13px">' + dateStr + '</div></div>' +
+    '</div>' +
+
+    '<div class="items-list"><h3>المنتجات</h3>' + itemsHtml + '</div>' +
+
+    // Action buttons
+    '<div class="actions">' +
+      '<button class="btn-action btn-confirm" onclick="updateStatus(' + order.orderNumber + ',\'CONFIRMED\')" ' + (order.status !== 'PENDING' ? 'disabled' : '') + '>تأكيد الطلب</button>' +
+      '<button class="btn-action btn-ship" onclick="updateStatus(' + order.orderNumber + ',\'SHIPPED\')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>تم الشحن</button>' +
+      '<button class="btn-action btn-deliver" onclick="updateStatus(' + order.orderNumber + ',\'DELIVERED\')" ' + (order.status !== 'SHIPPED' ? 'disabled' : '') + '>تم التوصيل</button>' +
+      '<button class="btn-action btn-cancel" onclick="updateStatus(' + order.orderNumber + ',\'CANCELLED\')" ' + (['DELIVERED','CANCELLED','RETURNED'].includes(order.status) ? 'disabled' : '') + '>إلغاء</button>' +
+      '<button class="btn-action btn-return" onclick="updateStatus(' + order.orderNumber + ',\'RETURNED\')" ' + (order.status !== 'DELIVERED' ? 'disabled' : '') + '>مرتجع</button>' +
+    '</div>' +
+
+    // Tracking code field
+    '<div class="modal-field">' +
+      '<label>رمز التتبع (Tracking Code)</label>' +
+      '<input type="text" id="trackingInput" placeholder="أدخل رمز التتبع..." value="' + escapeAttr(order.trackingCode || '') + '" style="direction:ltr;text-align:right">' +
+      '<button class="btn-save-field" onclick="saveTracking(' + order.orderNumber + ')">حفظ رمز التتبع</button>' +
+    '</div>' +
+
+    // Notes field
+    '<div class="modal-field">' +
+      '<label>ملاحظات</label>' +
+      '<textarea id="notesInput" placeholder="أضف ملاحظة...">' + escapeHtml(order.notes || '') + '</textarea>' +
+      '<button class="btn-save-field" onclick="saveNotes(' + order.orderNumber + ')">حفظ الملاحظات</button>' +
+    '</div>';
+
+  content.innerHTML = html;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// ─── Order Actions ──────────────────────────────────────
+
+function updateStatus(orderNumber, newStatus) {
+  var label = STATUS_LABELS[newStatus] || newStatus;
+
+  fetch(API + '/api/orders/' + orderNumber, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey
+    },
+    body: JSON.stringify({ status: newStatus })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showToast('طلب #' + orderNumber + ' → ' + label);
+        renderOrderDetail(data.order);
+        loadOrders();
+      } else {
+        showToast(data.error || 'صار مشكل', true);
+      }
+    })
+    .catch(function() {
+      showToast('صار مشكل في الاتصال', true);
+    });
+}
+
+function saveTracking(orderNumber) {
+  var code = document.getElementById('trackingInput').value.trim();
+  patchOrder(orderNumber, { trackingCode: code }, 'تم حفظ رمز التتبع');
+}
+
+function saveNotes(orderNumber) {
+  var notes = document.getElementById('notesInput').value.trim();
+  patchOrder(orderNumber, { notes: notes }, 'تم حفظ الملاحظات');
+}
+
+function patchOrder(orderNumber, data, successMsg) {
+  fetch(API + '/api/orders/' + orderNumber, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey
+    },
+    body: JSON.stringify(data)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(result) {
+      if (result.success) {
+        showToast(successMsg);
+      } else {
+        showToast(result.error || 'صار مشكل', true);
+      }
+    })
+    .catch(function() {
+      showToast('صار مشكل في الاتصال', true);
+    });
+}
+
+// ─── Helpers ────────────────────────────────────────────
+
+function formatDA(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' DA';
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function escapeAttr(str) {
+  if (!str) return '';
+  return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function showToast(msg, isError) {
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(function() { toast.className = 'toast'; }, 3000);
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+</body>
+</html>

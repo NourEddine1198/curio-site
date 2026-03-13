@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curio | تم تسجيل طلبك!</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Meta Pixel — fires Purchase event on this page (backup tracking) -->
+  <!-- REPLACE YOUR_PIXEL_ID below once you have a Meta Pixel -->
+  <!--
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fbf4ea;
+      --surface: rgba(255, 255, 255, 0.86);
+      --ink: #21162f;
+      --ink-soft: #675874;
+      --line: rgba(33, 22, 47, 0.1);
+      --red: #e5424d;
+      --green: #1e9f62;
+      --blue: #457b9d;
+      --yellow: #f5cb48;
+      --radius: 22px;
+      --radius-sm: 14px;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .brand {
+      font-family: 'Changa', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 32px;
+      color: var(--ink);
+    }
+    .brand span { color: var(--blue); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(33, 22, 47, 0.06);
+    }
+
+    .check-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .check-icon svg {
+      width: 36px;
+      height: 36px;
+      fill: none;
+      stroke: white;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h1 {
+      font-family: 'Changa', sans-serif;
+      font-size: 26px;
+      margin-bottom: 8px;
+      color: var(--green);
+    }
+
+    .subtitle {
+      color: var(--ink-soft);
+      font-size: 16px;
+      margin-bottom: 28px;
+    }
+
+    .order-number {
+      background: rgba(30, 159, 98, 0.08);
+      border: 2px solid var(--green);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .order-number .label {
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .order-number .number {
+      font-family: 'Changa', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .details {
+      text-align: right;
+      margin-bottom: 24px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row .label { color: var(--ink-soft); }
+    .detail-row .value { font-weight: 700; }
+    .detail-row.total {
+      font-size: 18px;
+      font-weight: 800;
+      padding-top: 14px;
+    }
+    .detail-row.total .value { color: var(--green); }
+
+    .next-steps {
+      background: rgba(69, 123, 157, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      text-align: right;
+      margin-bottom: 24px;
+    }
+    .next-steps h3 {
+      font-family: 'Changa', sans-serif;
+      font-size: 16px;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .next-steps ul {
+      list-style: none;
+      padding: 0;
+    }
+    .next-steps li {
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .next-steps li::before {
+      content: '✓ ';
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .back-link {
+      display: inline-block;
+      padding: 14px 28px;
+      background: var(--blue);
+      color: white;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    .back-link:hover { background: #3a6a88; }
+
+    .loading-state {
+      padding: 40px;
+      color: var(--ink-soft);
+    }
+    .error-state {
+      color: var(--red);
+      padding: 20px;
+    }
+
+    @media (max-width: 560px) {
+      .card { padding: 28px 20px; }
+      .order-number .number { font-size: 34px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="brand">Curio <span>Games</span></div>
+
+<div class="card" id="thankYouCard">
+  <div class="loading-state" id="loadingState">جاري تحميل تفاصيل الطلب...</div>
+</div>
+
+<script>
+var API = 'https://stirring-marigold-3dd8e9.netlify.app';
+
+// Delivery time estimates by wilaya region
+var DELIVERY_ESTIMATES = {
+  fast: ['16', '09', '35', '42'],   // Algiers area: 1-2 days
+  medium: ['31', '27', '23', '06', '15', '26', '25', '43', '46', '44', '48'], // Major cities: 2-3 days
+};
+
+function getDeliveryEstimate(wilayaCode) {
+  if (DELIVERY_ESTIMATES.fast.indexOf(wilayaCode) !== -1) return '1-2 أيام';
+  if (DELIVERY_ESTIMATES.medium.indexOf(wilayaCode) !== -1) return '2-3 أيام';
+  return '3-5 أيام';
+}
+
+function formatDA(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' DA';
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Get order number from URL: ?order=3
+var urlParams = new URLSearchParams(window.location.search);
+var orderNumber = urlParams.get('order');
+
+if (!orderNumber) {
+  document.getElementById('loadingState').innerHTML =
+    '<div class="error-state">ماكانش رقم طلب. ارجع للصفحة الرئيسية واطلب من جديد.</div>' +
+    '<br><a href="/" class="back-link">ارجع للصفحة الرئيسية</a>';
+} else {
+  // Fetch order details
+  fetch(API + '/api/orders/' + orderNumber)
+    .then(function(r) {
+      if (!r.ok) throw new Error('not found');
+      return r.json();
+    })
+    .then(function(order) {
+      var deliveryEst = getDeliveryEstimate(order.wilayaCode || '');
+
+      var itemsHtml = '';
+      order.items.forEach(function(item) {
+        itemsHtml +=
+          '<div class="detail-row">' +
+            '<span class="label">' + escapeHtml(item.product.name) + (item.quantity > 1 ? ' x' + item.quantity : '') + '</span>' +
+            '<span class="value">' + formatDA(item.unitPrice * item.quantity) + '</span>' +
+          '</div>';
+      });
+
+      var card = document.getElementById('thankYouCard');
+      card.innerHTML =
+        '<div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+        '<h1>طلبك تسجل بنجاح!</h1>' +
+        '<p class="subtitle">شكرا لك ' + escapeHtml(order.customerName) + '!</p>' +
+
+        '<div class="order-number">' +
+          '<div class="label">رقم الطلب</div>' +
+          '<div class="number">#' + order.orderNumber + '</div>' +
+        '</div>' +
+
+        '<div class="details">' +
+          itemsHtml +
+          '<div class="detail-row">' +
+            '<span class="label">التوصيل (' + (order.deliveryType === 'HOME' ? 'للدار' : 'للمكتب') + ')</span>' +
+            '<span class="value">' + formatDA(order.deliveryPrice) + '</span>' +
+          '</div>' +
+          '<div class="detail-row total">' +
+            '<span class="label">المجموع</span>' +
+            '<span class="value">' + formatDA(order.total) + '</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="next-steps">' +
+          '<h3>واش غادي يصرا دروك؟</h3>' +
+          '<ul>' +
+            '<li>راح نتصلو بيك قريبا باش نأكدو الطلب</li>' +
+            '<li>التوصيل ل' + escapeHtml(order.wilayaName) + ': ' + deliveryEst + ' تقريبا</li>' +
+            '<li>الدفع عند الاستلام (COD)</li>' +
+            '<li>احتفظ برقم الطلب: <strong>#' + order.orderNumber + '</strong></li>' +
+          '</ul>' +
+        '</div>' +
+
+        '<a href="/" class="back-link">ارجع للصفحة الرئيسية</a>';
+
+      // Fire Meta Pixel Purchase event if pixel is loaded
+      if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {
+          value: order.total,
+          currency: 'DZD',
+          content_type: 'product',
+          order_id: order.orderNumber
+        });
+      }
+    })
+    .catch(function() {
+      document.getElementById('loadingState').innerHTML =
+        '<div class="error-state">ما قدرناش نحملو تفاصيل الطلب. لا تقلق — طلبك مسجل وراح نتصلو بيك.</div>' +
+        '<br><a href="/" class="back-link">ارجع للصفحة الرئيسية</a>';
+    });
+}
+</script>
+</body>
+</html>

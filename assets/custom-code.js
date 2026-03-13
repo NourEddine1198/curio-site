@@ -1545,11 +1545,20 @@
         })
         .then(function (result) {
           if (result.ok && result.data.success) {
-            // Reset form first (updateHomeState clears the message area)
-            form.reset();
-            updateHomeState();
-            // Show success AFTER reset so it doesn't get wiped
-            showMessage(message, 'success', result.data.message || STORE_COPY.common.messages.submitSuccess);
+            // Fire Meta Pixel Purchase event if pixel is loaded
+            if (typeof fbq === 'function') {
+              fbq('track', 'Purchase', {
+                value: result.data.total,
+                currency: 'DZD',
+                content_type: 'product',
+                order_id: result.data.orderNumber
+              });
+            }
+            // Show brief success message then redirect to thank-you page
+            showMessage(message, 'success', repairText(STORE_COPY.common.messages.submitSuccess));
+            setTimeout(function () {
+              window.location.href = '/merci.html?order=' + result.data.orderNumber;
+            }, 1500);
           } else {
             showMessage(message, 'error', result.data.error || repairText(STORE_COPY.common.messages.fallback));
           }
