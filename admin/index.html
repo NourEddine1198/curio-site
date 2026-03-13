@@ -426,6 +426,23 @@
     .btn-deliver { background: var(--green); }
     .btn-cancel { background: var(--red); }
     .btn-return { background: #991b1b; }
+    .btn-ecotrack {
+      background: linear-gradient(135deg, #0d9488, #14b8a6);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-ecotrack:disabled { background: #374151; }
+    .btn-ecotrack .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Tracking + notes */
     .modal-field {
@@ -498,6 +515,66 @@
       color: var(--ink-soft);
     }
 
+    /* ─── New Order Banner ─── */
+    .new-order-banner {
+      display: none;
+      background: linear-gradient(135deg, var(--green), #15803d);
+      color: white;
+      text-align: center;
+      padding: 14px 24px;
+      font-weight: 800;
+      font-size: 16px;
+      font-family: 'Changa', sans-serif;
+      cursor: pointer;
+      animation: banner-pulse 1.5s ease-in-out infinite;
+      position: relative;
+      z-index: 99;
+    }
+    .new-order-banner.show { display: block; }
+    .new-order-banner .dismiss-hint {
+      font-size: 12px;
+      font-weight: 400;
+      font-family: 'Tajawal', sans-serif;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+    @keyframes banner-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    /* ─── Auto-Refresh Indicator ─── */
+    .auto-refresh-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .auto-refresh-badge:hover { background: var(--surface-hover); }
+    .auto-refresh-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: dot-blink 2s ease-in-out infinite;
+    }
+    .auto-refresh-badge.paused .auto-refresh-dot {
+      background: var(--ink-soft);
+      animation: none;
+    }
+    @keyframes dot-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .stats-bar { padding: 16px; }
@@ -526,6 +603,12 @@
 
 <!-- ─── Dashboard ─── -->
 <div class="dashboard" id="dashboard">
+
+  <!-- New order banner -->
+  <div class="new-order-banner" id="newOrderBanner" onclick="dismissBanner()">
+    🔔 طلب جديد!
+    <div class="dismiss-hint">اضغط هنا للإخفاء</div>
+  </div>
 
   <!-- Top bar -->
   <div class="topbar">
@@ -575,6 +658,10 @@
   <div class="toolbar">
     <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="debounceSearch()">
     <button class="btn-refresh" onclick="loadOrders()">تحديث</button>
+    <div class="auto-refresh-badge" id="autoRefreshBadge" onclick="toggleAutoRefresh()" title="اضغط لتشغيل/إيقاف التحديث التلقائي">
+      <span class="auto-refresh-dot"></span>
+      <span id="autoRefreshLabel">تحديث تلقائي: ON</span>
+    </div>
   </div>
 
   <!-- Orders table -->
@@ -656,6 +743,8 @@ function tryLogin() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('dashboard').classList.add('active');
       loadOrders();
+      // Initialize auto-refresh after login
+      setTimeout(function() { initAutoRefreshAfterLogin(); }, 3000);
     })
     .catch(function() {
       document.getElementById('loginError').style.display = 'block';
@@ -893,7 +982,8 @@ function renderOrderDetail(order) {
     // Action buttons
     '<div class="actions">' +
       '<button class="btn-action btn-confirm" onclick="updateStatus(' + order.orderNumber + ',\'CONFIRMED\')" ' + (order.status !== 'PENDING' ? 'disabled' : '') + '>تأكيد الطلب</button>' +
-      '<button class="btn-action btn-ship" onclick="updateStatus(' + order.orderNumber + ',\'SHIPPED\')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>تم الشحن</button>' +
+      '<button class="btn-action btn-ecotrack" id="btnEcotrack" onclick="shipToEcotrack(' + order.orderNumber + ')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>&#x1f69a; إرسال إلى Ecotrack</button>' +
+      '<button class="btn-action btn-ship" onclick="updateStatus(' + order.orderNumber + ',\'SHIPPED\')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>تم الشحن (يدوي)</button>' +
       '<button class="btn-action btn-deliver" onclick="updateStatus(' + order.orderNumber + ',\'DELIVERED\')" ' + (order.status !== 'SHIPPED' ? 'disabled' : '') + '>تم التوصيل</button>' +
       '<button class="btn-action btn-cancel" onclick="updateStatus(' + order.orderNumber + ',\'CANCELLED\')" ' + (['DELIVERED','CANCELLED','RETURNED'].includes(order.status) ? 'disabled' : '') + '>إلغاء</button>' +
       '<button class="btn-action btn-return" onclick="updateStatus(' + order.orderNumber + ',\'RETURNED\')" ' + (order.status !== 'DELIVERED' ? 'disabled' : '') + '>مرتجع</button>' +
@@ -980,6 +1070,53 @@ function patchOrder(orderNumber, data, successMsg) {
     });
 }
 
+// ─── Ship to Ecotrack ────────────────────────────────────
+
+function shipToEcotrack(orderNumber) {
+  var btn = document.getElementById('btnEcotrack');
+  if (!btn || btn.disabled) return;
+
+  // Confirm before sending
+  if (!confirm('إرسال الطلب #' + orderNumber + ' إلى Ecotrack للشحن؟')) return;
+
+  // Show loading state
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الإرسال...';
+
+  fetch(API + '/api/orders/' + orderNumber + '/ship', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey
+    }
+  })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      if (res.ok && res.data.success) {
+        var msg = 'تم إرسال الطلب إلى Ecotrack';
+        if (res.data.trackingCode) {
+          msg += ' — كود التتبع: ' + res.data.trackingCode;
+        }
+        showToast(msg);
+        // Re-render the modal with updated order data
+        renderOrderDetail(res.data.order);
+        // Refresh the orders table behind the modal
+        loadOrders();
+      } else {
+        var errorMsg = res.data.error || 'فشل الإرسال إلى Ecotrack';
+        showToast(errorMsg, true);
+        // Reset button so they can try again
+        btn.disabled = false;
+        btn.innerHTML = '&#x1f69a; إرسال إلى Ecotrack';
+      }
+    })
+    .catch(function() {
+      showToast('صار مشكل في الاتصال بالسيرفر', true);
+      btn.disabled = false;
+      btn.innerHTML = '&#x1f69a; إرسال إلى Ecotrack';
+    });
+}
+
 // ─── Helpers ────────────────────────────────────────────
 
 function formatDA(n) {
@@ -1009,6 +1146,216 @@ function showToast(msg, isError) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeModal();
 });
+
+// ─── Auto-Refresh + New Order Alerts ─────────────────────
+
+var lastKnownOrderNumber = 0;
+var autoRefreshEnabled = true;
+var autoRefreshTimer = null;
+var originalTitle = document.title;
+var titleFlashTimer = null;
+var audioCtx = null;
+
+// Silent poll — fetches orders without showing "loading..." in the table
+function silentPoll() {
+  // Don't poll if modal is open (could interfere with editing)
+  if (document.getElementById('modalOverlay').classList.contains('active')) return;
+  if (!adminKey) return;
+
+  var params = new URLSearchParams();
+  params.set('page', currentPage);
+  params.set('limit', '50');
+  if (currentStatus) params.set('status', currentStatus);
+  if (currentSearch) params.set('search', currentSearch);
+
+  fetch(API + '/api/orders?' + params.toString(), {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) {
+      if (r.status === 401) { logout(); throw new Error('unauthorized'); }
+      return r.json();
+    })
+    .then(function(data) {
+      allOrders = data.orders;
+      renderOrders(data.orders);
+      renderPagination(data.pagination);
+
+      // Check for new orders
+      var maxNum = 0;
+      data.orders.forEach(function(o) {
+        if (o.orderNumber > maxNum) maxNum = o.orderNumber;
+      });
+
+      // Also fetch all orders to update stats + detect new orders globally
+      return fetch(API + '/api/orders?limit=500', {
+        headers: { 'X-Admin-Key': adminKey }
+      });
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      // Update stats
+      var counts = { PENDING: 0, CONFIRMED: 0, PROCESSING: 0, SHIPPED: 0, DELIVERED: 0, CANCELLED: 0, RETURNED: 0 };
+      var globalMax = 0;
+      data.orders.forEach(function(o) {
+        if (counts[o.status] !== undefined) counts[o.status]++;
+        if (o.orderNumber > globalMax) globalMax = o.orderNumber;
+      });
+
+      document.getElementById('statAll').textContent = data.orders.length;
+      document.getElementById('statPending').textContent = counts.PENDING;
+      document.getElementById('statConfirmed').textContent = counts.CONFIRMED;
+      document.getElementById('statProcessing').textContent = counts.PROCESSING;
+      document.getElementById('statShipped').textContent = counts.SHIPPED;
+      document.getElementById('statDelivered').textContent = counts.DELIVERED;
+      document.getElementById('statCancelled').textContent = counts.CANCELLED;
+      document.getElementById('statReturned').textContent = counts.RETURNED;
+
+      // Detect new order
+      if (lastKnownOrderNumber > 0 && globalMax > lastKnownOrderNumber) {
+        onNewOrderDetected(globalMax - lastKnownOrderNumber);
+      }
+      if (globalMax > 0) lastKnownOrderNumber = globalMax;
+    })
+    .catch(function(err) {
+      // Silent fail — don't disrupt the UI
+    });
+}
+
+// What happens when a new order is detected
+function onNewOrderDetected(count) {
+  // 1. Play sound chime
+  playChime();
+
+  // 2. Show banner
+  document.getElementById('newOrderBanner').classList.add('show');
+
+  // 3. Flash tab title
+  startTitleFlash(count);
+}
+
+// Dismiss the banner
+function dismissBanner() {
+  document.getElementById('newOrderBanner').classList.remove('show');
+}
+
+// ─── Sound: 2-note chime using Web Audio API ─────────────
+
+function playChime() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    // Note 1: E5 (659 Hz)
+    playTone(659, 0, 0.15);
+    // Note 2: A5 (880 Hz) — starts slightly after
+    playTone(880, 0.15, 0.2);
+  } catch(e) {
+    // Audio not supported — fail silently
+  }
+}
+
+function playTone(freq, startDelay, duration) {
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  var now = audioCtx.currentTime + startDelay;
+  gain.gain.setValueAtTime(0.3, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  osc.start(now);
+  osc.stop(now + duration);
+}
+
+// ─── Tab Title Flash ─────────────────────────────────────
+
+function startTitleFlash(count) {
+  stopTitleFlash(); // clear any existing flash
+  var showAlert = true;
+  var msg = count > 1
+    ? '🔔 ' + count + ' طلبات جداد! — Curio Admin'
+    : '🔔 طلب جديد! — Curio Admin';
+
+  titleFlashTimer = setInterval(function() {
+    document.title = showAlert ? msg : originalTitle;
+    showAlert = !showAlert;
+  }, 1000);
+}
+
+function stopTitleFlash() {
+  if (titleFlashTimer) {
+    clearInterval(titleFlashTimer);
+    titleFlashTimer = null;
+  }
+  document.title = originalTitle;
+}
+
+// Stop flashing when user focuses the tab
+window.addEventListener('focus', function() {
+  stopTitleFlash();
+  dismissBanner();
+});
+
+// ─── Auto-Refresh Timer Control ──────────────────────────
+
+function startAutoRefresh() {
+  stopAutoRefresh();
+  autoRefreshTimer = setInterval(silentPoll, 30000); // every 30 seconds
+}
+
+function stopAutoRefresh() {
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
+  }
+}
+
+function toggleAutoRefresh() {
+  autoRefreshEnabled = !autoRefreshEnabled;
+  var badge = document.getElementById('autoRefreshBadge');
+  var label = document.getElementById('autoRefreshLabel');
+
+  if (autoRefreshEnabled) {
+    badge.classList.remove('paused');
+    label.textContent = 'تحديث تلقائي: ON';
+    startAutoRefresh();
+  } else {
+    badge.classList.add('paused');
+    label.textContent = 'تحديث تلقائي: OFF';
+    stopAutoRefresh();
+  }
+}
+
+// ─── Initialize auto-refresh ─────────────────────────────
+// Fetches all orders to find the highest order number, then
+// starts the 30-second polling timer.
+
+function initAutoRefreshAfterLogin() {
+  if (!adminKey) return;
+  if (autoRefreshTimer) return; // already running
+
+  fetch(API + '/api/orders?limit=500', {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var maxNum = 0;
+      data.orders.forEach(function(o) {
+        if (o.orderNumber > maxNum) maxNum = o.orderNumber;
+      });
+      lastKnownOrderNumber = maxNum;
+
+      if (autoRefreshEnabled) startAutoRefresh();
+    })
+    .catch(function() {});
+}
+
+// For auto-login (session already saved), wait for initial load then init
+setTimeout(function() { initAutoRefreshAfterLogin(); }, 3000);
 </script>
 </body>
 </html>
