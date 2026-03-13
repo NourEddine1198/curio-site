@@ -1,4 +1,15 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
+  // ─── API Configuration ─────────────────────────────────────
+  // Points to the Next.js store API. Change this URL after deploying.
+  var CURIO_API = 'https://stirring-marigold-3dd8e9.netlify.app';
+
+  // Maps product keys to database slugs
+  var PRODUCT_SLUGS = {
+    goul: 'goul-bla-matgoul',
+    roubla: 'roubla',
+    bundle: 'eid-2026-bundle'
+  };
+
   var PRODUCT_CATALOG = {
     goul: {
       key: 'goul',
@@ -1488,55 +1499,62 @@
         return;
       }
 
-      if (!window.axios || typeof window.route !== 'function') {
-        showMessage(message, 'info', STORE_COPY.common.messages.previewOnly);
-        return;
-      }
-
       var product = getSelectedHomeProduct();
       var record = getDeliveryRecordByLabel(wilayaSelect.value);
       var mode = getSelectedMode(form);
-      var payload = new FormData();
+      var wilayaCode = String(record.code).padStart(2, '0');
+      var couponInput = form.querySelector('#curio-coupon-input');
 
-      payload.set('id', product.id);
-      payload.set('quantity', '1');
-      payload.set('first_name', nameInput.value.trim());
-      payload.set('phone', sanitizePhone(phoneInput.value));
-      payload.set('city', record.label);
-      payload.set('extra_payload', buildExtraPayload(product, record, mode, addressInput.value.trim(), officeSelect.value));
-      payload.set('is_page_builder_express_checkout', 'true');
+      // Build the office info from the selected office
+      var selectedOffice = null;
+      if (mode === 'office' && officeSelect.value) {
+        var offices = record.offices || [];
+        for (var i = 0; i < offices.length; i++) {
+          if (offices[i].value === officeSelect.value) {
+            selectedOffice = offices[i];
+            break;
+          }
+        }
+      }
+
+      var payload = {
+        items: [{ slug: PRODUCT_SLUGS[product.key] || product.key, quantity: 1 }],
+        customerName: nameInput.value.trim(),
+        customerPhone: sanitizePhone(phoneInput.value),
+        wilayaCode: wilayaCode,
+        deliveryType: mode === 'office' ? 'OFFICE' : 'HOME',
+        address: mode === 'home' ? addressInput.value.trim() : null,
+        officeName: selectedOffice ? selectedOffice.station : null,
+        officeCommune: selectedOffice ? selectedOffice.commune : null,
+        couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null
+      };
 
       submitButton.classList.add('is-loading');
       submitButton.textContent = repairText(STORE_COPY.common.buttons.submitLoading);
       clearMessage(message);
 
-      window.axios.post(window.route('store-front::api.checkout.express'), payload)
+      fetch(CURIO_API + '/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
         .then(function (response) {
-          var data = response && response.data ? response.data : {};
-          showMessage(message, 'success', STORE_COPY.common.messages.submitSuccess);
-
-          if (data.has_upsell && data.id && typeof window.route === 'function') {
-            window.location = window.route('store-front::orders.upsells.show', data.id);
-            return;
-          }
-
-          window.location = window.route('store-front::checkout.thankyou');
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
         })
-        .catch(function (error) {
-          var detail = error && error.response && error.response.data && error.response.data.detail;
-          var fieldErrors = error && error.response && error.response.data && error.response.data.meta && error.response.data.meta.fields;
-          var fallback = repairText(STORE_COPY.common.messages.fallback);
-
-          if (fieldErrors) {
-            var firstField = Object.keys(fieldErrors)[0];
-            var firstFieldErrors = firstField ? fieldErrors[firstField] : null;
-            var firstFieldMessage = Array.isArray(firstFieldErrors) && firstFieldErrors.length ? firstFieldErrors[0] : '';
-            fallback = firstFieldMessage ? repairText(firstFieldMessage) : repairText(STORE_COPY.common.messages.fallbackFields);
-          } else if (detail) {
-            fallback = detail;
+        .then(function (result) {
+          if (result.ok && result.data.success) {
+            showMessage(message, 'success', result.data.message || STORE_COPY.common.messages.submitSuccess);
+            // Reset form after successful order
+            form.reset();
+            updateHomeState();
+          } else {
+            showMessage(message, 'error', result.data.error || repairText(STORE_COPY.common.messages.fallback));
           }
-
-          showMessage(message, 'error', fallback);
+        })
+        .catch(function () {
+          showMessage(message, 'error', repairText(STORE_COPY.common.messages.fallback));
         })
         .finally(function () {
           submitButton.classList.remove('is-loading');
