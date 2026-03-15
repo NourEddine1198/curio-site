@@ -930,6 +930,14 @@
 
             <div class="form-message" id="curio-form-message" aria-live="polite"></div>
 
+            <!-- Honeypot: invisible to humans, bots auto-fill it → order rejected -->
+            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true" tabindex="-1">
+              <label for="curio-website">Website</label>
+              <input id="curio-website" name="website" type="text" autocomplete="off" tabindex="-1">
+            </div>
+            <!-- Timestamp: set on page load, used to detect bots that submit too fast -->
+            <input type="hidden" id="curio-form-ts" name="_t" value="">
+
             <button class="submit-btn" id="curio-submit-btn" type="submit">
               ابعث الطلب
             </button>
@@ -1059,5 +1067,9 @@
     </div>
   </footer>
   <script src="./assets/custom-code.js"></script>
+  <script>
+    // Security: set form timestamp on page load (used to detect bots submitting too fast)
+    (function(){var ts=document.getElementById('curio-form-ts');if(ts)ts.value=String(Date.now());})();
+  </script>
 </body>
 </html>

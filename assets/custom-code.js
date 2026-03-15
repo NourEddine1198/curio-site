@@ -1112,6 +1112,8 @@
       '            <p class="curio-home-summary-note" id="curio-summary-note" data-curio-copy-path="common.summary.homeDefault">' + STORE_COPY.common.summary.homeDefault + '</p>',
       '          </div>',
       '          <div class="form-message" id="curio-form-message" aria-live="polite"></div>',
+      '          <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true" tabindex="-1"><label for="curio-website">Website</label><input id="curio-website" name="website" type="text" autocomplete="off" tabindex="-1"></div>',
+      '          <input type="hidden" id="curio-form-ts" name="_t" value="' + Date.now() + '">',
       '          <button class="curio-home-submit submit-btn" id="curio-submit-btn" type="submit"><span data-curio-copy-path="common.buttons.submit">' + STORE_COPY.common.buttons.submit + '</span></button>',
       '        </form>',
       '    </aside>',
@@ -1517,6 +1519,10 @@
         }
       }
 
+      // Security fields: honeypot + timestamp
+      var honeypotInput = document.getElementById('curio-website');
+      var tsInput = document.getElementById('curio-form-ts');
+
       var payload = {
         items: [{ slug: PRODUCT_SLUGS[product.key] || product.key, quantity: 1 }],
         customerName: nameInput.value.trim(),
@@ -1526,7 +1532,9 @@
         address: mode === 'home' ? addressInput.value.trim() : null,
         officeName: selectedOffice ? selectedOffice.station : null,
         officeCommune: selectedOffice ? selectedOffice.commune : null,
-        couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null
+        couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null,
+        website: honeypotInput ? honeypotInput.value : '',
+        _t: tsInput ? Number(tsInput.value) : 0
       };
 
       submitButton.classList.add('is-loading');
