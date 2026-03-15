@@ -464,6 +464,54 @@
       border: 1px solid rgba(69, 123, 157, 0.16);
     }
 
+    .coupon-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .coupon-row input {
+      flex: 1;
+    }
+
+    .coupon-apply-btn {
+      min-height: 52px;
+      padding: 0 20px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), #e6b800);
+      color: var(--ink);
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .coupon-apply-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .coupon-apply-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none;
+    }
+
+    .coupon-note-success {
+      color: #10643d;
+      font-weight: 700;
+    }
+
+    .coupon-note-error {
+      color: var(--red-dark);
+      font-weight: 700;
+    }
+
+    .summary-row.discount span {
+      color: #10643d;
+    }
+
     .submit-btn {
       min-height: 58px;
       width: 100%;
@@ -906,6 +954,15 @@
               <p class="field-note" id="curio-office-note">المكتب يتبدل حسب الولاية لي تختارها.</p>
             </div>
 
+            <div class="field-group" id="curio-coupon-group">
+              <label for="curio-coupon-input">عندك كود تخفيض؟</label>
+              <div class="coupon-row">
+                <input id="curio-coupon-input" name="coupon" type="text" placeholder="دخل الكود هنا" aria-label="كود التخفيض" autocomplete="off">
+                <button type="button" id="curio-coupon-apply" class="coupon-apply-btn">طبّق</button>
+              </div>
+              <p class="field-note" id="curio-coupon-note"></p>
+            </div>
+
             <div class="summary-box">
               <div class="summary-row">
                 <span>المنتج</span>
@@ -914,6 +971,10 @@
               <div class="summary-row">
                 <span>ثمن المنتج</span>
                 <span id="curio-summary-product-price">2,390 دج</span>
+              </div>
+              <div class="summary-row discount" id="curio-summary-discount-row" style="display:none;">
+                <span>التخفيض</span>
+                <span id="curio-summary-discount"></span>
               </div>
               <div class="summary-row">
                 <span>ثمن التوصيل</span>

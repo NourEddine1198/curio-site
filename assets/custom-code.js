@@ -1357,6 +1357,20 @@
     var summaryNote = form.querySelector('#curio-summary-note');
     var productCards = document.querySelectorAll('[data-curio-product-card]');
     var pickerButtons = document.querySelectorAll('[data-curio-pick]');
+    var couponInput = form.querySelector('#curio-coupon-input');
+    var couponApplyBtn = form.querySelector('#curio-coupon-apply');
+    var couponNote = form.querySelector('#curio-coupon-note');
+    var discountRow = form.querySelector('#curio-summary-discount-row');
+    var discountValue = form.querySelector('#curio-summary-discount');
+
+    // Coupon state: tracks the active coupon discount
+    var activeCouponDiscount = 0;
+    var activeCouponCode = '';
+
+    // Coupon config (frontend display only — backend validates the real discount)
+    var COUPON_CONFIG = {
+      INSTAGRAM: { discount: 900, forProduct: 'bundle', label: 'كود INSTAGRAM' }
+    };
 
     populateWilayaSelect(wilayaSelect, '');
     bindPhoneInput(phoneInput, phoneGroup, message);
@@ -1371,6 +1385,54 @@
       });
     }
 
+    function applyCoupon() {
+      var code = (couponInput.value || '').trim().toUpperCase();
+      var product = getSelectedHomeProduct();
+
+      // Reset state
+      activeCouponDiscount = 0;
+      activeCouponCode = '';
+      couponNote.textContent = '';
+      couponNote.className = 'field-note';
+      discountRow.style.display = 'none';
+
+      if (!code) {
+        updateHomeState();
+        return;
+      }
+
+      var coupon = COUPON_CONFIG[code];
+      if (!coupon) {
+        couponNote.textContent = 'هذا الكود غير صالح';
+        couponNote.className = 'field-note coupon-note-error';
+        updateHomeState();
+        return;
+      }
+
+      if (coupon.forProduct && product.key !== coupon.forProduct) {
+        couponNote.textContent = 'هذا الكود يخدم غير مع الباك';
+        couponNote.className = 'field-note coupon-note-error';
+        updateHomeState();
+        return;
+      }
+
+      // Coupon is valid
+      activeCouponDiscount = coupon.discount;
+      activeCouponCode = code;
+      couponNote.textContent = 'تم تطبيق الكود! تخفيض ' + formatDA(coupon.discount);
+      couponNote.className = 'field-note coupon-note-success';
+      updateHomeState();
+    }
+
+    if (couponApplyBtn) {
+      couponApplyBtn.addEventListener('click', applyCoupon);
+    }
+    if (couponInput) {
+      couponInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); applyCoupon(); }
+      });
+    }
+
     function updateHomeState() {
       clearMessage(message);
 
@@ -1379,6 +1441,25 @@
       var mode = getSelectedMode(form);
       var officeValue = officeSelect.value;
       var fee = null;
+
+      // Check if coupon still applies to selected product
+      var discount = 0;
+      if (activeCouponDiscount > 0 && activeCouponCode) {
+        var coupon = COUPON_CONFIG[activeCouponCode];
+        if (coupon && (!coupon.forProduct || product.key === coupon.forProduct)) {
+          discount = activeCouponDiscount;
+        }
+      }
+
+      // Show/hide discount row
+      if (discount > 0) {
+        discountRow.style.display = 'flex';
+        discountValue.textContent = '- ' + formatDA(discount);
+      } else {
+        discountRow.style.display = 'none';
+      }
+
+      var effectivePrice = product.price - discount;
 
       updateSelectedCard(product.key);
 
@@ -1417,7 +1498,7 @@
 
       fee = mode === 'office' ? record.office : record.home;
       summaryDeliveryPrice.textContent = formatDA(fee);
-      summaryTotal.textContent = formatDA(product.price + fee);
+      summaryTotal.textContent = formatDA(effectivePrice + fee);
       summaryNote.textContent = repairText(mode === 'office'
         ? STORE_COPY.common.summary.officeReady
         : STORE_COPY.common.summary.homeReady);
