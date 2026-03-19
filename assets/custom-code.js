@@ -982,7 +982,7 @@
 
     document.documentElement.lang = 'ar';
     document.documentElement.dir = 'rtl';
-    document.title = 'Curio | ألعاب كارط جزائرية';
+    document.title = 'Curio | نَصنع العابا تَصنع ذكريات لا تُنسى';
     document.body.className = 'curio-home-body';
 
     var goul = getProductByKey('goul');
