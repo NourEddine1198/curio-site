@@ -433,6 +433,26 @@
       gap: 6px;
     }
     .btn-ecotrack:disabled { background: #374151; }
+    .btn-orderdz {
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-orderdz:disabled { background: #374151; }
+    .btn-orderdz .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    .btn-orderdz .sent-indicator {
+      font-size: 11px;
+      opacity: 0.85;
+    }
     .btn-ecotrack .spinner {
       display: inline-block;
       width: 14px;
@@ -982,6 +1002,7 @@ function renderOrderDetail(order) {
     // Action buttons
     '<div class="actions">' +
       '<button class="btn-action btn-confirm" onclick="updateStatus(' + order.orderNumber + ',\'CONFIRMED\')" ' + (order.status !== 'PENDING' ? 'disabled' : '') + '>تأكيد الطلب</button>' +
+      '<button class="btn-action btn-orderdz" id="btnOrderdz" onclick="sendToOrderDZ(' + order.orderNumber + ')">' + (order.externalId ? '&#x2705; <span class="sent-indicator">تم الإرسال</span>' : '&#x1f4de; إرسال إلى OrderDZ') + '</button>' +
       '<button class="btn-action btn-ecotrack" id="btnEcotrack" onclick="shipToEcotrack(' + order.orderNumber + ')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>&#x1f69a; إرسال إلى Ecotrack</button>' +
       '<button class="btn-action btn-ship" onclick="updateStatus(' + order.orderNumber + ',\'SHIPPED\')" ' + (!['CONFIRMED','PROCESSING'].includes(order.status) ? 'disabled' : '') + '>تم الشحن (يدوي)</button>' +
       '<button class="btn-action btn-deliver" onclick="updateStatus(' + order.orderNumber + ',\'DELIVERED\')" ' + (order.status !== 'SHIPPED' ? 'disabled' : '') + '>تم التوصيل</button>' +
@@ -1067,6 +1088,44 @@ function patchOrder(orderNumber, data, successMsg) {
     })
     .catch(function() {
       showToast('صار مشكل في الاتصال', true);
+    });
+}
+
+// ─── Send to OrderDZ ─────────────────────────────────────
+
+function sendToOrderDZ(orderNumber) {
+  var btn = document.getElementById('btnOrderdz');
+  if (!btn || btn.disabled) return;
+
+  if (!confirm('إرسال الطلب #' + orderNumber + ' إلى OrderDZ للتأكيد؟')) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الإرسال...';
+
+  fetch(API + '/api/orders/' + orderNumber + '/orderdz', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey
+    }
+  })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+    .then(function(res) {
+      if (res.ok && res.data.success) {
+        showToast('تم إرسال الطلب إلى OrderDZ');
+        renderOrderDetail(res.data.order);
+        loadOrders();
+      } else {
+        var errorMsg = res.data.error || 'فشل الإرسال إلى OrderDZ';
+        showToast(errorMsg, true);
+        btn.disabled = false;
+        btn.innerHTML = '&#x1f4de; إرسال إلى OrderDZ';
+      }
+    })
+    .catch(function() {
+      showToast('صار مشكل في الاتصال بالسيرفر', true);
+      btn.disabled = false;
+      btn.innerHTML = '&#x1f4de; إرسال إلى OrderDZ';
     });
 }
 
