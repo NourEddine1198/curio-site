@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Origami DZ — كيت أوريغامي</title>
+    <meta name="description" content="كيت أوريغامي 80 ورقة ملوّنة + كتاب تعليمات. نشاط إبداعي للصغار والكبار بلا شاشة. 1,900 DA — توصيل لكل الولايات.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==============================
+           RESET & VARIABLES
+           ============================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --coral:       #FF6B6B;
+            --coral-dark:  #E85555;
+            --coral-light: #FFF0F0;
+            --teal:        #4ECDC4;
+            --teal-dark:   #3BA89F;
+            --teal-light:  #E8FAF8;
+            --yellow:      #FFD93D;
+            --yellow-light:#FFFDE7;
+            --purple:      #A78BFA;
+            --purple-light:#F3EEFF;
+            --orange:      #FF9F43;
+            --pink:        #FF78B4;
+            --green:       #27AE60;
+            --bg:          #FFFDF7;
+            --surface:     #FFFFFF;
+            --text:        #2D3436;
+            --text-l:      #636E72;
+            --dark:        #1A1A2E;
+
+            --ff-display: 'Changa', sans-serif;
+            --ff-body:    'Tajawal', sans-serif;
+
+            --r-xs:  clamp(.4rem,  1vw,  .65rem);
+            --r-sm:  clamp(.75rem, 1.5vw, 1rem);
+            --r-md:  clamp(1.1rem, 2.5vw, 1.75rem);
+            --r-lg:  clamp(1.75rem, 4vw,  3rem);
+            --r-xl:  clamp(2.5rem, 6vw,  5rem);
+            --r-2xl: clamp(3.5rem, 9vw,  7rem);
+        }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+
+        body {
+            font-family: var(--ff-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { max-width: 100%; display: block; }
+        a { color: inherit; text-decoration: none; }
+
+        .t-display {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            line-height: 1.15;
+        }
+
+        /* ==============================
+           BUTTONS
+           ============================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            padding: clamp(.85rem, 2vw, 1.1rem) clamp(1.8rem, 4vw, 3rem);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: transform .2s cubic-bezier(.22,1,.36,1), box-shadow .2s ease;
+            text-decoration: none;
+        }
+        .btn:active { transform: scale(.97); }
+
+        .btn-coral {
+            background: linear-gradient(135deg, var(--coral), var(--orange));
+            color: white;
+            box-shadow: 0 4px 20px rgba(255,107,107,.3), 0 1px 3px rgba(255,107,107,.2);
+        }
+        .btn-coral:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,107,107,.4), 0 2px 6px rgba(255,107,107,.25);
+        }
+
+        .btn-white {
+            background: var(--surface);
+            color: var(--coral);
+            box-shadow: 0 4px 20px rgba(0,0,0,.1);
+        }
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,.15);
+        }
+
+        /* ==============================
+           LAYOUT
+           ============================== */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+        }
+        .section-pad {
+            padding-top: var(--r-2xl);
+            padding-bottom: var(--r-2xl);
+        }
+        .section-label {
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: clamp(.8rem, 1.8vw, .95rem);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--teal-dark);
+            margin-bottom: var(--r-xs);
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: var(--r-md);
+        }
+
+        /* ==============================
+           TOP BAR
+           ============================== */
+        .top-bar {
+            background: linear-gradient(135deg, var(--coral), var(--orange));
+            color: white;
+            text-align: center;
+            padding: .5rem 1rem;
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: clamp(.75rem, 1.8vw, .88rem);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ==============================
+           HEADER
+           ============================== */
+        .site-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: .75rem 0;
+            transition: background .3s ease, box-shadow .3s ease;
+        }
+        .site-header.scrolled {
+            background: rgba(255,253,247,.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0,0,0,.06);
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { display: flex; align-items: center; }
+        .logo-img { height: clamp(32px, 8vw, 42px); width: auto; }
+        .header-cta {
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: .85rem;
+            padding: .55rem 1.2rem;
+            background: linear-gradient(135deg, var(--coral), var(--orange));
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity .3s ease, transform .3s ease;
+        }
+        .site-header.scrolled .header-cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==============================
+           HERO
+           ============================== */
+        .hero {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            padding-bottom: var(--r-xl);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(160deg, #FFFDF7 0%, #FFF5F5 30%, #F0FDFA 60%, #FFFDE7 100%);
+        }
+
+        .float-shape {
+            position: absolute;
+            opacity: .12;
+            animation: floaty 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .float-shape:nth-child(1) { top: 12%; left: 4%;  font-size: 2.2rem; animation-delay: 0s; }
+        .float-shape:nth-child(2) { top: 22%; right: 6%; font-size: 2.8rem; animation-delay: 1.2s; }
+        .float-shape:nth-child(3) { bottom: 25%; left: 8%;  font-size: 1.8rem; animation-delay: 2.4s; }
+        .float-shape:nth-child(4) { bottom: 35%; right: 12%; font-size: 2rem;  animation-delay: 3.6s; }
+        .float-shape:nth-child(5) { top: 55%; left: 45%;  font-size: 1.6rem; animation-delay: 4.5s; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(6deg); }
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: var(--r-lg);
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .hero-grid { grid-template-columns: 1fr 1fr; gap: var(--r-xl); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: clamp(.8rem, 1.8vw, .95rem);
+            color: var(--teal-dark);
+            background: var(--teal-light);
+            padding: .4rem 1rem;
+            border-radius: 100px;
+            width: fit-content;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            background: linear-gradient(135deg, var(--coral), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: var(--r-sm);
+        }
+        .hero-sub {
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--teal-dark);
+            margin-top: var(--r-xs);
+        }
+        .hero-desc {
+            font-size: clamp(.95rem, 2vw, 1.1rem);
+            color: var(--text-l);
+            margin-top: var(--r-sm);
+            max-width: 480px;
+        }
+
+        .hero-price {
+            display: flex;
+            align-items: baseline;
+            gap: .5rem;
+            margin-top: var(--r-md);
+        }
+        .hero-price .amount {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--coral);
+        }
+        .hero-price .currency {
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-l);
+        }
+
+        .hero-actions { margin-top: var(--r-md); }
+        .hero-trust {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem 1.2rem;
+            margin-top: var(--r-sm);
+            font-size: clamp(.82rem, 1.8vw, .92rem);
+            color: var(--text-l);
+        }
+
+        /* ==============================
+           HERO CAROUSEL (Stories Style)
+           ============================== */
+        .hero-visual { position: relative; }
+        .product-frame {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 24px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--coral-light), var(--yellow-light));
+            box-shadow: 0 20px 60px rgba(0,0,0,.08);
+        }
+
+        /* Stacked card depth effect */
+        .hero-visual::before,
+        .hero-visual::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 24px;
+            z-index: -1;
+        }
+        .hero-visual::before {
+            transform: translateY(10px) scale(.96);
+            background: var(--teal-light);
+            opacity: .6;
+        }
+        .hero-visual::after {
+            transform: translateY(20px) scale(.92);
+            background: var(--yellow-light);
+            opacity: .4;
+        }
+
+        .carousel-images {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .carousel-images img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+        .carousel-images img.active { opacity: 1; }
+
+        /* Progress bars */
+        .carousel-bars {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            gap: 4px;
+            z-index: 5;
+        }
+        .carousel-bar {
+            flex: 1;
+            height: 3px;
+            border-radius: 2px;
+            background: rgba(255,255,255,.3);
+            overflow: hidden;
+        }
+        .carousel-bar-fill {
+            width: 0;
+            height: 100%;
+            border-radius: 2px;
+        }
+        .carousel-bar.done .carousel-bar-fill { width: 100%; }
+        .carousel-bar.active .carousel-bar-fill {
+            animation: fillBar 4s linear forwards;
+        }
+        /* Color cycling */
+        .carousel-bar:nth-child(6n+1) .carousel-bar-fill { background: var(--coral); }
+        .carousel-bar:nth-child(6n+2) .carousel-bar-fill { background: var(--teal); }
+        .carousel-bar:nth-child(6n+3) .carousel-bar-fill { background: var(--yellow); }
+        .carousel-bar:nth-child(6n+4) .carousel-bar-fill { background: var(--purple); }
+        .carousel-bar:nth-child(6n+5) .carousel-bar-fill { background: var(--coral); }
+        .carousel-bar:nth-child(6n+6) .carousel-bar-fill { background: var(--teal); }
+
+        @keyframes fillBar {
+            from { width: 0; }
+            to   { width: 100%; }
+        }
+
+        /* Dot navigation */
+        .carousel-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 0; right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 5;
+        }
+        .carousel-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.4);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: transform .2s, background .2s;
+        }
+        .carousel-dot.active {
+            transform: scale(1.4);
+            background: white;
+        }
+
+        /* Tap zones */
+        .carousel-tap {
+            position: absolute;
+            top: 0; bottom: 0;
+            z-index: 4;
+            cursor: pointer;
+        }
+        .carousel-tap-prev { left: 0; width: 30%; }
+        .carousel-tap-next { right: 0; width: 70%; }
+
+        /* Floating emojis */
+        .hero-visual .float-emoji {
+            position: absolute;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,.1));
+            animation: floaty 5s ease-in-out infinite;
+            z-index: 2;
+        }
+        .float-emoji:nth-child(2) { top: -8%; right: 5%; animation-delay: 0s; }
+        .float-emoji:nth-child(3) { bottom: -5%; left: 5%; animation-delay: 1.5s; }
+        .float-emoji:nth-child(4) { top: 40%; right: -8%; animation-delay: 3s; }
+
+        /* ==============================
+           KIT CONTENTS
+           ============================== */
+        .kit { background: var(--bg); }
+        .kit-items {
+            display: grid;
+            gap: var(--r-sm);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .kit-item {
+            display: flex;
+            align-items: center;
+            gap: var(--r-sm);
+            padding: var(--r-sm) var(--r-md);
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,.04);
+            transition: transform .2s ease;
+        }
+        .kit-item:hover { transform: translateX(-4px); }
+        .kit-item .item-icon {
+            flex-shrink: 0;
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+        .kit-item:nth-child(1) .item-icon { background: var(--coral-light); }
+        .kit-item:nth-child(2) .item-icon { background: var(--teal-light); }
+        .kit-item:nth-child(3) .item-icon { background: var(--yellow-light); }
+        .kit-item:nth-child(4) .item-icon { background: var(--purple-light); }
+        .kit-item .item-text {
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: clamp(.92rem, 2vw, 1.05rem);
+        }
+        .kit-item .item-sub {
+            font-size: clamp(.78rem, 1.6vw, .85rem);
+            color: var(--text-l);
+        }
+
+        /* ==============================
+           BENEFITS — Swipeable Photo Cards
+           ============================== */
+        .benefits { background: var(--surface); }
+
+        .benefits-scroll {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 clamp(1.25rem, 4vw, 2.5rem) 1rem;
+            scrollbar-width: none;
+        }
+        .benefits-scroll::-webkit-scrollbar { display: none; }
+
+        .benefit-card {
+            flex: 0 0 260px;
+            height: 340px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            scroll-snap-align: center;
+            cursor: pointer;
+            transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease;
+        }
+        .benefit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,.15);
+        }
+        @media (max-width: 639px) {
+            .benefit-card {
+                flex: 0 0 75vw;
+                height: 300px;
+            }
+        }
+
+        /* Dark gradient overlay */
+        .benefit-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
+            border-radius: 24px;
+        }
+
+        /* Emoji badge */
+        .benefit-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,.15);
+        }
+        .benefit-card:nth-child(1) .benefit-badge { background: var(--coral-light); }
+        .benefit-card:nth-child(2) .benefit-badge { background: var(--teal-light); }
+        .benefit-card:nth-child(3) .benefit-badge { background: var(--yellow-light); }
+        .benefit-card:nth-child(4) .benefit-badge { background: var(--purple-light); }
+
+        /* Text overlay */
+        .benefit-text {
+            position: absolute;
+            bottom: 0;
+            left: 0; right: 0;
+            padding: 1.5rem;
+            z-index: 2;
+            color: white;
+        }
+        .benefit-text h3 {
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            text-shadow: 0 1px 4px rgba(0,0,0,.3);
+            margin-bottom: .3rem;
+        }
+        .benefit-text p {
+            font-size: clamp(.82rem, 1.8vw, .92rem);
+            opacity: .9;
+            text-shadow: 0 1px 3px rgba(0,0,0,.2);
+            line-height: 1.5;
+        }
+
+        /* ==============================
+           ORDER SECTION
+           ============================== */
+        .order-section {
+            background: linear-gradient(160deg, var(--coral-light) 0%, var(--bg) 50%, var(--teal-light) 100%);
+        }
+
+        .order-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 10px 40px rgba(0,0,0,.06);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .order-card h2 {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            text-align: center;
+            margin-bottom: .3rem;
+        }
+        .order-subtitle {
+            text-align: center;
+            color: var(--text-l);
+            margin-bottom: var(--r-md);
+            font-size: clamp(.85rem, 2vw, .95rem);
+        }
+
+        .form-group { margin-bottom: var(--r-sm); }
+        .form-group label {
+            display: block;
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: .9rem;
+            margin-bottom: .35rem;
+            color: var(--text);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: .75rem 1rem;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            font-family: var(--ff-body);
+            color: var(--text);
+            background: var(--surface);
+            transition: border-color .2s ease;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--teal);
+        }
+        .form-group textarea { resize: vertical; min-height: 70px; }
+
+        .delivery-options {
+            display: flex;
+            gap: .75rem;
+            margin-top: .35rem;
+        }
+        .delivery-option {
+            flex: 1;
+            position: relative;
+        }
+        .delivery-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+        .delivery-option .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            padding: .75rem;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s ease;
+            font-family: var(--ff-display);
+            font-weight: 600;
+            font-size: .9rem;
+        }
+        .delivery-option input:checked + .option-label {
+            border-color: var(--teal);
+            background: var(--teal-light);
+            color: var(--teal-dark);
+        }
+
+        .price-summary {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            margin-top: var(--r-sm);
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: .35rem 0;
+            font-size: .92rem;
+        }
+        .price-row.total {
+            border-top: 2px dashed #E0E0E0;
+            margin-top: .5rem;
+            padding-top: .75rem;
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--coral);
+        }
+        .price-note {
+            font-size: clamp(.78rem, 1.6vw, .85rem);
+            color: var(--text-l);
+            text-align: center;
+            margin-top: var(--r-xs);
+        }
+
+        .order-submit {
+            width: 100%;
+            margin-top: var(--r-md);
+            font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+            padding: 1rem;
+        }
+        .order-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .ohnohoney { position: absolute; left: -9999px; }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: var(--r-xl) var(--r-sm);
+        }
+        .success-message.show { display: block; }
+        .success-icon { font-size: 4rem; margin-bottom: var(--r-sm); }
+        .success-message h3 {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            color: var(--green);
+            margin-bottom: var(--r-xs);
+        }
+        .success-message p {
+            color: var(--text-l);
+            font-size: clamp(.9rem, 2vw, 1.05rem);
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        /* ==============================
+           TRUST
+           ============================== */
+        .trust { background: var(--surface); }
+        .trust-items {
+            display: grid;
+            gap: var(--r-sm);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        @media (min-width: 640px) {
+            .trust-items { grid-template-columns: repeat(3, 1fr); }
+        }
+        .trust-item {
+            text-align: center;
+            padding: var(--r-md);
+            background: var(--bg);
+            border-radius: 18px;
+        }
+        .trust-icon { font-size: clamp(1.8rem, 4vw, 2.2rem); margin-bottom: var(--r-xs); }
+        .trust-item h3 {
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: clamp(.92rem, 2vw, 1.05rem);
+            margin-bottom: .25rem;
+        }
+        .trust-item p {
+            font-size: clamp(.78rem, 1.6vw, .88rem);
+            color: var(--text-l);
+        }
+
+        /* ==============================
+           FINAL CTA
+           ============================== */
+        .final-cta {
+            background: linear-gradient(135deg, var(--coral), var(--orange));
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .final-cta .container { position: relative; z-index: 1; }
+
+        .final-price {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            line-height: 1.1;
+        }
+        .final-price small { font-size: .45em; font-weight: 600; opacity: .8; }
+        .final-sub {
+            font-size: clamp(.95rem, 2vw, 1.1rem);
+            opacity: .85;
+            margin-top: var(--r-xs);
+            margin-bottom: var(--r-md);
+        }
+
+        /* ==============================
+           FOOTER
+           ============================== */
+        .site-footer {
+            background: var(--dark);
+            color: rgba(255,255,255,.5);
+            text-align: center;
+            padding: var(--r-lg) 0;
+            font-size: .85rem;
+        }
+        .site-footer .footer-brand {
+            font-family: var(--ff-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,.7);
+            margin-bottom: .5rem;
+        }
+
+        /* ==============================
+           STICKY MOBILE BAR
+           ============================== */
+        .sticky-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 90;
+            background: rgba(255,253,247,.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(0,0,0,.06);
+            padding: .65rem clamp(1rem, 3vw, 1.5rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            transform: translateY(100%);
+            transition: transform .35s cubic-bezier(.22,1,.36,1);
+        }
+        .sticky-bar.visible { transform: translateY(0); }
+        .sticky-price {
+            font-family: var(--ff-display);
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--text);
+        }
+        .sticky-price small {
+            font-weight: 500;
+            font-size: .75rem;
+            color: var(--text-l);
+            display: block;
+        }
+        .sticky-bar .btn {
+            font-size: .9rem;
+            padding: .65rem 1.5rem;
+            border-radius: 12px;
+        }
+        @media (min-width: 768px) {
+            .sticky-bar { display: none; }
+        }
+
+        /* ==============================
+           SCROLL ANIMATIONS
+           ============================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: hero-enter .8s cubic-bezier(.22,1,.36,1) forwards;
+        }
+        .hero-content > *:nth-child(1) { animation-delay: .1s; }
+        .hero-content > *:nth-child(2) { animation-delay: .2s; }
+        .hero-content > *:nth-child(3) { animation-delay: .3s; }
+        .hero-content > *:nth-child(4) { animation-delay: .4s; }
+        .hero-content > *:nth-child(5) { animation-delay: .5s; }
+        .hero-content > *:nth-child(6) { animation-delay: .6s; }
+        .hero-content > *:nth-child(7) { animation-delay: .7s; }
+
+        .hero-visual {
+            opacity: 0;
+            transform: translateY(30px) scale(.97);
+            animation: hero-visual-enter 1s cubic-bezier(.22,1,.36,1) .4s forwards;
+        }
+        @keyframes hero-enter {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hero-visual-enter {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ==============================
+           EDIT MODE
+           ============================== */
+        .edit-toolbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            background: #1a1a2e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: .6rem 1.5rem;
+            font-family: var(--ff-display);
+            font-size: .9rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,.3);
+            transform: translateY(-100%);
+            transition: transform .3s ease;
+        }
+        .edit-toolbar.active { transform: translateY(0); }
+        .edit-toolbar .edit-status {
+            display: flex; align-items: center; gap: .5rem; font-weight: 700;
+        }
+        .edit-toolbar .edit-dot {
+            width: 10px; height: 10px;
+            background: #2ECC71;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease infinite;
+        }
+        @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .edit-toolbar button {
+            padding: .45rem 1.2rem; border: none; border-radius: 8px;
+            font-family: var(--ff-display); font-weight: 700; font-size: .85rem; cursor: pointer;
+        }
+        .edit-toolbar .btn-save { background: #2ECC71; color: white; }
+        .edit-toolbar .btn-exit { background: rgba(255,255,255,.15); color: white; }
+
+        .edit-fab {
+            position: fixed; bottom: 90px; left: 1.5rem; z-index: 200;
+            width: 52px; height: 52px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--coral), var(--orange));
+            color: white; border: none; font-size: 1.4rem; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255,107,107,.4);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform .2s;
+        }
+        .edit-fab:hover { transform: scale(1.1); }
+
+        body.editing [data-editable] {
+            outline: 2px dashed var(--coral); outline-offset: 4px;
+            cursor: text; border-radius: 4px;
+        }
+        body.editing [data-editable]:hover { outline-color: var(--teal); }
+        body.editing [data-editable]:focus {
+            outline: 2px solid var(--teal); background: rgba(78,205,196,.06);
+        }
+
+        /* ==============================
+           MOBILE OPTIMIZATION
+           ============================== */
+
+        /* iOS: prevent auto-zoom on input focus */
+        .form-group input, .form-group select, .form-group textarea {
+            font-size: 16px;
+        }
+
+        /* Safe area insets (notch + home indicator) */
+        .top-bar { padding-top: max(0.5rem, env(safe-area-inset-top)); }
+        .sticky-bar { padding-bottom: max(0.65rem, env(safe-area-inset-bottom)); }
+
+        /* Touch-action on interactive elements */
+        .carousel-tap, .carousel-dot, .btn, .delivery-option, a[href] {
+            touch-action: manipulation;
+        }
+
+        /* Hero title overflow protection */
+        .hero h1 { word-break: break-word; overflow-wrap: break-word; }
+
+        /* Responsive top bar gap */
+        .top-bar { gap: clamp(0.5rem, 3vw, 1.5rem); }
+
+        /* Logo sizing handled by .logo-img clamp */
+
+        /* Hero padding responsive */
+        .hero { padding-top: clamp(4rem, 12vw, 5rem); }
+
+        /* Carousel dots — larger touch area */
+        .carousel-dot {
+            position: relative;
+        }
+        .carousel-dot::before {
+            content: '';
+            position: absolute;
+            inset: -14px;
+        }
+
+        /* ===== 767px and below (mobile) ===== */
+        @media (max-width: 767px) {
+            .site-footer {
+                padding-bottom: calc(var(--r-lg) + 70px + env(safe-area-inset-bottom, 0px));
+            }
+            .edit-fab {
+                bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+            }
+        }
+
+        /* Contain horizontal scroll on benefits and hero */
+        .benefits { overflow: hidden; }
+        .hero { overflow: hidden; }
+
+        /* ===== 639px and below (small screens) ===== */
+        @media (max-width: 639px) {
+            .float-emoji:nth-child(4) { display: none; } /* hide the one at right: -8% */
+            .hero {
+                min-height: auto;
+                padding-top: clamp(3.5rem, 10vw, 5rem);
+                padding-bottom: var(--r-lg);
+            }
+            .product-frame {
+                aspect-ratio: 4 / 5;
+            }
+            .hero-visual::before {
+                transform: translateY(6px) scale(.97);
+            }
+            .hero-visual::after {
+                transform: translateY(12px) scale(.94);
+            }
+            .benefit-card {
+                flex: 0 0 78vw;
+                height: clamp(260px, 72vw, 300px);
+            }
+            .order-card {
+                padding: clamp(1rem, 4vw, 1.5rem);
+            }
+            .form-group textarea {
+                min-height: 60px;
+            }
+        }
+
+        /* ===== 399px and below (tiny phones) ===== */
+        @media (max-width: 399px) {
+            .delivery-options {
+                flex-direction: column;
+            }
+        }
+
+        /* ===== 374px and below (iPhone SE / smallest screens) ===== */
+        @media (max-width: 374px) {
+            .product-frame {
+                aspect-ratio: 3 / 4;
+            }
+            .hero-visual::before,
+            .hero-visual::after {
+                display: none;
+            }
+            .benefit-card {
+                flex: 0 0 82vw;
+                height: 250px;
+            }
+            .benefit-text {
+                padding: 1rem;
+            }
+            .benefit-text h3 {
+                font-size: 1rem;
+            }
+            .benefit-text p {
+                font-size: 0.8rem;
+            }
+            .top-bar {
+                font-size: 0.72rem;
+                gap: 0.4rem;
+                padding: 0.4rem 0.75rem;
+                padding-top: max(0.4rem, env(safe-area-inset-top));
+            }
+            .section-label { font-size: 0.82rem; }
+            .price-note { font-size: 0.82rem; }
+            .kit-item .item-sub { font-size: 0.8rem; }
+            .trust-item p { font-size: 0.8rem; }
+            .sticky-price { font-size: 1rem; }
+            .sticky-price small { font-size: 0.7rem; white-space: nowrap; }
+            .sticky-bar .btn { font-size: 0.82rem; padding: 0.55rem 1rem; }
+            .logo-img { height: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- EDIT TOOLBAR -->
+    <div class="edit-toolbar" id="editToolbar">
+        <div class="edit-status"><div class="edit-dot"></div> Edit Mode ON</div>
+        <button class="btn-save" onclick="saveEdits()">Save Changes</button>
+        <button class="btn-exit" onclick="toggleEditMode()">Exit Edit Mode</button>
+    </div>
+    <button class="edit-fab" id="editFab" onclick="toggleEditMode()" title="Edit Mode">✏️</button>
+
+    <!-- ============ TOP BAR ============ -->
+    <div class="top-bar">
+        <span data-editable="topbar-1">💰 الدفع عند الاستلام</span>
+        <span data-editable="topbar-2">📦 التوصيل لكل الولايات</span>
+    </div>
+
+    <!-- ============ HEADER ============ -->
+    <header class="site-header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="#" class="logo"><img src="images/logo.png" alt="Origami DZ" class="logo-img"></a>
+                <a href="#order" class="header-cta">اطلب دروك 🎉</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+        <div class="float-shape">🦋</div>
+        <div class="float-shape">🌸</div>
+        <div class="float-shape">⭐</div>
+        <div class="float-shape">🦕</div>
+        <div class="float-shape">🐰</div>
+
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge" data-editable="hero-badge">🎨 نشاط إبداعي للصغار والكبار</div>
+
+                    <h1 class="t-display" data-editable="hero-title">كيت أوريغامي</h1>
+
+                    <p class="hero-sub" data-editable="hero-subtitle">80 ورقة أوريغامي + كتاب تعليمات 📖</p>
+
+                    <p class="hero-desc" data-editable="hero-desc">
+                        خلّي ولادك يبدعو بيديهم — حيوانات، ديناصورات، وأشكال رهيبة من الورق.
+                        <br>نشاط ممتع بلا شاشة، يخلّينا نتعلمو ونضحكو في نفس الوقت ✨
+                    </p>
+
+                    <div class="hero-price">
+                        <span class="amount" data-editable="hero-price">1,900</span>
+                        <span class="currency">DA</span>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#order" class="btn btn-coral" data-editable="hero-cta">اطلب دروك 🎉</a>
+                    </div>
+
+                    <div class="hero-trust">
+                        <span>📦 توصيل لكل الولايات</span>
+                        <span>💰 الدفع عند الاستلام</span>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="product-frame" id="carousel">
+                        <!-- Progress bars -->
+                        <div class="carousel-bars" id="carouselBars">
+                            <div class="carousel-bar active"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                            <div class="carousel-bar"><div class="carousel-bar-fill"></div></div>
+                        </div>
+
+                        <!-- Images -->
+                        <div class="carousel-images">
+                            <img src="images/origami-1.avif" alt="كيت أوريغامي 1" class="active" loading="eager">
+                            <img src="images/origami-2.avif" alt="كيت أوريغامي 2" loading="lazy">
+                            <img src="images/origami-3.avif" alt="كيت أوريغامي 3" loading="lazy">
+                            <img src="images/origami-4.avif" alt="كيت أوريغامي 4" loading="lazy">
+                            <img src="images/origami-5.avif" alt="كيت أوريغامي 5" loading="lazy">
+                            <img src="images/Gemini_Generated_Image_gikghpgikghpgikg.png" alt="طريقة صنع كلب — خطوة بخطوة" loading="lazy">
+                            <img src="images/Gemini_Generated_Image_qntpwdqntpwdqntp.png" alt="طريقة صنع قطة — خطوة بخطوة" loading="lazy">
+                        </div>
+
+                        <!-- Tap zones -->
+                        <div class="carousel-tap carousel-tap-prev" id="tapPrev"></div>
+                        <div class="carousel-tap carousel-tap-next" id="tapNext"></div>
+
+                        <!-- Dot navigation -->
+                        <div class="carousel-dots" id="carouselDots">
+                            <button class="carousel-dot active" data-index="0"></button>
+                            <button class="carousel-dot" data-index="1"></button>
+                            <button class="carousel-dot" data-index="2"></button>
+                            <button class="carousel-dot" data-index="3"></button>
+                            <button class="carousel-dot" data-index="4"></button>
+                            <button class="carousel-dot" data-index="5"></button>
+                            <button class="carousel-dot" data-index="6"></button>
+                        </div>
+                    </div>
+                    <div class="float-emoji">🦕</div>
+                    <div class="float-emoji">🐰</div>
+                    <div class="float-emoji">🚀</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WHAT'S IN THE KIT ============ -->
+    <section class="kit section-pad">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label" data-editable="kit-label">واش كاين فالكيت؟</div>
+                <h2 class="section-title t-display" data-editable="kit-title">كل واش يحتاج طفلك يبدع</h2>
+            </div>
+
+            <div class="kit-items">
+                <div class="kit-item reveal">
+                    <div class="item-icon">📄</div>
+                    <div>
+                        <div class="item-text" data-editable="kit-1-title">80 ورقة ملوّنة</div>
+                        <div class="item-sub" data-editable="kit-1-sub">أشكال مطبوعة جاهزة للطي</div>
+                    </div>
+                </div>
+                <div class="kit-item reveal">
+                    <div class="item-icon">📖</div>
+                    <div>
+                        <div class="item-text" data-editable="kit-2-title">كتاب تعليمات بالصور</div>
+                        <div class="item-sub" data-editable="kit-2-sub">خطوة بخطوة، ساهل حتى للصغار</div>
+                    </div>
+                </div>
+                <div class="kit-item reveal">
+                    <div class="item-icon">🦕</div>
+                    <div>
+                        <div class="item-text" data-editable="kit-3-title">40 شكل مختلف</div>
+                        <div class="item-sub" data-editable="kit-3-sub">حيوانات، ديناصورات، صواريخ وبزاف</div>
+                    </div>
+                </div>
+                <div class="kit-item reveal">
+                    <div class="item-icon">📱</div>
+                    <div>
+                        <div class="item-text" data-editable="kit-4-title">QR Code = فيديو تعليمي</div>
+                        <div class="item-sub" data-editable="kit-4-sub">سكاني الكود وشوف كيفاش يتصنع كل شكل</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ BENEFITS — Swipeable Photo Cards ============ -->
+    <section class="benefits section-pad">
+        <div class="container">
+            <div class="reveal" style="text-align:center;">
+                <div class="section-label" data-editable="benefits-label">علاش ولادك غادي يحبّوها</div>
+                <h2 class="section-title t-display" data-editable="benefits-title">مش غير ورق — تجربة إبداعية</h2>
+            </div>
+        </div>
+        <div class="benefits-scroll reveal">
+            <div class="benefit-card" style="background-image:url('images/origami-3.avif')">
+                <div class="benefit-badge">📵</div>
+                <div class="benefit-text">
+                    <h3 data-editable="b1-title">بلا شاشة</h3>
+                    <p data-editable="b1-desc">نشاط حقيقي بالأيدي. يلعبو، يتعلّمو، ويبدعو بلا تلفون ولا تابلات.</p>
+                </div>
+            </div>
+            <div class="benefit-card" style="background-image:url('images/origami-2.avif')">
+                <div class="benefit-badge">🧠</div>
+                <div class="benefit-text">
+                    <h3 data-editable="b2-title">ينمّي الإبداع والتركيز</h3>
+                    <p data-editable="b2-desc">الطي بالورق يقوّي التركيز والصبر ويخلّي الطفل يفكّر بيديه.</p>
+                </div>
+            </div>
+            <div class="benefit-card" style="background-image:url('images/Gemini_Generated_Image_qntpwdqntpwdqntp.png')">
+                <div class="benefit-badge">👶</div>
+                <div class="benefit-text">
+                    <h3 data-editable="b3-title">ساهل حتى للصغار</h3>
+                    <p data-editable="b3-desc">من 5 سنين وطالع. التعليمات واضحة بالصور، خطوة بخطوة.</p>
+                </div>
+            </div>
+            <div class="benefit-card" style="background-image:url('images/origami-5.avif')">
+                <div class="benefit-badge">🎁</div>
+                <div class="benefit-text">
+                    <h3 data-editable="b4-title">هدية مثالية</h3>
+                    <p data-editable="b4-desc">كادو فريد ومختلف. يضحّكهم ويخلّيهم فخورين بأشكالهم.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ORDER FORM ============ -->
+    <section class="order-section section-pad" id="order">
+        <div class="container">
+            <div class="order-card reveal">
+                <div id="orderFormWrapper">
+                    <h2>الطلب السريع 🎉</h2>
+                    <p class="order-subtitle">دخل معلوماتك وتوصلك للدار أو للمكتب</p>
+
+                    <form id="orderForm" name="origami-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="origami-orders">
+                        <input type="hidden" name="product" value="Kit Origami 80">
+                        <input type="hidden" name="product-price" value="1900">
+                        <input type="hidden" name="delivery-price" id="hiddenDeliveryPrice" value="">
+                        <input type="hidden" name="total-price" id="hiddenTotalPrice" value="">
+
+                        <div class="ohnohoney">
+                            <label>لا تملأ هذا الحقل</label>
+                            <input name="bot-field">
+                        </div>
+
+                        <div class="form-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" name="name" placeholder="مثال: محمد بن علي" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="tel" name="phone" placeholder="06xxxxxxxx" required
+                                   pattern="^(0)(5|6|7)[0-9]{8}$" inputmode="numeric"
+                                   title="دخل رقم هاتف صحيح (مثال: 0612345678)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>الولاية</label>
+                            <select name="wilaya" id="wilayaSelect" required>
+                                <option value="">اختار الولاية</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>نوع التوصيل</label>
+                            <div class="delivery-options">
+                                <div class="delivery-option">
+                                    <input type="radio" name="delivery-type" id="homeDelivery" value="home" checked>
+                                    <label class="option-label" for="homeDelivery">🏠 للدار</label>
+                                </div>
+                                <div class="delivery-option">
+                                    <input type="radio" name="delivery-type" id="officeDelivery" value="office">
+                                    <label class="option-label" for="officeDelivery">🏢 للمكتب</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>العنوان بالتفصيل</label>
+                            <textarea name="address" placeholder="الحي، رقم الدار/العمارة، الطابق، معالم قريبة..." required></textarea>
+                        </div>
+
+                        <div class="price-summary">
+                            <div class="price-row">
+                                <span>كيت أوريغامي</span>
+                                <span>1,900 DA</span>
+                            </div>
+                            <div class="price-row">
+                                <span>ثمن التوصيل</span>
+                                <span id="deliveryPriceDisplay">اختار الولاية</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>المجموع</span>
+                                <span id="totalPriceDisplay">—</span>
+                            </div>
+                        </div>
+
+                        <p class="price-note">الطلب يتأكد معاك بالتلفون قبل الشحن.</p>
+
+                        <button type="submit" class="btn btn-coral order-submit" id="submitBtn">
+                            قدم طلبك الآن 🎉
+                        </button>
+                    </form>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">🎉</div>
+                    <h3 data-editable="success-title">تم تسجيل طلبك!</h3>
+                    <p data-editable="success-desc">شكرا لك! غادي نتّصلو بيك قريبا باش نأكّدو الطلب ونبعتولك الكيت.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TRUST ============ -->
+    <section class="trust section-pad">
+        <div class="container">
+            <div class="trust-items">
+                <div class="trust-item reveal">
+                    <div class="trust-icon">📦</div>
+                    <h3 data-editable="t1-title">توصيل لكل الولايات</h3>
+                    <p data-editable="t1-desc">وين ما كنت في الجزائر، الكيت يوصلك للباب</p>
+                </div>
+                <div class="trust-item reveal">
+                    <div class="trust-icon">💰</div>
+                    <h3 data-editable="t2-title">الدفع عند الاستلام</h3>
+                    <p data-editable="t2-desc">ما تخلصش حتى توصلك. بلا كارط بنكية، بلا وجع راس</p>
+                </div>
+                <div class="trust-item reveal">
+                    <div class="trust-icon">✅</div>
+                    <h3 data-editable="t3-title">عندك سؤال؟ راسلنا</h3>
+                    <p data-editable="t3-desc">راسلنا على إنستا ولا بالتلفون ونجاوبوك فالحين</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="final-cta section-pad">
+        <div class="container">
+            <div class="reveal">
+                <div class="final-price" data-editable="final-price">1,900 <small>DA</small></div>
+                <p class="final-sub" data-editable="final-sub">توصيل لكل الولايات — الدفع عند الاستلام</p>
+                <a href="#order" class="btn btn-white" style="font-size:clamp(1.1rem,2.5vw,1.3rem);" data-editable="final-cta">
+                    اطلب كيت أوريغامي دروك 🎉
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="footer-brand">Origami DZ</p>
+            <p data-editable="footer-tagline">نشاط إبداعي للأطفال 🎨</p>
+            <p style="margin-top:1rem;font-size:.75rem;">© 2026 Origami DZ</p>
+        </div>
+    </footer>
+
+    <!-- ============ STICKY MOBILE BAR ============ -->
+    <div class="sticky-bar" id="stickyBar">
+        <div class="sticky-price">
+            1,900 DA
+            <small>توصيل + الدفع عند الاستلام</small>
+        </div>
+        <a href="#order" class="btn btn-coral">اطلب دروك 🎉</a>
+    </div>
+
+    <!-- ============ JAVASCRIPT ============ -->
+    <script>
+        // ===== CAROUSEL (Instagram Stories style) =====
+        const carouselImages = document.querySelectorAll('.carousel-images img');
+        const carouselBars = document.querySelectorAll('.carousel-bar');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        const SLIDE_COUNT = carouselImages.length;
+        const SLIDE_DURATION = 4000;
+        let currentSlide = 0;
+        let autoTimer = null;
+        let idleTimer = null;
+
+        function goToSlide(index) {
+            if (index < 0) index = SLIDE_COUNT - 1;
+            if (index >= SLIDE_COUNT) index = 0;
+
+            carouselImages.forEach(img => img.classList.remove('active'));
+            carouselImages[index].classList.add('active');
+
+            carouselBars.forEach((bar, i) => {
+                bar.classList.remove('active', 'done');
+                if (i < index) bar.classList.add('done');
+                if (i === index) bar.classList.add('active');
+                // Force animation restart
+                const fill = bar.querySelector('.carousel-bar-fill');
+                fill.style.animation = 'none';
+                fill.offsetHeight; // trigger reflow
+                fill.style.animation = '';
+            });
+
+            carouselDots.forEach(dot => dot.classList.remove('active'));
+            carouselDots[index].classList.add('active');
+
+            currentSlide = index;
+        }
+
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function prevSlide() { goToSlide(currentSlide - 1); }
+
+        function startAutoPlay() {
+            stopAutoPlay();
+            autoTimer = setInterval(nextSlide, SLIDE_DURATION);
+        }
+        function stopAutoPlay() {
+            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+        }
+        function pauseAndResume() {
+            stopAutoPlay();
+            clearTimeout(idleTimer);
+            idleTimer = setTimeout(startAutoPlay, 6000);
+        }
+
+        // Tap zones
+        document.getElementById('tapNext').addEventListener('click', () => { nextSlide(); pauseAndResume(); });
+        document.getElementById('tapPrev').addEventListener('click', () => { prevSlide(); pauseAndResume(); });
+
+        // Dot clicks
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                goToSlide(parseInt(dot.dataset.index));
+                pauseAndResume();
+            });
+        });
+
+        // Swipe support
+        let swipeStartX = 0;
+        const carousel = document.getElementById('carousel');
+        carousel.addEventListener('pointerdown', e => { swipeStartX = e.clientX; });
+        carousel.addEventListener('pointerup', e => {
+            const diff = swipeStartX - e.clientX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide(); else prevSlide();
+                pauseAndResume();
+            }
+        });
+
+        // Pause when tab hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopAutoPlay();
+            else startAutoPlay();
+        });
+
+        // Start
+        startAutoPlay();
+
+        // ===== WILAYA DATA (real EcoTrack fees) =====
+        const WILAYAS = [
+            { code: "01", name: "أدرار",         home: 1650, office: 850  },
+            { code: "02", name: "الشلف",         home: 700,  office: 450  },
+            { code: "03", name: "الأغواط",       home: 850,  office: 450  },
+            { code: "04", name: "أم البواقي",     home: 850,  office: 450  },
+            { code: "05", name: "باتنة",         home: 850,  office: 450  },
+            { code: "06", name: "بجاية",         home: 850,  office: 450  },
+            { code: "07", name: "بسكرة",         home: 850,  office: 650  },
+            { code: "08", name: "بشار",          home: 1200, office: 650  },
+            { code: "09", name: "البليدة",        home: 650,  office: 400  },
+            { code: "10", name: "البويرة",        home: 650,  office: 450  },
+            { code: "11", name: "تمنراست",       home: 1800, office: 1000 },
+            { code: "12", name: "تبسة",          home: 850,  office: 450  },
+            { code: "13", name: "تلمسان",        home: 850,  office: 450  },
+            { code: "14", name: "تيارت",         home: 850,  office: 450  },
+            { code: "15", name: "تيزي وزو",      home: 650,  office: 450  },
+            { code: "16", name: "الجزائر",        home: 450,  office: 300  },
+            { code: "17", name: "الجلفة",        home: 850,  office: 450  },
+            { code: "18", name: "جيجل",          home: 850,  office: 450  },
+            { code: "19", name: "سطيف",          home: 850,  office: 450  },
+            { code: "20", name: "سعيدة",         home: 850,  office: 450  },
+            { code: "21", name: "سكيكدة",        home: 850,  office: 450  },
+            { code: "22", name: "سيدي بلعباس",   home: 850,  office: 450  },
+            { code: "23", name: "عنابة",         home: 850,  office: 450  },
+            { code: "24", name: "قالمة",         home: 850,  office: 450  },
+            { code: "25", name: "قسنطينة",       home: 850,  office: 450  },
+            { code: "26", name: "المدية",        home: 650,  office: 450  },
+            { code: "27", name: "مستغانم",       home: 850,  office: 450  },
+            { code: "28", name: "المسيلة",        home: 850,  office: 450  },
+            { code: "29", name: "معسكر",         home: 850,  office: 450  },
+            { code: "30", name: "ورقلة",         home: 1000, office: 500  },
+            { code: "31", name: "وهران",         home: 850,  office: 450  },
+            { code: "32", name: "البيض",         home: 850,  office: 450  },
+            { code: "33", name: "إليزي",         home: 1800, office: 1000 },
+            { code: "34", name: "برج بوعريريج",  home: 650,  office: 450  },
+            { code: "35", name: "بومرداس",       home: 650,  office: 400  },
+            { code: "36", name: "الطارف",        home: 850,  office: 550  },
+            { code: "37", name: "تندوف",         home: 1650, office: 700  },
+            { code: "38", name: "تيسمسيلت",      home: 850,  office: 450  },
+            { code: "39", name: "الوادي",        home: 950,  office: 600  },
+            { code: "40", name: "خنشلة",         home: 850,  office: 450  },
+            { code: "41", name: "سوق أهراس",     home: 850,  office: 450  },
+            { code: "42", name: "تيبازة",        home: 650,  office: 450  },
+            { code: "43", name: "ميلة",          home: 850,  office: 450  },
+            { code: "44", name: "عين الدفلى",    home: 650,  office: 450  },
+            { code: "45", name: "النعامة",       home: 950,  office: 500  },
+            { code: "46", name: "عين تموشنت",    home: 850,  office: 450  },
+            { code: "47", name: "غرداية",        home: 950,  office: 650  },
+            { code: "48", name: "غليزان",        home: 850,  office: 450  },
+            { code: "49", name: "تيميمون",       home: 1650, office: 850  },
+            { code: "50", name: "برج باجي مختار", home: 2000, office: 1200 },
+            { code: "51", name: "أولاد جلال",    home: 950,  office: 450  },
+            { code: "52", name: "بني عباس",      home: 1300, office: 650  },
+            { code: "53", name: "عين صالح",      home: 1650, office: 850  },
+            { code: "54", name: "عين قزام",      home: 2000, office: 1200 },
+            { code: "55", name: "تقرت",          home: 950,  office: 500  },
+            { code: "56", name: "جانت",          home: 1800, office: 1000 },
+            { code: "57", name: "المغير",        home: 950,  office: 500  },
+            { code: "58", name: "المنيعة",       home: 950,  office: 500  }
+        ];
+
+        const PRODUCT_PRICE = 1900;
+
+        // Populate wilaya dropdown
+        const wilayaSelect = document.getElementById('wilayaSelect');
+        WILAYAS.forEach(w => {
+            const opt = document.createElement('option');
+            opt.value = w.code;
+            opt.textContent = `${w.code} - ${w.name}`;
+            wilayaSelect.appendChild(opt);
+        });
+
+        // Price calculation
+        const deliveryDisplay = document.getElementById('deliveryPriceDisplay');
+        const totalDisplay    = document.getElementById('totalPriceDisplay');
+        const hiddenDelivery  = document.getElementById('hiddenDeliveryPrice');
+        const hiddenTotal     = document.getElementById('hiddenTotalPrice');
+
+        function updatePrice() {
+            const code = wilayaSelect.value;
+            const wilaya = WILAYAS.find(w => w.code === code);
+            if (!wilaya) {
+                deliveryDisplay.textContent = 'اختار الولاية';
+                totalDisplay.textContent = '—';
+                hiddenDelivery.value = '';
+                hiddenTotal.value = '';
+                return;
+            }
+            const isHome = document.getElementById('homeDelivery').checked;
+            const deliveryPrice = isHome ? wilaya.home : wilaya.office;
+            const total = PRODUCT_PRICE + deliveryPrice;
+            deliveryDisplay.textContent = deliveryPrice.toLocaleString('en') + ' DA';
+            totalDisplay.textContent = total.toLocaleString('en') + ' DA';
+            hiddenDelivery.value = deliveryPrice;
+            hiddenTotal.value = total;
+        }
+
+        wilayaSelect.addEventListener('change', updatePrice);
+        document.querySelectorAll('input[name="delivery-type"]').forEach(r => r.addEventListener('change', updatePrice));
+
+        // Form submission (Netlify Forms via AJAX)
+        const form = document.getElementById('orderForm');
+        const formWrapper = document.getElementById('orderFormWrapper');
+        const successMsg  = document.getElementById('successMessage');
+        const submitBtn   = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!wilayaSelect.value) { wilayaSelect.focus(); return; }
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+                if (response.ok) {
+                    formWrapper.style.display = 'none';
+                    successMsg.classList.add('show');
+                    successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else { throw new Error('fail'); }
+            } catch (err) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'قدم طلبك الآن 🎉';
+                alert('حصل مشكل في الإرسال. عاود حاول مرة أخرى.');
+            }
+        });
+
+        // Header scroll + sticky bar
+        const header = document.getElementById('header');
+        const hero   = document.getElementById('hero');
+        const sticky = document.getElementById('stickyBar');
+        const heroObs = new IntersectionObserver(([e]) => {
+            header.classList.toggle('scrolled', !e.isIntersecting);
+            sticky.classList.toggle('visible', !e.isIntersecting);
+        }, { threshold: 0.1 });
+        heroObs.observe(hero);
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 80);
+                    revealObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => revealObs.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.querySelector(a.getAttribute('href'));
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
+
+        // ===== EDIT MODE =====
+        let editMode = false;
+        const editToolbar = document.getElementById('editToolbar');
+        const editFab = document.getElementById('editFab');
+        const editables = document.querySelectorAll('[data-editable]');
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.body.classList.toggle('editing', editMode);
+            editToolbar.classList.toggle('active', editMode);
+            editFab.style.display = editMode ? 'none' : 'flex';
+            editables.forEach(el => { el.contentEditable = editMode ? 'true' : 'false'; });
+            document.body.style.paddingTop = editMode ? '50px' : '';
+        }
+
+        function saveEdits() {
+            editables.forEach(el => { el.contentEditable = 'false'; });
+            editToolbar.classList.remove('active');
+            document.body.classList.remove('editing');
+            document.body.style.paddingTop = '';
+            const clone = document.documentElement.cloneNode(true);
+            clone.querySelector('#editToolbar')?.remove();
+            clone.querySelector('#editFab')?.remove();
+            clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+            const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index-edited.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            editMode = false;
+            editFab.style.display = 'flex';
+            alert('Saved! The edited file has been downloaded as "index-edited.html".\nGive it to Claude to use for the live site.');
+        }
+    </script>
+</body>
+</html>
