@@ -1617,10 +1617,12 @@
             submitBtn.textContent = 'جاري الإرسال...';
             const formData = new FormData(form);
             try {
-                const response = await fetch('https://formsubmit.co/ajax/noureddine9811@gmail.com', {
+                formData.append('access_key', 'a6092bf6-540c-43d6-9049-0687f26b0296');
+                formData.append('subject', 'Origami DZ — طلب جديد!');
+                formData.append('from_name', 'Origami DZ Orders');
+                const response = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(Object.fromEntries(formData))
+                    body: formData
                 });
                 if (response.ok) {
                     formWrapper.style.display = 'none';
