@@ -6,6 +6,24 @@
     <title>Origami DZ — كيت أوريغامي</title>
     <meta name="description" content="كيت أوريغامي 80 ورقة ملوّنة + كتاب تعليمات. نشاط إبداعي للصغار والكبار بلا شاشة. 1,900 DA — توصيل لكل الولايات.">
 
+    <!-- Meta Pixel -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '587121070888027');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -1611,6 +1629,15 @@
                     formWrapper.style.display = 'none';
                     successMsg.classList.add('show');
                     successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Fire Meta Pixel Purchase event
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'Purchase', {
+                            value: parseFloat(hiddenTotal.value) || 1900,
+                            currency: 'DZD',
+                            content_name: 'Kit Origami 80',
+                            content_type: 'product'
+                        });
+                    }
                 } else { throw new Error('fail'); }
             } catch (err) {
                 submitBtn.disabled = false;
