@@ -1285,17 +1285,14 @@
                     <h2>الطلب السريع 🎉</h2>
                     <p class="order-subtitle">دخل معلوماتك وتوصلك للدار أو للمكتب</p>
 
-                    <form id="orderForm" name="origami-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                        <input type="hidden" name="form-name" value="origami-orders">
+                    <form id="orderForm">
+                        <input type="hidden" name="_subject" value="Origami DZ — طلب جديد!">
+                        <input type="hidden" name="_template" value="table">
                         <input type="hidden" name="product" value="Kit Origami 80">
                         <input type="hidden" name="product-price" value="1900">
                         <input type="hidden" name="delivery-price" id="hiddenDeliveryPrice" value="">
                         <input type="hidden" name="total-price" id="hiddenTotalPrice" value="">
-
-                        <div class="ohnohoney">
-                            <label>لا تملأ هذا الحقل</label>
-                            <input name="bot-field">
-                        </div>
+                        <input type="text" name="_honey" style="display:none">
 
                         <div class="form-group">
                             <label>الاسم الكامل</label>
@@ -1620,10 +1617,10 @@
             submitBtn.textContent = 'جاري الإرسال...';
             const formData = new FormData(form);
             try {
-                const response = await fetch('/origami/', {
+                const response = await fetch('https://formsubmit.co/ajax/noureddine9811@gmail.com', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(formData).toString()
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(formData))
                 });
                 if (response.ok) {
                     formWrapper.style.display = 'none';
