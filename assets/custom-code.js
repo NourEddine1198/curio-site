@@ -1353,6 +1353,7 @@
     if (typeof ttq !== 'undefined') {
       ttq.track('ViewContent', {
         content_type: 'product',
+        content_id: 'curio-store',
         content_name: 'Curio Store'
       });
     }
