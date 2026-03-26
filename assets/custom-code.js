@@ -1656,6 +1656,15 @@
                 order_id: result.data.orderNumber
               });
             }
+            // Fire TikTok Pixel Purchase event
+            if (typeof ttq !== 'undefined') {
+              ttq.track('CompletePayment', {
+                value: result.data.total,
+                currency: 'DZD',
+                content_type: 'product',
+                content_id: result.data.orderNumber
+              });
+            }
             // Show brief success message then redirect to thank-you page
             showMessage(message, 'success', repairText(STORE_COPY.common.messages.submitSuccess));
             setTimeout(function () {
