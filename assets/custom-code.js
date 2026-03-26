@@ -1349,6 +1349,14 @@
       return;
     }
 
+    // TikTok: track ViewContent when the store page loads
+    if (typeof ttq !== 'undefined') {
+      ttq.track('ViewContent', {
+        content_type: 'product',
+        content_name: 'Curio Store'
+      });
+    }
+
     var productSelect = form.querySelector('#curio-product-select');
     var nameInput = form.querySelector('#curio-first-name');
     var phoneInput = form.querySelector('#curio-phone');
@@ -1567,6 +1575,10 @@
       return valid;
     }
 
+    // TikTok funnel tracking flags (fire each event only once per page visit)
+    var ttqFiredAddToCart = false;
+    var ttqFiredInitCheckout = false;
+
     pickerButtons.forEach(function (button) {
       button.addEventListener('click', function () {
         var key = button.getAttribute('data-curio-pick');
@@ -1577,11 +1589,51 @@
         productSelect.value = key;
         updateHomeState();
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // TikTok: track AddToCart when user selects a product
+        if (!ttqFiredAddToCart && typeof ttq !== 'undefined') {
+          var p = PRODUCT_CATALOG[key];
+          ttq.track('AddToCart', {
+            value: p.price,
+            currency: 'DZD',
+            content_type: 'product',
+            content_id: key,
+            content_name: p.label
+          });
+          ttqFiredAddToCart = true;
+        }
       });
     });
 
-    productSelect.addEventListener('change', updateHomeState);
-    wilayaSelect.addEventListener('change', updateHomeState);
+    productSelect.addEventListener('change', function () {
+      updateHomeState();
+      // TikTok: track AddToCart when user picks a product from dropdown
+      if (!ttqFiredAddToCart && typeof ttq !== 'undefined') {
+        var p = getSelectedHomeProduct();
+        ttq.track('AddToCart', {
+          value: p.price,
+          currency: 'DZD',
+          content_type: 'product',
+          content_id: p.key,
+          content_name: p.label
+        });
+        ttqFiredAddToCart = true;
+      }
+    });
+    wilayaSelect.addEventListener('change', function () {
+      updateHomeState();
+      // TikTok: track InitiateCheckout when user selects a wilaya (serious buyer signal)
+      if (!ttqFiredInitCheckout && typeof ttq !== 'undefined') {
+        var p = getSelectedHomeProduct();
+        ttq.track('InitiateCheckout', {
+          value: p.price,
+          currency: 'DZD',
+          content_type: 'product',
+          content_id: p.key
+        });
+        ttqFiredInitCheckout = true;
+      }
+    });
     addressInput.addEventListener('input', updateHomeState);
     officeSelect.addEventListener('change', updateHomeState);
     form.querySelectorAll('input[name="delivery_mode"]').forEach(function (radio) {
