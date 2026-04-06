@@ -83,6 +83,7 @@
         shippingUnavailable: 'ثمن التوصيل لهذه الولاية مازال ما تضبطش.',
         enterAddressLong: 'دخل العنوان بالتفصيل باش نوصلوه حتى للدار.',
         enterAddressShort: 'دخل العنوان بالتفصيل.',
+        enterCommune: 'دخل اسم البلدية ديالك.',
         noOfficesAvailable: 'ماكانش مكاتب متاحة لهذه الولاية حاليا.',
         chooseOffice: 'اختار المكتب لي تحب تستلم منه.',
         previewOnly: 'الطلب المباشر يخدم غير داخل صفحة YouCan الحقيقية. هنا تقدر غير تراجع الواجهة.',
@@ -136,6 +137,8 @@
         officeDesc: '',
         addressLabel: 'العنوان بالتفصيل',
         addressPlaceholder: 'الحي، رقم الدار/العمارة، الطابق، معالم قريبة...',
+        communeLabel: 'البلدية',
+        communePlaceholder: 'مثال: حسين داي، باب الزوار، الشراقة...',
         officeLabel: 'اختار المكتب (شركة Anderson)'
       },
       summary: {
@@ -178,6 +181,8 @@
       officeDesc: 'تختار الولاية ومن بعدها تختار المكتب المناسب.',
       addressLabel: 'العنوان بالتفصيل',
       addressPlaceholder: 'الحي، العمارة، الطابق، معالم قريبة...',
+      communeLabel: 'البلدية',
+      communePlaceholder: 'مثال: حسين داي، باب الزوار، الشراقة...',
       officeLabel: 'اختار المكتب',
       officeHint: 'المكتب يتبدل حسب الولاية لي تختارها.',
       inlineNote: 'الطلب يتأكد معاك بالتلفون قبل الشحن. ثمن التوصيل يبان هنا قبل ما تكمل.',
@@ -1105,6 +1110,10 @@
       '            <label for="curio-address" data-curio-copy-path="home.order.addressLabel">' + homeCopy.order.addressLabel + '</label>',
       '            <textarea id="curio-address" name="address" aria-label="' + homeCopy.order.addressLabel + '" autocomplete="street-address" placeholder="' + homeCopy.order.addressPlaceholder + '" required></textarea>',
       '          </div>',
+      '          <div class="curio-home-field" id="curio-commune-group">',
+      '            <label for="curio-commune" data-curio-copy-path="home.order.communeLabel">' + homeCopy.order.communeLabel + '</label>',
+      '            <input id="curio-commune" name="commune" type="text" aria-label="' + homeCopy.order.communeLabel + '" autocomplete="address-level2" placeholder="' + homeCopy.order.communePlaceholder + '" required>',
+      '          </div>',
       '          <div class="curio-home-field is-hidden" id="curio-office-group">',
       '            <label for="curio-office" data-curio-copy-path="home.order.officeLabel">' + homeCopy.order.officeLabel + '</label>',
       '            <select id="curio-office" name="office_pickup" aria-label="اختار المكتب" autocomplete="off">',
@@ -1167,6 +1176,10 @@
       '  <label for="curio-home-address-input" data-curio-copy-path="productPanel.addressLabel">' + panelCopy.addressLabel + '</label>',
       '  <textarea id="curio-home-address-input" placeholder="' + panelCopy.addressPlaceholder + '"></textarea>',
       '</div>',
+      '<div class="curio-field" id="curio-home-commune-field">',
+      '  <label for="curio-home-commune-input" data-curio-copy-path="productPanel.communeLabel">' + panelCopy.communeLabel + '</label>',
+      '  <input id="curio-home-commune-input" type="text" placeholder="' + panelCopy.communePlaceholder + '">',
+      '</div>',
       '<div class="curio-field curio-hidden" id="curio-office-field">',
       '  <label for="curio-office-select" data-curio-copy-path="productPanel.officeLabel">' + panelCopy.officeLabel + '</label>',
       '  <select id="curio-office-select" disabled>',
@@ -1222,8 +1235,10 @@
     form.insertAdjacentElement('afterend', panel);
 
     var addressField = panel.querySelector('#curio-home-address-field');
+    var communeField = panel.querySelector('#curio-home-commune-field');
     var officeField = panel.querySelector('#curio-office-field');
     var addressInput = panel.querySelector('#curio-home-address-input');
+    var communeInput = panel.querySelector('#curio-home-commune-input');
     var officeSelect = panel.querySelector('#curio-office-select');
     var message = panel.querySelector('#curio-product-message');
     var summaryDelivery = panel.querySelector('#curio-product-summary-delivery');
@@ -1238,6 +1253,7 @@
       var fee = null;
 
       addressField.classList.toggle('curio-hidden', mode !== 'home');
+      communeField.classList.toggle('curio-hidden', mode !== 'home');
       officeField.classList.toggle('curio-hidden', mode !== 'office');
 
       if (record) {
@@ -1287,6 +1303,7 @@
       setFieldInvalid(cityGroup, false);
       setFieldInvalid(phoneGroup, false);
       setFieldInvalid(addressField, false);
+      setFieldInvalid(communeField, false);
       setFieldInvalid(officeField, false);
 
       if (!citySelect.value || !record) {
@@ -1305,6 +1322,10 @@
         valid = false;
         setFieldInvalid(addressField, true);
         showMessage(message, 'error', STORE_COPY.common.messages.enterAddressLong);
+      } else if (mode === 'home' && !communeInput.value.trim()) {
+        valid = false;
+        setFieldInvalid(communeField, true);
+        showMessage(message, 'error', STORE_COPY.common.messages.enterCommune);
       } else if (mode === 'office' && record.offices.length === 0) {
         valid = false;
         setFieldInvalid(officeField, true);
@@ -1327,6 +1348,7 @@
       radio.addEventListener('change', updateProductPageState);
     });
     addressInput.addEventListener('input', updateProductPageState);
+    communeInput.addEventListener('input', updateProductPageState);
     officeSelect.addEventListener('change', updateProductPageState);
     phoneInput.addEventListener('input', updateProductPageState);
     submitButton.addEventListener('click', function (event) {
@@ -1364,6 +1386,8 @@
     var wilayaSelect = form.querySelector('#curio-wilaya');
     var addressGroup = form.querySelector('#curio-address-group');
     var addressInput = form.querySelector('#curio-address');
+    var communeGroup = form.querySelector('#curio-commune-group');
+    var communeInput = form.querySelector('#curio-commune');
     var officeGroup = form.querySelector('#curio-office-group');
     var officeSelect = form.querySelector('#curio-office');
     var submitButton = form.querySelector('#curio-submit-btn');
@@ -1489,6 +1513,7 @@
       summaryProductPrice.textContent = formatDA(product.price);
 
       addressGroup.classList.toggle('is-hidden', mode !== 'home');
+      communeGroup.classList.toggle('is-hidden', mode !== 'home');
       officeGroup.classList.toggle('is-hidden', mode !== 'office');
 
       if (record) {
@@ -1537,6 +1562,7 @@
       setFieldInvalid(phoneGroup, false);
       setFieldInvalid(wilayaGroup, false);
       setFieldInvalid(addressGroup, false);
+      setFieldInvalid(communeGroup, false);
       setFieldInvalid(officeGroup, false);
 
       if (!product) {
@@ -1563,6 +1589,10 @@
         valid = false;
         setFieldInvalid(addressGroup, true);
         showMessage(message, 'error', STORE_COPY.common.messages.enterAddressShort);
+      } else if (mode === 'home' && !communeInput.value.trim()) {
+        valid = false;
+        setFieldInvalid(communeGroup, true);
+        showMessage(message, 'error', STORE_COPY.common.messages.enterCommune);
       } else if (mode === 'office' && record.offices.length === 0) {
         valid = false;
         setFieldInvalid(officeGroup, true);
@@ -1636,6 +1666,7 @@
       }
     });
     addressInput.addEventListener('input', updateHomeState);
+    communeInput.addEventListener('input', updateHomeState);
     officeSelect.addEventListener('change', updateHomeState);
     form.querySelectorAll('input[name="delivery_mode"]').forEach(function (radio) {
       radio.addEventListener('change', updateHomeState);
@@ -1677,6 +1708,7 @@
         wilayaCode: wilayaCode,
         deliveryType: mode === 'office' ? 'OFFICE' : 'HOME',
         address: mode === 'home' ? addressInput.value.trim() : null,
+        commune: mode === 'home' ? communeInput.value.trim() : null,
         officeName: selectedOffice ? selectedOffice.station : null,
         officeCommune: selectedOffice ? selectedOffice.commune : null,
         couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null,
