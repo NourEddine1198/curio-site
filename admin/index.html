@@ -595,6 +595,101 @@
       50% { opacity: 0.3; }
     }
 
+    /* ─── Stock Bar ─── */
+    .stock-bar {
+      padding: 0 24px 8px;
+    }
+    .stock-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .stock-toggle:hover { background: var(--surface-hover); }
+    .stock-toggle h3 {
+      font-family: 'Changa', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .stock-toggle .arrow {
+      transition: transform 0.2s;
+      color: var(--ink-soft);
+    }
+    .stock-toggle.open .arrow { transform: rotate(180deg); }
+    .stock-panel {
+      display: none;
+      padding: 14px 0 0;
+    }
+    .stock-panel.open { display: block; }
+    .stock-items {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .stock-item {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .stock-item-name {
+      font-weight: 700;
+      font-size: 14px;
+      flex: 1;
+    }
+    .stock-item-name small {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+    .stock-item input {
+      width: 70px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Changa', sans-serif;
+      text-align: center;
+      outline: none;
+    }
+    .stock-item input:focus {
+      border-color: var(--blue);
+    }
+    .stock-save-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+    .btn-stock-save {
+      padding: 10px 24px;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-stock-save:hover { filter: brightness(1.15); }
+    .btn-stock-save:disabled { opacity: 0.4; cursor: default; filter: none; }
+
     /* Responsive */
     @media (max-width: 768px) {
       .stats-bar { padding: 16px; }
@@ -671,6 +766,22 @@
     <div class="stat-card" data-status="RETURNED" onclick="filterByStatus(this, 'RETURNED')">
       <div class="count status-RETURNED" id="statReturned">-</div>
       <div class="label">مرجع</div>
+    </div>
+  </div>
+
+  <!-- Stock management -->
+  <div class="stock-bar">
+    <div class="stock-toggle" id="stockToggle" onclick="toggleStockPanel()">
+      <h3>Stock</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="stock-panel" id="stockPanel">
+      <div class="stock-items" id="stockItems">
+        <div style="color:var(--ink-soft);font-size:14px;">Loading...</div>
+      </div>
+      <div class="stock-save-row">
+        <button class="btn-stock-save" id="stockSaveBtn" onclick="saveStock()">Save</button>
+      </div>
     </div>
   </div>
 
@@ -1415,6 +1526,83 @@ function initAutoRefreshAfterLogin() {
 
 // For auto-login (session already saved), wait for initial load then init
 setTimeout(function() { initAutoRefreshAfterLogin(); }, 3000);
+
+// ─── Stock Management ────────────────────────────────────
+
+function toggleStockPanel() {
+  var toggle = document.getElementById('stockToggle');
+  var panel = document.getElementById('stockPanel');
+  var isOpen = toggle.classList.toggle('open');
+  if (isOpen) {
+    panel.classList.add('open');
+    loadStock();
+  } else {
+    panel.classList.remove('open');
+  }
+}
+
+function loadStock() {
+  var container = document.getElementById('stockItems');
+  container.innerHTML = '<div style="color:var(--ink-soft);font-size:14px;">Loading...</div>';
+
+  fetch(API + '/api/products/stock', {
+    headers: { 'X-Admin-Key': adminKey }
+  })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Failed');
+      return r.json();
+    })
+    .then(function(data) {
+      var html = '';
+      (data.products || []).forEach(function(p) {
+        html += '<div class="stock-item">' +
+          '<div class="stock-item-name">' + p.name + '<small>' + p.slug + '</small></div>' +
+          '<input type="number" min="0" data-slug="' + p.slug + '" value="' + p.stock + '">' +
+        '</div>';
+      });
+      container.innerHTML = html || '<div style="color:var(--ink-soft)">No products</div>';
+    })
+    .catch(function() {
+      container.innerHTML = '<div style="color:var(--red)">Failed to load stock</div>';
+    });
+}
+
+function saveStock() {
+  var inputs = document.querySelectorAll('#stockItems input[data-slug]');
+  var updates = [];
+  for (var i = 0; i < inputs.length; i++) {
+    var val = parseInt(inputs[i].value, 10);
+    if (isNaN(val) || val < 0) {
+      showToast('Stock must be 0 or more', 'error');
+      return;
+    }
+    updates.push({ slug: inputs[i].getAttribute('data-slug'), stock: val });
+  }
+
+  var btn = document.getElementById('stockSaveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  fetch(API + '/api/products/stock', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify({ updates: updates })
+  })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Failed');
+      return r.json();
+    })
+    .then(function() {
+      showToast('Stock updated!', 'success');
+      btn.disabled = false;
+      btn.textContent = 'Save';
+    })
+    .catch(function() {
+      showToast('Failed to save stock', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Save';
+    });
+}
 </script>
 </body>
 </html>

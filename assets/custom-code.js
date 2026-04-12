@@ -660,6 +660,9 @@
       '.coupon-note-success{color:#10643d;font-weight:700}',
       '.coupon-note-error{color:#e5424d;font-weight:700}',
       '.curio-home-summary-note{color:#675874;line-height:1.7;font-size:.92rem}',
+      '.stock-line{margin:0;font-size:.88rem;font-weight:500;color:#675874;line-height:1.6}',
+      '.stock-line.is-low{color:#e5424d;font-weight:700}',
+      '.stock-line.is-zero{color:#1e9f62;font-weight:700;font-size:.84rem}',
       '.curio-home-submit{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:8;width:100%;min-height:58px;border:0;border-radius:18px;background:linear-gradient(135deg,#e5424d,#c53039);color:#fff;font:inherit;font-weight:900;cursor:pointer;box-shadow:0 18px 34px rgba(229,66,77,.22)}',
       '.curio-home-submit.is-loading{opacity:.76;pointer-events:none}',
       '.curio-home-cards{display:grid;gap:18px;margin-top:22px}',
@@ -965,6 +968,7 @@
       '  <div class="curio-home-tags">' + cardCopy.tags.map(function (tag, index) {
         return '<span class="curio-home-tag" data-curio-copy-path="' + cardPath + '.tags.' + index + '">' + tag + '</span>';
       }).join('') + '</div>',
+      '  <p class="stock-line" data-stock-for="' + product.key + '"></p>',
       '  <div class="curio-home-card-actions">',
       '    <button type="button" data-curio-pick="' + product.key + '"><span data-curio-copy-path="' + cardPath + '.primary">' + cardCopy.primary + '</span></button>',
            viewPageMarkup,
@@ -1739,6 +1743,135 @@
     updateHomeState();
   }
 
+  // ─── Stock Counter ────────────────────────────────────────
+  var STOCK_API = CURIO_API + '/api/stock';
+  var STOCK_POLL_MS = 60000;
+
+  var SLUG_TO_KEY = {
+    'goul-bla-matgoul': 'goul',
+    'roubla': 'roubla',
+    'eid-2026-bundle': 'bundle'
+  };
+
+  var latestStockData = null;
+  var PREORDER_SUBMIT = '\u0633\u062C\u0651\u0644 \u0637\u0644\u0628 \u0645\u0633\u0628\u0642';
+  var PREORDER_PICK = '\u0633\u062C\u0651\u0644 \u0644\u0644\u0637\u0628\u0639\u0629 \u0627\u0644\u062C\u0627\u064A\u0629';
+  var PREORDER_NOTE = '\u0647\u0630\u0627 \u0637\u0644\u0628 \u0645\u0633\u0628\u0642 \u2014 \u0643\u064A \u064A\u0631\u062C\u0639 \u0627\u0644\u0645\u0646\u062A\u062C \u0646\u062A\u0648\u0627\u0635\u0644\u0648 \u0645\u0639\u0627\u0643 \u0644\u0644\u062A\u0623\u0643\u064A\u062F \u0648\u0627\u0644\u0634\u062D\u0646';
+  var originalSubmitText = null;
+  var originalPickTexts = {};
+
+  function updateStockDOM(data) {
+    if (!data || !data.products) return;
+    latestStockData = data;
+
+    data.products.forEach(function (item) {
+      var key = SLUG_TO_KEY[item.slug];
+      if (!key) return;
+
+      var els = document.querySelectorAll('[data-stock-for="' + key + '"]');
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        el.classList.remove('is-low', 'is-zero');
+        if (item.stock <= 0) {
+          el.classList.add('is-zero');
+          el.textContent = '\u0631\u0627\u062D\u062A \u0639\u0644\u064A\u0643 \u0647\u0627\u0630\u064A! \u0648\u0644\u0627 \u0644\u0627\u0644\u0627 \u2014 \u0633\u062C\u0651\u0644 \u0648\u0646\u062E\u0644\u064A\u0648\u0644\u0643 \u0646\u0633\u062E\u062A\u0643 \u0644\u0644\u0637\u0628\u0639\u0629 \u0627\u0644\u062C\u0627\u064A\u0629 \uD83D\uDCE6';
+        } else if (item.stock <= 10) {
+          el.classList.add('is-low');
+          el.textContent = '\uD83D\uDD34 \u0628\u0627\u0642\u064A ' + item.stock + ' \u0646\u0633\u062E\u0629';
+        } else {
+          el.textContent = '\uD83D\uDD34 \u0628\u0627\u0642\u064A ' + item.stock + ' \u0646\u0633\u062E\u0629';
+        }
+      }
+
+      var pickBtns = document.querySelectorAll('[data-curio-pick="' + key + '"]');
+      for (var j = 0; j < pickBtns.length; j++) {
+        var btn = pickBtns[j];
+        if (!originalPickTexts[key] && item.stock > 0) {
+          originalPickTexts[key] = btn.textContent;
+        }
+        if (item.stock <= 0) {
+          btn.textContent = PREORDER_PICK;
+        } else if (originalPickTexts[key]) {
+          btn.textContent = originalPickTexts[key];
+        }
+      }
+    });
+
+    updateOrderFormStockNote();
+  }
+
+  function getStockForKey(key) {
+    if (!latestStockData || !latestStockData.products) return null;
+    for (var i = 0; i < latestStockData.products.length; i++) {
+      var item = latestStockData.products[i];
+      if (SLUG_TO_KEY[item.slug] === key) return item.stock;
+    }
+    return null;
+  }
+
+  function updateOrderFormStockNote() {
+    var sel = document.getElementById('curio-product-select') || document.getElementById('curio-home-product-select');
+    if (!sel) return;
+    var key = sel.value;
+    var stock = getStockForKey(key);
+    var noteId = 'curio-stock-note';
+    var existing = document.getElementById(noteId);
+    var submitBtn = document.getElementById('curio-submit-btn');
+    var isOutOfStock = stock !== null && stock <= 0;
+
+    if (isOutOfStock) {
+      if (!existing) {
+        existing = document.createElement('p');
+        existing.id = noteId;
+        existing.style.cssText = 'color:#1e9f62;font-weight:700;font-size:.9rem;margin:10px 0 0;line-height:1.6';
+        var anchor = document.querySelector('.summary-box') || document.querySelector('.curio-home-summary');
+        if (anchor) anchor.parentNode.insertBefore(existing, anchor.nextSibling);
+      }
+      existing.textContent = PREORDER_NOTE;
+      existing.style.display = '';
+    } else if (existing) {
+      existing.style.display = 'none';
+    }
+
+    if (submitBtn) {
+      if (originalSubmitText === null) {
+        originalSubmitText = submitBtn.textContent;
+      }
+      submitBtn.textContent = isOutOfStock ? PREORDER_SUBMIT : originalSubmitText;
+    }
+
+    var pickBtn = document.querySelector('[data-curio-pick="' + key + '"]');
+    if (pickBtn) {
+      if (!originalPickTexts[key]) {
+        originalPickTexts[key] = pickBtn.textContent;
+      }
+      pickBtn.textContent = isOutOfStock ? PREORDER_PICK : originalPickTexts[key];
+    }
+  }
+
+  function fetchStock() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', STOCK_API, true);
+    xhr.timeout = 8000;
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        try { updateStockDOM(JSON.parse(xhr.responseText)); } catch (e) { /* ignore */ }
+      }
+    };
+    xhr.onerror = function () {};
+    xhr.ontimeout = function () {};
+    xhr.send();
+  }
+
+  function initStockCounters() {
+    if (!document.querySelector('[data-stock-for]')) return;
+    fetchStock();
+    setInterval(fetchStock, STOCK_POLL_MS);
+
+    var sel = document.getElementById('curio-product-select') || document.getElementById('curio-home-product-select');
+    if (sel) sel.addEventListener('change', updateOrderFormStockNote);
+  }
+
   normalizeProducts();
   normalizeDeliveryData();
   loadCopyDraft();
@@ -1750,5 +1883,6 @@
   enhanceProductPageCheckout();
   enhanceHomePageForm();
   attachCopyEditor();
+  initStockCounters();
 });
 

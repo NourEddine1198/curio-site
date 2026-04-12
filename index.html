@@ -722,6 +722,25 @@
       font-size: 0.88rem;
     }
 
+    .stock-line {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    .stock-line.is-low {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .stock-line.is-zero {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.84rem;
+    }
+
     .card-actions {
       display: flex;
       flex-wrap: wrap;
@@ -1055,6 +1074,8 @@
             <span class="spec">16 سنة وطالع</span>
           </div>
 
+          <p class="stock-line" data-stock-for="goul"></p>
+
           <div class="card-actions">
             <button class="card-pick" type="button" data-curio-pick="goul">اختار هاذي</button>
             <a class="card-link" href="https://curio-games.youcan.store/products/kol-bla-mtkol" target="_blank" rel="noopener noreferrer">شوف الصفحة</a>
@@ -1079,6 +1100,8 @@
             <span class="spec">15-30 دقيقة</span>
             <span class="spec">12 سنة وطالع</span>
           </div>
+
+          <p class="stock-line" data-stock-for="roubla"></p>
 
           <div class="card-actions">
             <button class="card-pick" type="button" data-curio-pick="roubla">اختار هاذي</button>
@@ -1107,6 +1130,8 @@
             <span class="spec">توفير 880 دج</span>
             <span class="spec">كادو واجد</span>
           </div>
+
+          <p class="stock-line" data-stock-for="bundle"></p>
 
           <div class="card-actions">
             <button class="card-pick" type="button" data-curio-pick="bundle">خذ الباك</button>
