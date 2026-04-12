@@ -1593,12 +1593,12 @@ function saveStock() {
       return r.json();
     })
     .then(function() {
-      showToast('Stock updated!', 'success');
+      showToast('Stock updated!', false);
       btn.disabled = false;
       btn.textContent = 'Save';
     })
     .catch(function() {
-      showToast('Failed to save stock', 'error');
+      showToast('Failed to save stock', true);
       btn.disabled = false;
       btn.textContent = 'Save';
     });
