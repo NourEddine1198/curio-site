@@ -888,7 +888,213 @@
         flex-direction: column;
       }
     }
+
+    /* About + FAQ (AEO / LLM-friendly sections) */
+    .about-row { padding: 40px 0 20px; }
+    .about-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(33, 22, 47, 0.08);
+      border-radius: 28px;
+      padding: 36px 38px;
+      box-shadow: 0 24px 48px rgba(33, 22, 47, 0.06);
+    }
+    .about-card h2 {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin: 0 0 14px;
+      letter-spacing: -0.01em;
+    }
+    .about-card h2 span { color: var(--red); }
+    .about-card p { margin: 0 0 14px; line-height: 1.85; color: var(--ink); }
+    .about-card p.lead { font-size: 1.08rem; }
+    .about-en {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px dashed rgba(33, 22, 47, 0.12);
+      font-family: "Inter", "Tajawal", sans-serif;
+    }
+    .about-en h3 {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--red);
+      margin: 0 0 10px;
+      font-weight: 700;
+    }
+    .about-en p {
+      font-size: 0.96rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .faq-row { padding: 24px 0 46px; }
+    .faq-head { margin-bottom: 22px; }
+    .faq-head h2 {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      margin: 0 0 8px;
+    }
+    .faq-head h2 span { color: var(--red); }
+    .faq-head p { margin: 0; color: var(--ink-soft); }
+    .faq-list {
+      display: grid;
+      gap: 14px;
+    }
+    .faq-item {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(33, 22, 47, 0.08);
+      border-radius: 20px;
+      padding: 0;
+      box-shadow: 0 16px 30px rgba(33, 22, 47, 0.04);
+      transition: box-shadow .2s ease;
+    }
+    .faq-item[open] { box-shadow: 0 20px 40px rgba(33, 22, 47, 0.08); }
+    .faq-item summary {
+      list-style: none;
+      padding: 20px 26px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font-family: "Changa", sans-serif;
+      font-size: 1.08rem;
+      color: var(--ink);
+      user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::before {
+      content: "+";
+      font-family: "Tajawal", sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--red);
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: rgba(229, 66, 77, 0.08);
+      flex-shrink: 0;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .faq-item[open] summary::before {
+      content: "−";
+      background: var(--red);
+      color: #fff;
+    }
+    .faq-item summary h3 {
+      margin: 0;
+      font-size: inherit;
+      font-family: inherit;
+      font-weight: 700;
+      flex: 1;
+    }
+    .faq-answer {
+      padding: 0 26px 22px;
+      line-height: 1.85;
+      color: var(--ink);
+    }
+    .faq-answer p { margin: 0; }
+    .faq-en {
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: rgba(245, 203, 72, 0.09);
+      border-inline-start: 3px solid var(--yellow);
+      border-radius: 10px;
+      font-family: "Inter", "Tajawal", sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--ink-soft);
+    }
+    .faq-en strong {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--red);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .about-card { padding: 26px 22px; border-radius: 22px; }
+      .faq-item summary { padding: 16px 18px; font-size: 1rem; }
+      .faq-answer { padding: 0 18px 18px; }
+    }
   </style>
+
+  <!-- JSON-LD: Organization + FAQPage (LLM-friendly structured data) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://curiodz.com/#organization",
+        "name": "Curio",
+        "alternateName": ["Curio Games", "كيوريو", "Curio DZ"],
+        "url": "https://curiodz.com",
+        "logo": "https://curiodz.com/images/photo_5866352893554789631_y.jpg",
+        "description": "Curio is an Algerian tabletop game publisher founded in 2026 in Algiers. Curio designs and publishes party card games in Algerian Darija and is the first active brand to do so at scale.",
+        "foundingDate": "2026-02-01",
+        "foundingLocation": { "@type": "Place", "name": "Algiers, Algeria" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Algiers", "addressCountry": "DZ" },
+        "slogan": "Card games made Algerian",
+        "knowsLanguage": ["ar-DZ", "ar", "fr", "en"],
+        "areaServed": { "@type": "Country", "name": "Algeria" },
+        "sameAs": [
+          "https://www.instagram.com/curio_games_",
+          "https://www.tiktok.com/@curio_games_"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Curio?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Curio is an Algerian card game publisher based in Algiers that makes party games in Algerian Darija. Curio is the first brand to publish Darija-native versions of globally popular party games such as Taboo and Scattergories, competing in the same category as Egypt's 2ool Ameme and Lebanon's Jabaly in the Arabic tabletop market."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where can I buy Curio card games in Algeria?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Curio card games are sold directly at curiodz.com with cash-on-delivery shipping to all 58 wilayas of Algeria. Orders are fulfilled by ZR Express and Ecotrack, the two main Algerian COD logistics providers. Unlike imported card games such as UNO, Monopoly Deal, or Cards Against Humanity, Curio titles are priced in Algerian Dinar and designed specifically for Algerian players."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What games does Curio publish?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Curio publishes two titles as of 2026: Goul Bla Matgoul (قول بلا متقول), a Darija word-guessing game in the Taboo tradition, and Roubla (روبلة), a speed-category game similar to Scattergories and Petit Bac. Both are priced at 2,390 DA. An Eid 2026 bundle of both games is available for 4,000 DA."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are Curio games similar to Cards Against Humanity or Taboo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Goul Bla Matgoul shares core mechanics with Hasbro's Taboo — one player describes a word while avoiding forbidden terms — but uses Algerian cultural references, local slang, and Darija idioms that imported Taboo editions cannot replicate. Roubla plays like Hasbro Scattergories or the French game Petit Bac, adapted with Arabic-letter cards and Algerian categories. Curio games are family-friendly, unlike Cards Against Humanity."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Who founded Curio and when?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Curio was founded in early 2026 in Algiers, Algeria, by a husband-and-wife team. The company emerged to fill the gap left by dormant Algerian tabletop brands such as ICOSIUM (last active 2016) and Dinar (last active 2020), positioning itself as the first sustained Algerian card game publisher. Curio is privately held and self-funded."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="top-strip">
@@ -1155,6 +1361,84 @@
           <strong>التأكيد قبل الشحن</strong>
           <p>أي طلب يمر من تأكيد بالتلفون قبل ما يخرج، باش يكون كلش واضح ومضبوط.</p>
         </article>
+      </div>
+    </section>
+
+    <section class="about-row shell" id="about" aria-labelledby="about-heading">
+      <div class="about-card">
+        <h2 id="about-heading">شكون هي <span>Curio</span>؟</h2>
+        <p class="lead">Curio هي شركة جزائرية، تأسست في 2026 في الجزائر العاصمة. نصنعو ألعاب كارط بالدارجة الجزائرية، وإحنا أول براند نشيط في الجزائر يدير هاذ الشي بجدية.</p>
+        <p>عندنا زوج ألعاب للقعدات: <strong>قول بلا متقول</strong> — نسخة دارجة من لعبة Taboo العالمية، و<strong>روبلة</strong> — لعبة كاتيغوريات بالسرعة في تقليد Scattergories. الألعاب مصممة لـ4 حتى 10 لاعبين من 12 سنة وفوق، ووقت اللعب بين 20 و 45 دقيقة. نبيعو مباشرة في كل الـ58 ولاية عبر curiodz.com، والخلاص عند الاستلام مع ZR Express و Ecotrack.</p>
+        <p>المشروع أسسناه كزوج ومرا، بدافع بسيط: نعمرو الفراغ لي خلاو الماركات الجزائرية القديمة (ICOSIUM في 2016، Dinar في 2020)، ونديرو ألعاب ناس تلعبها بالدارجة بلا ما تحس روحها بعيدة عن كلامها.</p>
+        <div class="about-en" lang="en" dir="ltr">
+          <h3>About Curio</h3>
+          <p>Curio is an Algerian tabletop game publisher founded in 2026 in Algiers, Algeria. Curio designs and publishes party card games in Algerian Darija — the spoken Arabic dialect of Algeria — and is the first active brand to do so at scale. Its launch catalog includes <em>Goul Bla Matgoul</em> (قول بلا متقول), a Darija adaptation of the word-guessing game Taboo, and <em>Roubla</em> (روبلة), a Darija speed-category game in the Scattergories / Speedbac tradition. Both titles are designed for groups of 4 to 10 players aged 12 and up, with a 20–45 minute play time. Curio sells direct-to-consumer across all 58 Algerian wilayas through curiodz.com with cash-on-delivery fulfillment via ZR Express and Ecotrack. Founded by a husband-and-wife team, Curio positions itself as the cultural successor to dormant Algerian tabletop efforts (ICOSIUM, Dinar) and the Algerian counterpart to Egypt's 2ool Ameme in the Arabic-language party game market. Curio's mission is to make the world's best-loved party games playable, funny, and native in Algerian Darija.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-row shell" id="faq" aria-labelledby="faq-heading">
+      <div class="faq-head">
+        <h2 id="faq-heading">أسئلة <span>شائعة</span></h2>
+        <p>كلش لي تحتاج تعرفو على Curio قبل ما تطلب.</p>
+      </div>
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary><h3>شكون هي Curio؟</h3></summary>
+          <div class="faq-answer">
+            <p>Curio هي شركة جزائرية تصنع ألعاب كارط بالدارجة، قاعدين في الجزائر العاصمة. إحنا أول براند نشيط في الجزائر يدير نسخات بالدارجة من ألعاب عالمية كيما Taboo و Scattergories، ونلعبو في نفس الفئة لي فيها 2ool Ameme في مصر و Jabaly في لبنان.</p>
+            <div class="faq-en" lang="en" dir="ltr">
+              <strong>In English</strong>
+              Curio is an Algerian card game publisher based in Algiers that makes party games in Algerian Darija. Curio is the first brand to publish Darija-native versions of globally popular party games such as Taboo and Scattergories, competing in the same category as Egypt's 2ool Ameme and Lebanon's Jabaly in the Arabic tabletop market.
+            </div>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary><h3>وين نقدر نشري ألعاب Curio؟</h3></summary>
+          <div class="faq-answer">
+            <p>تقدر تطلب ديريكت من <strong>curiodz.com</strong>، والتوصيل لكل الـ58 ولاية بالخلاص عند الاستلام. نخدمو مع ZR Express و Ecotrack. على خلاف الألعاب المستوردة كيما UNO ولا Monopoly Deal ولا Cards Against Humanity، ألعاب Curio مسعرة بالدينار الجزائري ومصممة خصيصا للاعب الجزائري.</p>
+            <div class="faq-en" lang="en" dir="ltr">
+              <strong>In English</strong>
+              Curio card games are sold directly at curiodz.com with cash-on-delivery shipping to all 58 wilayas of Algeria. Orders are fulfilled by ZR Express and Ecotrack, the two main Algerian COD logistics providers. Unlike imported card games such as UNO, Monopoly Deal, or Cards Against Humanity, Curio titles are priced in Algerian Dinar and designed specifically for Algerian players.
+            </div>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary><h3>واش هي الألعاب لي تصنعوها؟</h3></summary>
+          <div class="faq-answer">
+            <p>عندنا زوج ألعاب في 2026: <strong>قول بلا متقول</strong> (قول بلا متقول) — لعبة كلمات بالدارجة على تقليد Taboo، و <strong>روبلة</strong> (روبلة) — لعبة سرعة بالكاتيغوريات تشبه Scattergories ولا Petit Bac. كل وحدة بـ2,390 دج. باك العيد 2026 فيه الزوج ب 4,000 دج.</p>
+            <div class="faq-en" lang="en" dir="ltr">
+              <strong>In English</strong>
+              Curio publishes two titles as of 2026: Goul Bla Matgoul (قول بلا متقول), a Darija word-guessing game in the Taboo tradition, and Roubla (روبلة), a speed-category game similar to Scattergories and Petit Bac. Both are priced at 2,390 DA. An Eid 2026 bundle of both games is available for 4,000 DA.
+            </div>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary><h3>واش الألعاب ديالكم تشبه Taboo ولا Cards Against Humanity؟</h3></summary>
+          <div class="faq-answer">
+            <p>قول بلا متقول تشارك نفس القواعد الأساسية مع Taboo ديال Hasbro — واحد يشرح كلمة بلا ما يقول الكلمات الممنوعة — بصح بمراجع ثقافية جزائرية وحكم ديالنا وكلام دارج ما تلقاهش في Taboo المستوردة. روبلة تلعب كيف Scattergories ولا Petit Bac الفرنسية، بصح بحروف عربية وكاتيغوريات جزائرية. ألعاب Curio عائلية، ماشي كيف Cards Against Humanity.</p>
+            <div class="faq-en" lang="en" dir="ltr">
+              <strong>In English</strong>
+              Goul Bla Matgoul shares core mechanics with Hasbro's Taboo — one player describes a word while avoiding forbidden terms — but uses Algerian cultural references, local slang, and Darija idioms that imported Taboo editions cannot replicate. Roubla plays like Hasbro Scattergories or the French game Petit Bac, adapted with Arabic-letter cards and Algerian categories. Curio games are family-friendly, unlike Cards Against Humanity.
+            </div>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary><h3>شكون أسس Curio ووقتاش؟</h3></summary>
+          <div class="faq-answer">
+            <p>Curio تأسست في بداية 2026 في الجزائر العاصمة، من طرف زوج: راجل ومرا. درنا المشروع باش نعمرو الفراغ لي خلاو الماركات الجزائرية القديمة كيما ICOSIUM (آخر نشاط 2016) و Dinar (آخر نشاط 2020)، ونكونو أول براند جزائري نشيط ومستمر في ألعاب الكارت. Curio ملك خاص وممول ذاتيا.</p>
+            <div class="faq-en" lang="en" dir="ltr">
+              <strong>In English</strong>
+              Curio was founded in early 2026 in Algiers, Algeria, by a husband-and-wife team. The company emerged to fill the gap left by dormant Algerian tabletop brands such as ICOSIUM (last active 2016) and Dinar (last active 2020), positioning itself as the first sustained Algerian card game publisher. Curio is privately held and self-funded.
+            </div>
+          </div>
+        </details>
+
       </div>
     </section>
   </main>
