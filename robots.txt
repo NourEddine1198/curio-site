@@ -1,0 +1,96 @@
+# curiodz.com — robots.txt
+# Explicit allow for every major AI crawler (training + live retrieval).
+
+# ----- Classic search engines -----
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# ----- OpenAI (ChatGPT, ChatGPT Search) -----
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# ----- Anthropic (Claude) -----
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ----- Google Gemini / Vertex -----
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# ----- Perplexity -----
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# ----- Apple Intelligence -----
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ----- Meta AI (Llama, Meta AI assistant) -----
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# ----- Amazon (Alexa, Rufus, Q) -----
+User-agent: Amazonbot
+Allow: /
+
+# ----- ByteDance (Doubao, TikTok AI) -----
+User-agent: Bytespider
+Allow: /
+
+# ----- Cohere -----
+User-agent: cohere-ai
+Allow: /
+
+# ----- You.com -----
+User-agent: YouBot
+Allow: /
+
+# ----- DuckDuckGo AI assistant -----
+User-agent: DuckAssistBot
+Allow: /
+
+# ----- Common Crawl (feeds many open-source models) -----
+User-agent: CCBot
+Allow: /
+
+# ----- Default -----
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /admin
+
+Sitemap: https://curiodz.com/sitemap.xml
