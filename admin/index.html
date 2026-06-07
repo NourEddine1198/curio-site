@@ -143,6 +143,21 @@
       transition: all 0.2s;
     }
     .btn-logout:hover { background: var(--surface-hover); color: var(--ink); }
+    .btn-cc {
+      background: var(--blue);
+      border: 1px solid var(--blue);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-left: 8px;
+    }
+    .btn-cc:hover { filter: brightness(1.08); }
 
     /* Stats bar */
     .stats-bar {
@@ -730,7 +745,10 @@
     <div class="topbar-right">
       <h1>Curio <span>Admin</span></h1>
     </div>
-    <button class="btn-logout" onclick="logout()">خروج</button>
+    <div style="display:flex;align-items:center;gap:0;">
+      <a class="btn-cc" href="https://stirring-marigold-3dd8e9.netlify.app/dashboard" target="_blank" rel="noopener">📊 Command Center</a>
+      <button class="btn-logout" onclick="logout()" style="margin-left:8px;">خروج</button>
+    </div>
   </div>
 
   <!-- Stats -->
