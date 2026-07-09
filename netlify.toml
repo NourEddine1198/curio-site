@@ -18,3 +18,15 @@
   from = "/merci"
   to = "/merci.html"
   status = 200
+
+# ─── Security headers (all pages) ────────────────────────────
+# CSP allows: our own assets + inline scripts/styles (the pages use inline
+# code), Google Fonts, images over https, and API calls to the store + Web3Forms.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://stirring-marigold-3dd8e9.netlify.app https://api.web3forms.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com"

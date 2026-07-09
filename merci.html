@@ -275,7 +275,7 @@ if (!orderNumber) {
       card.innerHTML =
         '<div class="check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>' +
         '<h1>طلبك تسجل بنجاح!</h1>' +
-        '<p class="subtitle">شكرا لك ' + escapeHtml(order.customerName) + '!</p>' +
+        '<p class="subtitle">شكرا لك' + (order.customerName ? ' ' + escapeHtml(order.customerName) : '') + '!</p>' +
 
         '<div class="order-number">' +
           '<div class="label">رقم الطلب</div>' +
@@ -298,7 +298,7 @@ if (!orderNumber) {
           '<h3>واش غادي يصرا دروك؟</h3>' +
           '<ul>' +
             '<li>راح نتصلو بيك قريبا باش نأكدو الطلب</li>' +
-            '<li>التوصيل ل' + escapeHtml(order.wilayaName) + ': ' + deliveryEst + ' تقريبا</li>' +
+            (order.wilayaName ? '<li>التوصيل ل' + escapeHtml(order.wilayaName) + ': ' + deliveryEst + ' تقريبا</li>' : '') +
             '<li>الدفع عند الاستلام (COD)</li>' +
             '<li>احتفظ برقم الطلب: <strong>#' + order.orderNumber + '</strong></li>' +
           '</ul>' +

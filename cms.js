@@ -251,7 +251,36 @@
   function resolveImg(val) {
     if (!val) return val;
     if (val.indexOf("/api/") === 0) return API + val;
+    // Only allow http(s) / root-relative image URLs (block javascript:, data:, etc.)
+    if (/^\s*(javascript|vbscript|data):/i.test(val)) return "";
     return val;
+  }
+
+  // Sanitize stored HTML before injecting via innerHTML (defense-in-depth:
+  // content writes require the admin key, but this stops a compromised/edited
+  // value from running script on the live page). Parses inertly in a
+  // <template> (no resource loads / no handler execution), strips dangerous
+  // elements + event-handler and javascript:/data: attributes, keeps safe
+  // formatting like <b>/<br>/<span>.
+  function sanitizeHTML(html) {
+    var tpl = document.createElement("template");
+    tpl.innerHTML = String(html);
+    var root = tpl.content;
+    var DANGER = "script,iframe,object,embed,link,meta,style,svg,math,base,form,input,button,textarea,noscript";
+    root.querySelectorAll(DANGER).forEach(function (n) { n.remove(); });
+    root.querySelectorAll("*").forEach(function (el) {
+      for (var i = el.attributes.length - 1; i >= 0; i--) {
+        var a = el.attributes[i], name = a.name.toLowerCase(), val = a.value || "";
+        if (name.indexOf("on") === 0) { el.removeAttribute(a.name); continue; }
+        if ((name === "href" || name === "src" || name === "xlink:href" || name === "formaction" || name === "srcset") &&
+            /^\s*(javascript|vbscript|data):/i.test(val)) {
+          el.removeAttribute(a.name);
+        }
+      }
+    });
+    var out = document.createElement("div");
+    out.appendChild(root.cloneNode(true));
+    return out.innerHTML;
   }
 
   // ── Apply saved content over the built-in defaults ──────────
@@ -265,7 +294,7 @@
       if (item.type === "image") {
         item.el.setAttribute("src", resolveImg(val));
       } else {
-        item.el.innerHTML = val;
+        item.el.innerHTML = sanitizeHTML(val);
       }
     });
   }
