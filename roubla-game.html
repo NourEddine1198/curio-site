@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roubla — Flip a Round (gameplay glance)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Changa:wght@600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#fbf6ec;--bg2:#fffdf7;--ink:#161310;--ink-soft:#675b4c;--red:#ec2c24;--yellow:#facc15;--blue:#2aa9e0;--green:#5cb335;--gold:#e6a700;--ease:cubic-bezier(.16,1,.3,1)}
+  body{font-family:"Tajawal",sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(rgba(22,19,16,.05) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.5}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:clamp(20px,4vw,44px) clamp(16px,4vw,28px) 70px}
+  .back{display:inline-block;font-weight:700;color:var(--ink-soft);margin-bottom:14px}
+  .kick{font-family:"Changa";font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem}
+  h1{font-family:"Anton";font-weight:400;text-transform:uppercase;font-size:clamp(2rem,6vw,3.2rem);line-height:.96;margin-top:8px}
+  h1 .ar{font-family:"Changa";display:block;font-size:.9em;color:var(--red)}
+
+  .clue{margin-top:18px;border:3px solid var(--ink);border-radius:18px;background:var(--yellow);box-shadow:6px 6px 0 var(--ink);padding:14px 18px;text-align:center}
+  .clue .c1{font-family:"Changa";font-weight:800;font-size:1.25rem;direction:rtl}
+  .clue .c2{margin-top:4px;font-weight:700;color:#5a4a12;direction:rtl;line-height:1.5}
+  .sndwrap{display:flex;justify-content:center;margin-top:14px}
+  .sndbtn{border:3px solid var(--ink);border-radius:999px;background:var(--bg2);font-family:"Changa";font-weight:800;padding:9px 20px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s;direction:rtl}
+  .sndbtn.on{background:var(--green);color:#fff}
+  .sndbtn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+  .sndbtn.pulse{animation:sndpulse 1.7s ease-in-out infinite}
+  @keyframes sndpulse{0%,100%{transform:none}50%{transform:scale(1.05)}}
+
+  .board{margin-top:18px;border:3px solid var(--ink);border-radius:24px;background:linear-gradient(180deg,#fff7e6,#fdeccb);box-shadow:9px 9px 0 var(--ink);overflow:hidden;position:relative}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:3px solid var(--ink);background:var(--ink);color:#fff;font-family:"Changa";font-weight:800}
+  .topbar .rnd{font-size:.95rem}
+  .topbar .score{font-size:1rem}
+  .topbar .score b{color:var(--yellow)}
+
+  .stage{position:relative;padding:clamp(20px,4vw,34px) clamp(16px,3vw,28px) clamp(22px,3vw,30px);min-height:340px;display:flex;flex-direction:column;align-items:center;gap:16px}
+  .caller{font-family:"Changa";font-weight:800;color:var(--ink-soft);text-align:center;min-height:24px}
+  .caller b{color:var(--ink)}
+
+  .round{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .plus{font-family:"Anton";font-size:2rem;color:var(--ink-soft)}
+  .flip{width:128px;height:172px;perspective:1000px}
+  .flip-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s var(--ease)}
+  .flip.flipped .flip-in{transform:rotateY(180deg)}
+  .flip-in .pc{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;justify-content:center;font-family:"Changa";font-weight:800;text-align:center;overflow:hidden}
+  .flip-in .front{transform:rotateY(180deg)}
+  .pc.letter{background:var(--yellow);font-family:"Anton";font-size:4.6rem;line-height:1}
+  .pc.cat{background:var(--ink);color:#fff;font-size:1.5rem;padding:12px;line-height:1.3}
+  .pc.back{background:linear-gradient(135deg,var(--blue),var(--green));position:relative;color:#fff}
+  .pc.back::after{content:"كيوريو";position:absolute;font-family:"Changa";font-weight:800;font-size:1rem;background:var(--bg2);color:var(--ink);border:2.5px solid var(--ink);border-radius:8px;padding:5px 9px;transform:rotate(-7deg);box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+  .clabel{font-family:"Changa";font-weight:800;font-size:.72rem;color:var(--ink-soft);margin-top:6px;text-align:center}
+
+  .timer{width:min(340px,86%);height:16px;border:3px solid var(--ink);border-radius:999px;background:var(--bg2);overflow:hidden;opacity:0;transition:opacity .2s}
+  .timer.on{opacity:1}
+  .timer i{display:block;height:100%;width:100%;background:var(--green);transform-origin:left;transition:transform .2s linear}
+  .timer.warn i{background:var(--red)}
+
+  .result{min-height:50px;display:flex;align-items:center;justify-content:center}
+  .bubble{font-family:"Changa";font-weight:800;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:9px 16px;box-shadow:4px 4px 0 var(--ink);font-size:1.1rem;opacity:0;transform:scale(.5);position:relative;direction:rtl}
+  .bubble.show{opacity:1;transform:scale(1);transition:.35s var(--ease)}
+  .bubble.win{background:#eafbef} .bubble.slow{background:#fdeaea}
+
+  .gotbtn{min-width:200px;border:3px solid var(--ink);border-radius:16px;background:var(--red);color:#fff;font-family:"Anton";text-transform:uppercase;font-size:1.5rem;padding:16px 28px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .gotbtn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .gotbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .gotbtn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:5px 5px 0 var(--ink)}
+
+  .startbtn{min-width:220px;border:3px solid #000;border-radius:16px;background:var(--yellow);color:var(--ink);font-family:"Changa";font-weight:800;font-size:1.7rem;padding:15px 34px;cursor:pointer;box-shadow:6px 6px 0 var(--green);transition:transform .15s,box-shadow .15s;animation:sndpulse 1.7s ease-in-out infinite;direction:rtl}
+  .startbtn:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--green)}
+  .startbtn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--green)}
+
+  .overlay{position:absolute;inset:0;background:rgba(22,19,16,.9);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:20}
+  .overlay.show{display:flex;animation:fadein .3s}
+  .overlay .em{font-size:3.2rem}
+  .overlay .big{font-family:"Anton";font-size:clamp(2.4rem,9vw,4rem);line-height:1;color:var(--yellow);margin-top:4px}
+  .overlay h2{font-family:"Anton";font-weight:400;text-transform:uppercase;font-size:clamp(1.3rem,4vw,1.9rem);margin-top:2px}
+  .overlay p{margin-top:10px;opacity:.88;max-width:34ch;direction:rtl;line-height:1.6}
+  .replay{margin-top:20px;background:var(--yellow);color:var(--ink);border:3px solid #000;border-radius:14px;padding:13px 26px;font-family:"Anton";text-transform:uppercase;font-size:1.05rem;cursor:pointer;box-shadow:5px 5px 0 var(--green);transition:transform .15s,box-shadow .15s}
+  .replay:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--green)}
+
+  .confetti{position:fixed;width:11px;height:11px;border:2px solid var(--ink);border-radius:2px;z-index:60;pointer-events:none;animation:conf .9s var(--ease) forwards}
+  @keyframes conf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .howto{margin-top:18px;color:var(--ink-soft);line-height:1.7;font-size:.9rem}
+  .howto b{color:var(--ink)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./card-lab.html">← back to the lab</a>
+  <div class="kick">Roubla · gameplay glance</div>
+  <h1>Flip a Round<span class="ar">روبلة — قلّب وجاوب بزربة ⚡</span></h1>
+
+  <div class="clue">
+    <div class="c1">بلا ما تكتب والو.</div>
+    <div class="c2">راح نعطيوُلك موضوع وحرف، عندك 10 ثواني باش تجيب كلمة في راسك. كليكي "ابدأ" وركّز ....</div>
+  </div>
+
+  <div class="board" id="board">
+    <div class="topbar">
+      <span class="rnd">الجولة <span id="roundnum">1</span> / 4</span>
+      <span class="score">🔥 نوبتي <b id="score">0</b></span>
+    </div>
+    <div class="stage" id="stage">
+      <div class="caller" id="caller">🎙️ <b>وجّد روحك…</b></div>
+      <div class="round">
+        <div class="flip" id="fLetter"><div class="flip-in"><div class="pc back"></div><div class="pc letter front">؟</div></div></div>
+        <span class="plus">+</span>
+        <div class="flip" id="fCat"><div class="flip-in"><div class="pc back"></div><div class="pc cat front">؟</div></div></div>
+      </div>
+      <div class="clabel">الحرف · الموضوع</div>
+      <div class="timer" id="timer"><i id="timerbar"></i></div>
+      <div class="result"><div class="bubble" id="result">نوبتي!</div></div>
+      <button class="gotbtn" id="gotbtn" disabled>عندي! 🙋</button>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="em">⚡</div>
+      <div class="big" id="ovbig">3 / 4</div>
+      <h2 id="ovtitle">سريع!</h2>
+      <p id="ovtext"></p>
+      <button class="replay" id="replay">عاود · play again</button>
+    </div>
+    <div class="overlay show" id="startOverlay">
+      <div class="em">⚡</div>
+      <button class="startbtn" id="startBtn">ابدأ</button>
+    </div>
+  </div>
+
+  <p class="howto"><b>How this maps to Roubla:</b> a letter + a category flip together; you race to find a word that fits — here you slam <b>"عندي!"</b> before the clock runs out, then we show a sample answer. Real Roubla is this against your friends, all shouting at once. (Placeholder letters/categories — your real prompt cards drop straight in.)</p>
+</div>
+
+<script>
+  const rnd=a=>a[Math.floor(Math.random()*a.length)];
+  const COLORS=['#ec2c24','#facc15','#2aa9e0','#5cb335','#e6a700'];
+  const ROUNDS=4, ROUND_TIME=7;
+  const LETTERS=['ر','م','ب','ح','س','ك','ت','ن','ف','ل','ع','د','ز','ق'];
+  const CATS=['حيوان','بلاد','أكلة','اسم ولد','شي في الدار','لون','نبات'];
+  const WORDS={
+    'حيوان':['أرنب','حصان','نمر','فار','بقرة','كلب','سبع','حوت','تمساح','نعامة','عقرب','دجاجة','زرافة','قط'],
+    'بلاد':['روسيا','مصر','بلجيكا','الهند','سويسرا','كندا','تركيا','ليبيا','فرنسا','نيجيريا','عمان','دانمارك','زامبيا','قطر'],
+    'أكلة':['رشتة','مقروط','بوراك','حريرة','شخشوخة','كسكسي','طاجين','لحم','فلفل','نشّاشة','عيش','دوبارة','زلابية','قلب اللوز'],
+    'اسم ولد':['رضا','مراد','بلال','حمزة','سفيان','كريم','توفيق','ناصر','فؤاد','لقمان','عمر','ديدين','زكرياء','قادة'],
+    'شي في الدار':['راديو','مرآة','باب','حنفية','سرير','كرسي','طاولة','نافذة','فراش','لمبة','عتبة','دولاب','زربية','قفل'],
+    'لون':['رمادي','موف','بني','أحمر','سماوي','كحلي','تورنج','نيلي','فيروزي','ليموني','عسلي','دهبي','زيتي','قرمزي'],
+    'نبات':['ريحان','مشماش','برتقال','حلفاء','سفرجل','كرموس','تفاح','نعناع','فجل','لوز','عنب','دلاع','زعتر','قرع']
+  };
+
+  const board=document.getElementById('board'),stage=document.getElementById('stage'),overlay=document.getElementById('overlay');
+  const fLetter=document.getElementById('fLetter'),fCat=document.getElementById('fCat');
+  const lFront=fLetter.querySelector('.front'),cFront=fCat.querySelector('.front');
+  const timer=document.getElementById('timer'),timerbar=document.getElementById('timerbar'),result=document.getElementById('result');
+  const gotbtn=document.getElementById('gotbtn'),caller=document.getElementById('caller');
+  const roundnum=document.getElementById('roundnum'),scoreEl=document.getElementById('score');
+  let round,score,timeLeft,tickTimer,active,lastL,lastC;
+
+  /* ---------- AUDIO ---------- */
+  let AC,master,musicGain,musicTimer,audioOn=false,arVoice=null,beat=0;
+  function pickVoice(){try{const vs=speechSynthesis.getVoices();arVoice=vs.find(v=>/^ar/i.test(v.lang))||vs.find(v=>/arab/i.test(v.name||''))||null;}catch(e){}}
+  try{speechSynthesis.onvoiceschanged=pickVoice;pickVoice();}catch(e){}
+  function say(t,rate,pitch){if(!audioOn)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(arVoice){u.voice=arVoice;u.lang=arVoice.lang;}else{u.lang='ar';}u.rate=rate||1;u.pitch=pitch||1;speechSynthesis.speak(u);}catch(e){}}
+  function blip(f,dur,type,vol,when){if(!AC)return;const t=when||AC.currentTime;const o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(vol||.22,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.03);}
+  function noise(dur,vol,freq){if(!AC)return;const t=AC.currentTime;const n=AC.createBufferSource();const b=AC.createBuffer(1,AC.sampleRate*dur,AC.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;n.buffer=b;const fl=AC.createBiquadFilter();fl.type='bandpass';fl.frequency.value=freq||1400;const g=AC.createGain();g.gain.setValueAtTime(vol||.2,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(fl);fl.connect(g);g.connect(master);n.start(t);n.stop(t+dur+.03);}
+  function sfxFlip(){if(!audioOn)return;noise(.14,.2,1000);blip(520,.14,'triangle',.12);}
+  function sfxTick(t){if(!audioOn)return;blip(t?1100:760,.05,'square',.12);}
+  function sfxBuzz(){if(!audioOn)return;blip(880,.1,'triangle',.2);blip(1320,.16,'triangle',.18,AC.currentTime+.07);}
+  function sfxTime(){if(!audioOn)return;blip(330,.35,'sawtooth',.18);blip(220,.5,'sawtooth',.16,AC.currentTime+.16);}
+  function sfxFinale(){if(!audioOn)return;[523,659,784,1046,1318].forEach((f,i)=>blip(f,.5,'triangle',.2,AC.currentTime+i*.09));}
+  const GROOVE=['dum',0,'tek','tek','dum','tek','tek',0];
+  function mNoise(dur,vol,freq){if(!AC)return;const t=AC.currentTime;const n=AC.createBufferSource();const b=AC.createBuffer(1,AC.sampleRate*dur,AC.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;n.buffer=b;const fl=AC.createBiquadFilter();fl.type='highpass';fl.frequency.value=freq;const g=AC.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(fl);fl.connect(g);g.connect(musicGain);n.start(t);n.stop(t+dur+.02);}
+  function mTone(f,dur,vol){if(!AC)return;const t=AC.currentTime;const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(vol,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(musicGain);o.start(t);o.stop(t+dur+.02);}
+  function playBeat(){if(!audioOn||!AC)return;const s=GROOVE[beat%8];if(s==='dum'){const t=AC.currentTime;const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(62,t+.16);g.gain.setValueAtTime(.55,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(musicGain);o.start(t);o.stop(t+.2);}else if(s==='tek'){mNoise(.045,.45,2100);}if(beat%8===0)mTone(247,.3,.16);if(beat%8===4)mTone(196,.3,.14);beat++;}
+  function startMusic(){clearInterval(musicTimer);beat=0;if(musicGain)musicGain.gain.setTargetAtTime(.3,AC.currentTime,.3);musicTimer=setInterval(playBeat,205);}
+  function stopMusic(){clearInterval(musicTimer);if(musicGain&&AC)musicGain.gain.setTargetAtTime(0,AC.currentTime,.2);}
+  function initAudio(){if(AC)return;AC=new (window.AudioContext||window.webkitAudioContext)();master=AC.createGain();master.gain.value=.85;master.connect(AC.destination);musicGain=AC.createGain();musicGain.gain.value=0;musicGain.connect(master);}
+  function enableSound(){try{initAudio();if(AC.state==='suspended')AC.resume();audioOn=true;startMusic();}catch(e){audioOn=false;}}
+
+  /* ---------- GAME ---------- */
+  function confetti(){for(let i=0;i<26;i++){const p=document.createElement('div');p.className='confetti';const r=board.getBoundingClientRect();p.style.left=(r.left+r.width/2)+'px';p.style.top=(r.top+r.height/2)+'px';p.style.background=COLORS[i%COLORS.length];const a=Math.random()*Math.PI*2,d=80+Math.random()*180;p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',(Math.sin(a)*d-40)+'px');p.style.setProperty('--rot',(Math.random()*720-360)+'deg');document.body.appendChild(p);setTimeout(()=>p.remove(),900);}}
+
+  function nextRound(){
+    if(round>ROUNDS){finale();return;}
+    roundnum.textContent=round;active=false;
+    result.classList.remove('show','win','slow');gotbtn.disabled=true;timer.className='timer';
+    fLetter.classList.remove('flipped');fCat.classList.remove('flipped');
+    caller.innerHTML='🎙️ <b>وجّد روحك…</b>';
+    setTimeout(()=>{
+      let L=rnd(LETTERS);while(L===lastL)L=rnd(LETTERS);
+      let C=rnd(CATS);while(C===lastC)C=rnd(CATS);
+      lastL=L;lastC=C;curL=L;curC=C;
+      lFront.textContent=L;cFront.textContent=C;
+      sfxFlip();fLetter.classList.add('flipped');setTimeout(()=>{sfxFlip();fCat.classList.add('flipped');},150);
+      caller.innerHTML='🎙️ <b>الحرف '+L+' · '+C+'!</b>';
+      setTimeout(startTimer,700);
+    },650);
+  }
+
+  let curL,curC;
+  function startTimer(){
+    active=true;gotbtn.disabled=false;timeLeft=ROUND_TIME;
+    timer.classList.add('on');timerbar.style.transition='none';timerbar.style.transform='scaleX(1)';
+    requestAnimationFrame(()=>{timerbar.style.transition='transform '+ROUND_TIME+'s linear';timerbar.style.transform='scaleX(0)';});
+    tickTimer=setInterval(()=>{
+      timeLeft--;
+      if(timeLeft<=3){timer.classList.add('warn');sfxTick(true);}else{sfxTick(false);}
+      if(timeLeft<=0){clearInterval(tickTimer);timeUp();}
+    },1000);
+  }
+
+  function reveal(good){
+    const pool=WORDS[curC]||[];const m=pool.filter(w=>w[0]===curL);
+    const sample=m.length?rnd(m):null;
+    result.className='bubble show '+(good?'win':'slow');
+    result.textContent=(good?'نوبتي! 🔥 ':'وقت! 🐢 ')+(sample?('مثلاً: '+sample):'فكّر… قولها انت!');
+  }
+  function got(){
+    if(!active)return;active=false;clearInterval(tickTimer);
+    timerbar.style.transition='none';timerbar.style.transform=getComputedStyle(timerbar).transform; // freeze
+    gotbtn.disabled=true;sfxBuzz();say('نوبتي!',1.2,1.2);
+    score++;scoreEl.textContent=score;
+    reveal(true);
+    setTimeout(()=>{round++;nextRound();},1700);
+  }
+  function timeUp(){
+    if(!active)return;active=false;gotbtn.disabled=true;timer.classList.remove('warn');
+    sfxTime();say('وقت!',1.1,1.1);
+    reveal(false);
+    setTimeout(()=>{round++;nextRound();},1700);
+  }
+
+  function finale(){
+    confetti();sfxFinale();
+    document.getElementById('ovbig').textContent=score+' / '+ROUNDS;
+    let title,txt;
+    if(score>=4){title='صاروخ! 🚀';txt='ربحت كل الجولات! تخيّل هاد السرعة والكل يصيّح معاك.';}
+    else if(score>=2){title='سريع!';txt='مزيان بزاف. مع صحابك تولي أسرع — جرّب روبلة الحقيقية.';}
+    else{title='تمرّن شوية 😄';txt='روبلة كلها سرعة — عاود، وراك تتحسّن. والعبها مع صحابك بصح!';}
+    document.getElementById('ovtitle').textContent=title;document.getElementById('ovtext').textContent=txt;
+    overlay.classList.add('show');
+  }
+
+  function start(){
+    overlay.classList.remove('show');round=1;score=0;scoreEl.textContent=0;lastL=lastC=null;
+    nextRound();
+  }
+
+  gotbtn.addEventListener('click',got);
+  document.getElementById('replay').addEventListener('click',start);
+  document.getElementById('startBtn').addEventListener('click',()=>{
+    enableSound();                                   // sound ON by default once they start
+    document.getElementById('startOverlay').classList.remove('show');
+    start();
+  });
+  // wait for ابدأ — game does not auto-run
+</script>
+<style>html.embed .back,html.embed .kick,html.embed h1,html.embed .howto{display:none!important}html.embed .wrap{padding:12px 16px 18px}html.embed,html.embed body{background:transparent!important}html.embed body::before{display:none!important}</style>
+<script>if(/[?&]embed/.test(location.search))document.documentElement.classList.add('embed');</script>
+<script>
+  // tell the parent page how tall we are, so the demo fits with no internal scroll
+  function postH(){try{const h=Math.ceil(document.querySelector('.wrap').getBoundingClientRect().height)+4;parent.postMessage({roublaH:h},'*');}catch(e){}}
+  addEventListener('load',postH);addEventListener('resize',postH);
+  try{new ResizeObserver(postH).observe(document.querySelector('.wrap'));}catch(e){}
+  setTimeout(postH,300);setTimeout(postH,1200);
+</script>
+</body>
+</html>

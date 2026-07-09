@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Curio كيوريو — الفرحة للكل، بعاد على لاسكران</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#fbf6ec;--bg2:#fffdf7;--ink:#161310;--ink-soft:#675b4c;
+    --red:#ec2c24;--yellow:#facc15;--blue:#2aa9e0;--green:#5cb335;
+    --ease:cubic-bezier(.16,1,.3,1)
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--bg);overflow-x:clip}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,36px)}
+
+  /* ===== hand-drawn IMPERFECT lines (signature) ===== */
+  .rough{border-color:transparent!important;position:relative}
+  .rough::after{content:"";position:absolute;inset:0;border:3px solid var(--ink);border-radius:inherit;filter:url(#rough);pointer-events:none;z-index:4}
+  .roughf{filter:url(#rough)}
+
+  /* scroll progress */
+  .progress{position:fixed;top:0;inset-inline:0;height:5px;z-index:140;background:transparent}
+  .progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--yellow),var(--red),var(--green))}
+  .tagchip{position:fixed;left:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;font-size:.7rem;font-weight:700;padding:5px 10px;border-radius:999px;opacity:.8}
+
+  /* floating header */
+  header{position:sticky;top:8px;z-index:100;margin:8px clamp(12px,3vw,28px) 0;border:2px solid var(--ink);border-radius:14px;background:var(--bg2);box-shadow:0 6px 16px rgba(22,19,16,.15)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px clamp(12px,3vw,18px)}
+  .burger{font-size:1.3rem;border:2px solid var(--ink);background:var(--yellow);border-radius:9px;width:38px;height:38px;cursor:pointer;box-shadow:none}
+  @media(min-width:760px){.burger{display:none}}
+  .logo{height:34px;mix-blend-mode:multiply}
+  .nav{display:none;gap:18px;font-weight:800;font-size:.92rem;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
+  @media(min-width:760px){.nav{display:flex}}
+  .nav a{position:relative}
+  .nav a::after{content:"";position:absolute;inset-inline:0;bottom:-4px;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:right;transition:transform .25s}
+  .nav a:hover::after{transform:scaleX(1)}
+  .cart{background:var(--yellow);border:2px solid var(--ink);border-radius:11px;padding:6px 12px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;box-shadow:none;font-size:.88rem}
+
+  /* mobile dropdown menu (burger) */
+  #hdr{overflow:hidden}
+  .mobmenu{display:none;flex-direction:column;gap:2px;padding:4px 8px 8px}
+  .mobmenu a{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;padding:10px;border-radius:9px;color:var(--ink)}
+  .mobmenu a:hover,.mobmenu a:active{background:var(--yellow)}
+  header.menuopen .mobmenu{display:flex;border-top:2px solid var(--ink);margin-top:2px}
+  @media(min-width:760px){.mobmenu{display:none!important}}
+  /* small Algerian flag graphic (renders everywhere, unlike the 🇩🇿 emoji) */
+  .dz-flag{width:56px;height:auto;border:2.5px solid var(--ink);border-radius:6px;box-shadow:2px 2px 0 var(--ink);display:inline-block;vertical-align:middle}
+
+  /* ===== HERO — big brand statement (cream, premium, calm) ===== */
+  .hero{position:relative;overflow:hidden;background:var(--bg2)}
+  .hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:clamp(26px,6vw,60px);padding-bottom:clamp(42px,8vw,92px)}
+  /* faint printed-paper dots + soft brand wash */
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(0,0,0,.06) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.5;z-index:0}
+  /* subtle floating decoration chips (desktop only, low-key) */
+  .hdeco{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .hdeco span{position:absolute;width:46px;height:46px;border:3px solid var(--ink);border-radius:12px;opacity:.16;filter:url(#rough)}
+  .hdeco .d1{top:14%;inset-inline-start:7%;background:var(--red);transform:rotate(-12deg)}
+  .hdeco .d2{top:20%;inset-inline-end:9%;background:var(--blue);border-radius:50%;transform:rotate(8deg)}
+  .hdeco .d3{bottom:22%;inset-inline-start:12%;background:var(--green);border-radius:50%}
+  .hdeco .d4{bottom:16%;inset-inline-end:8%;background:var(--yellow);transform:rotate(14deg)}
+  @media(max-width:760px){.hdeco{display:none}}
+
+  .hero-logo{height:clamp(56px,11vw,82px);width:auto;mix-blend-mode:multiply}
+  .hero-eyebrow{margin-top:16px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.98rem;color:var(--ink-soft)}
+  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2.9rem,12.5vw,6.2rem);line-height:.98;margin-top:12px}
+  .hero-h1 .c-red{color:var(--red)}
+  .hero-h1 .mark{white-space:nowrap;background:linear-gradient(transparent 60%, var(--yellow) 60%);padding:0 .04em}
+  .hero-lead{margin-top:18px;font-size:clamp(1.05rem,2.7vw,1.28rem);font-weight:700;line-height:1.62;max-width:40ch;color:var(--ink)}
+  .hero-cta{margin-top:26px}
+  .order{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:3px solid var(--ink);border-radius:14px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.28rem;padding:15px 32px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .order:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .order:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .proof{margin-top:20px;display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);font-weight:600;font-size:.82rem;opacity:.9}
+  .trust{margin-top:11px;display:flex;flex-wrap:wrap;justify-content:center;gap:7px 15px;color:var(--ink-soft);font-weight:700;font-size:.84rem}
+
+  /* hero entrance (premium staggered fade-up) */
+  .hero-el{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .7s var(--ease)}
+  .hero-logo.hero-el{transform:translateY(0) scale(.82) rotate(-6deg)}
+  .hero.in .hero-el{opacity:1;transform:none}
+  .hero.in .hero-logo{transition-delay:.02s}
+  .hero.in .hero-eyebrow{transition-delay:.12s}
+  .hero.in .hero-h1{transition-delay:.20s}
+  .hero.in .hero-lead{transition-delay:.34s}
+  .hero.in .hero-cta{transition-delay:.46s}
+  .hero.in .proof{transition-delay:.56s}
+  .hero.in .trust{transition-delay:.62s}
+
+  /* scrolling trust marquee */
+  .marq{background:var(--ink);color:#fff;overflow:hidden;border-block:3px solid var(--ink);white-space:nowrap;padding:11px 0}
+  .marq .run{display:inline-block;animation:run 24s linear infinite;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.02rem}
+  .marq .run span{margin:0 20px}
+  .marq .run b{color:var(--yellow)}
+  @keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* full-bleed blocks */
+  .block{position:relative;padding:clamp(36px,6vw,66px) 0}
+  .block.cream{background:var(--bg2)}
+  .eyebrow{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;opacity:.92}
+  .h2{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.1rem);line-height:1.1;margin-top:4px}
+  .sub{font-weight:700;margin-top:8px;font-size:1.05rem;opacity:.9;max-width:54ch}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== SECTION: THE GAMES (blue) + bundle offer ===== */
+  .games{background:var(--blue);color:#fff}
+  .games .head{text-align:center}
+  .games .head .eyebrow{color:#fff}
+  .games .head .sub{margin-inline:auto;color:rgba(255,255,255,.92);opacity:1}
+  .gcards{display:grid;gap:18px;margin-top:28px;grid-template-columns:1fr}
+  @media(min-width:720px){.gcards{grid-template-columns:1fr 1fr}}
+  .gcard{position:relative;display:flex;flex-direction:column;background:var(--bg2);border-radius:20px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);color:var(--ink);transition:transform .3s var(--ease)}
+  .gcard:hover{transform:translateY(-6px)}
+  .gc-img{position:relative;aspect-ratio:4/3;background:#0c0c0c;overflow:hidden}
+  .gc-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+  .gc-ribbon{position:absolute;top:12px;inset-inline-start:12px;z-index:3;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.8rem;padding:6px 13px;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-3deg)}
+  .gc-ribbon.new{background:var(--green)}
+  .gc-body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+  .gc-body h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.7rem;line-height:1}
+  .gc-hook{color:var(--ink-soft);font-weight:700;line-height:1.55;margin-top:8px;font-size:.97rem}
+  .gc-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .gc-specs span{background:var(--bg);border:2px solid var(--ink);border-radius:8px;padding:4px 9px;font-weight:800;font-size:.75rem}
+  .gc-foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .gc-price{font-family:"Anton";font-size:1.85rem;line-height:1}
+  .gc-price small{font-size:.85rem;color:var(--ink-soft);font-family:"Noto Sans Arabic",sans-serif}
+  .gc-cta{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:#fff;border-radius:11px;padding:11px 17px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.96rem;transition:transform .15s;white-space:nowrap}
+  .gcard:hover .gc-cta{transform:scale(1.04)}
+
+  /* ===== PACK / BUNDLE — "The Duo" (2-col, covers-hero) ===== */
+  .tag{display:inline-block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.82rem}
+  .save{display:inline-block;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.85rem;padding:4px 12px;border-radius:999px;border:2px solid var(--ink)}
+  .particle{position:absolute;left:50%;top:50%;width:11px;height:11px;border:2px solid var(--ink);border-radius:2px;pointer-events:none;z-index:8}
+  .bundle{position:relative;margin-top:20px;background:var(--bg2);color:var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:clamp(22px,4vw,38px);display:grid;grid-template-columns:1fr;gap:24px;align-items:center}
+  @media(min-width:760px){.bundle{grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,44px)}}
+  .b-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:230px}
+  .b-rays{position:absolute;width:min(96%,340px);aspect-ratio:1;border-radius:50%;z-index:0;background:radial-gradient(circle,rgba(250,204,21,.55),rgba(250,204,21,0) 62%),repeating-conic-gradient(from 0deg,rgba(236,44,36,.10) 0 9deg,transparent 9deg 18deg)}
+  .b-covers{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+  .b-cov{position:relative}
+  .b-cov img{width:clamp(122px,30vw,178px);aspect-ratio:1;object-fit:cover;border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);background:#000}
+  .b-cov figcaption{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.76rem;padding:3px 12px;border-radius:999px;white-space:nowrap;z-index:3}
+  .b-a{transform:rotate(-7deg)}
+  .b-b{transform:rotate(7deg);margin-inline-start:-22px}
+  .b-plus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;width:50px;height:50px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:"Anton",sans-serif;font-size:1.9rem;box-shadow:3px 3px 0 var(--ink)}
+  .b-spark{position:absolute;left:50%;top:50%;width:1px;height:1px;z-index:5}
+  .b-pitch{text-align:center}
+  @media(min-width:760px){.b-pitch{text-align:right}}
+  .b-pitch .tag{color:var(--red)}
+  .b-title{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.05;margin-top:6px}
+  .b-benefit{font-weight:700;color:var(--ink-soft);line-height:1.6;margin-top:12px;max-width:34ch;margin-inline:auto}
+  @media(min-width:760px){.b-benefit{margin-inline:0}}
+  .b-benefit b{color:var(--ink);background:linear-gradient(transparent 58%,var(--yellow) 58%);padding:0 2px}
+  .b-deal{margin-top:18px}
+  .b-old{display:block;color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:2px;font-weight:800;font-size:1rem}
+  .b-nowrow{display:flex;align-items:baseline;gap:10px;justify-content:center;margin-top:2px}
+  @media(min-width:760px){.b-nowrow{justify-content:flex-start}}
+  .b-nowrow b{font-family:"Anton",sans-serif;font-size:clamp(2.6rem,8vw,3.4rem);line-height:1}
+  .b-nowrow small{font-family:"Noto Sans Arabic",sans-serif;font-size:1rem;color:var(--ink-soft)}
+  .bundle .order{margin-top:18px}
+
+  /* ===== SECTION: THE WHY / CURIO STORY (ink) ===== */
+  .why{background:var(--ink);color:var(--bg);text-align:center}
+  .why .eyebrow{color:var(--yellow)}
+  .why-h{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2rem,6.4vw,3.5rem);line-height:1.14;margin:10px auto 0;max-width:19ch}
+  .why-h .y{color:var(--yellow)}
+  .why-lead{margin:18px auto 0;max-width:50ch;font-weight:700;line-height:1.75;color:rgba(255,255,255,.82);font-size:1.06rem}
+  .pillars{display:grid;gap:16px;margin-top:32px;grid-template-columns:1fr}
+  @media(min-width:720px){.pillars{grid-template-columns:repeat(3,1fr)}}
+  .pillar{border-radius:18px;padding:26px 20px;color:var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.55)}
+  .pillar.p1{background:var(--yellow)}
+  .pillar.p2{background:var(--blue);color:#fff}
+  .pillar.p3{background:var(--green);color:#fff}
+  .pillar .pem{font-size:2.5rem;line-height:1}
+  .pillar h4{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.3rem;margin-top:10px}
+  .pillar p{font-weight:700;margin-top:6px;line-height:1.5;font-size:.93rem}
+  .pillar.p1 p{color:#5a4d00}
+  .pillar.p2 p,.pillar.p3 p{color:rgba(255,255,255,.9)}
+  .why-hero-line{margin-top:34px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.25rem,3.8vw,1.75rem);color:var(--yellow)}
+  .why-cta{margin-top:18px}
+  .why-sig{margin-top:20px;font-weight:700;color:rgba(255,255,255,.58);font-size:.95rem}
+
+  /* placeholder for the next sections (built one by one) */
+  .soon{border:3px dashed var(--ink);border-radius:20px;background:var(--bg2);box-shadow:6px 6px 0 rgba(22,19,16,.12);padding:clamp(26px,5vw,44px);text-align:center;max-width:640px;margin:0 auto}
+  .soon .h2{margin-top:2px}
+
+  footer{border-top:3px solid var(--ink);background:var(--bg2);padding:clamp(36px,6vw,56px) 0 0;color:var(--ink-soft)}
+  .fwrap{display:grid;gap:28px;grid-template-columns:1fr}
+  @media(min-width:720px){.fwrap{grid-template-columns:1.5fr .7fr 1.2fr;gap:34px}}
+  .fcol h5{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.02rem;margin-bottom:13px;color:var(--ink)}
+  .fcol a{display:block;color:var(--ink-soft);font-weight:700;margin-bottom:9px;width:fit-content;transition:color .2s}
+  .fcol a:hover{color:var(--red)}
+  .flogo{height:46px;mix-blend-mode:multiply}
+  .ftag{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink);margin-top:14px;line-height:1.45;max-width:26ch}
+  .fsoc{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .fsoc a{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);border:2.5px solid var(--ink);border-radius:11px;padding:8px 14px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem;box-shadow:3px 3px 0 var(--ink);color:var(--ink);margin:0;transition:transform .12s,box-shadow .12s}
+  .fsoc a:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink);color:var(--ink)}
+  .fhandle{margin-top:12px;font-family:"Anton",sans-serif;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.02em}
+  .ftrustcol span{display:block;color:var(--ink-soft);font-weight:700;margin-bottom:10px;font-size:.95rem}
+  .fbottom{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;border-top:2px solid rgba(22,19,16,.14);margin-top:clamp(28px,5vw,44px);padding:20px 0 28px;color:var(--ink-soft);font-weight:700;font-size:.86rem}
+
+  /* ===== PACK ORDER MODAL (pop-up checkout) — compact ===== */
+  .mscrim{position:fixed;inset:0;z-index:200;background:rgba(22,19,16,.58);display:none;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto}
+  .mscrim.open{display:flex}
+  body.mlock{overflow:hidden}
+  .modal{position:relative;width:100%;max-width:500px;margin:auto;background:var(--bg2);border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);animation:modalin .3s var(--ease)}
+  @keyframes modalin{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+  .mhead{position:relative;background:var(--yellow);border-radius:17px 17px 0 0;border-bottom:3px solid var(--ink);padding:13px 18px}
+  .mclose{position:absolute;top:10px;inset-inline-end:10px;width:32px;height:32px;border:2.5px solid var(--ink);background:var(--bg2);border-radius:9px;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:grid;place-items:center;line-height:1}
+  .mtag{display:inline-block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.78rem;color:#5a4d00}
+  .mhead h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.12rem;margin-top:1px}
+  .mdeal{margin-top:4px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .mold{text-decoration:line-through;text-decoration-thickness:2px;color:#8a7a3a;font-weight:800;font-size:.9rem}
+  .mnow{font-family:"Anton",sans-serif;font-size:1.6rem;line-height:1}
+  .mnow small{font-family:"Noto Sans Arabic",sans-serif;font-size:.82rem;color:#5a4d00}
+  .msave{background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.74rem;padding:3px 9px;border-radius:999px;border:2px solid var(--ink)}
+  .mbody{padding:14px 18px 18px}
+  .mlabel{display:block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.78rem;margin-bottom:4px}
+  .min{width:100%;border:2.5px solid var(--ink);border-radius:10px;padding:9px 11px;font-family:"Noto Sans Arabic",sans-serif;font-size:.92rem;font-weight:600;background:#fff;color:var(--ink)}
+  .min:focus{outline:3px solid var(--yellow)}
+  .mg2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mfield{margin-top:10px}
+  .mseg{display:inline-flex;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;width:100%}
+  .mseg button{flex:1;border:0;background:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.86rem;padding:9px 4px;cursor:pointer;border-inline-start:2.5px solid var(--ink)}
+  .mseg button:first-child{border:0}
+  .mseg button.on{background:var(--yellow)}
+  .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-top:13px}
+  .mqty{display:inline-flex;align-items:center;border:2.5px solid var(--ink);border-radius:11px;overflow:hidden}
+  .mqty button{width:40px;height:40px;border:0;background:var(--bg);font-family:"Anton",sans-serif;font-size:1.3rem;cursor:pointer}
+  .mqty button:hover{background:var(--yellow)}
+  .mqty span{width:42px;text-align:center;font-family:"Anton",sans-serif;font-size:1.3rem;border-inline:2.5px solid var(--ink);line-height:40px}
+  .mtot{text-align:left}
+  .mtotlbl{font-size:.72rem;color:var(--ink-soft);font-weight:700}
+  .mtot b{display:block;font-family:"Anton",sans-serif;font-size:1.7rem;line-height:1.05}
+  .mtothint{font-size:.68rem;color:var(--ink-soft);font-weight:700}
+  .msubmit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:3px solid var(--ink);border-radius:13px;background:var(--green);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.18rem;padding:13px;margin-top:13px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .msubmit:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .msubmit:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .mtrust{text-align:center;margin-top:9px;font-weight:700;font-size:.76rem;color:var(--ink-soft);line-height:1.55}
+  .mdone{text-align:center;padding:10px 0}
+  .mdone .big{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.35rem}
+  .mdone .num{font-family:"Anton",sans-serif;font-size:2rem;color:var(--green);margin-top:6px}
+  .mdone p{font-weight:700;color:var(--ink-soft);margin-top:8px}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .hero-el,.reveal{opacity:1!important;transform:none!important}
+    .hero-h1 .mark::after{transform:scaleX(1)}
+  }
+</style>
+</head>
+<body data-cms-page="home">
+  <!-- hand-drawn roughen filter (gentle) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
+
+  <div class="progress"><i id="prog"></i></div>
+
+  <!-- FLOATING HEADER -->
+  <header id="hdr"><div class="bar">
+    <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
+    <a href="#top" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
+    <nav class="nav"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></nav>
+    <a class="cart">السلة · 0</a>
+  </div>
+  <div class="mobmenu" id="mobmenu"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></div>
+  </header>
+
+  <!-- HERO — big brand statement -->
+  <main id="top">
+  <section class="hero" id="hero">
+    <div class="hdeco" aria-hidden="true"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+    <div class="wrap">
+      <img class="hero-logo hero-el" src="/curio-logo.jpg" alt="Curio كيوريو">
+      <div class="hero-eyebrow hero-el">ألعاب و نشاطات جزائرية.</div>
+      <h1 class="hero-h1 hero-el">FUN FOR <span class="c-red">EVERYONE</span><br>Far From <span class="mark">Screen</span></h1>
+      <p class="hero-lead hero-el">هنا نصنع متعة تجمع الجميع… بعيدًا عن الشاشات</p>
+      <div class="hero-cta hero-el"><button class="order" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})"><span>شوف المنتجات لي عندنا</span><span>👇</span></button></div>
+      <div class="proof hero-el">🏆 +1000 علبة تباعت في أول طبعة</div>
+      <div class="trust hero-el"><span>✓ الدفع عند الاستلام</span><span>✓ توصيل متوفر ل58 ولاية</span></div>
+    </div>
+  </section>
+
+  <!-- moving trust marquee (completes the top band) -->
+  <div class="marq" aria-hidden="true"><div class="run">
+    <span>🎉 فرحة للكل</span><span>•</span><span><b>😂 ضحك مضمون</b></span><span>•</span><span>👨‍👩‍👧‍👦 من الصغير للكبير</span><span>•</span><span><b>صنع في الجزائر</b></span><span>•</span><span>💵 خلّص كي توصلك</span><span>•</span>
+    <span>🎉 فرحة للكل</span><span>•</span><span><b>😂 ضحك مضمون</b></span><span>•</span><span>👨‍👩‍👧‍👦 من الصغير للكبير</span><span>•</span><span><b>صنع في الجزائر</b></span><span>•</span><span>💵 خلّص كي توصلك</span><span>•</span>
+  </div></div>
+
+  <!-- SECTION 2 — THE GAMES + bundle offer -->
+  <section class="block games halftone" id="products">
+    <div class="wrap">
+      <div class="head reveal">
+        <div class="eyebrow">🎉 ألعاب القعدة</div>
+        <h2 class="h2">زوج ألعاب، و القعدة تخلط</h2>
+        <p class="sub">سرعة، عياط، و ضحك — تلعبها العائلة كاملة، من الصغير للكبير.</p>
+      </div>
+
+      <div class="gcards">
+        <a class="gcard rough reveal" href="/roubla">
+          <div class="gc-img"><img src="/images/photo_5866352893554789634_y.jpg" alt="روبلة"><span class="gc-ribbon">🏆 الأكثر مبيعاً</span></div>
+          <div class="gc-body">
+            <h3>روبلة</h3>
+            <p class="gc-hook">حرف + موضوع، و أسرع واحد يجاوب يربح. سبيدباك بالدارجة يخلّي الكل يعيّط.</p>
+            <div class="gc-specs"><span>👥 2–8</span><span>⏱️ 15–30 دق</span><span>🎂 +10</span></div>
+            <div class="gc-foot"><div class="gc-price">2390 <small>دج</small></div><span class="gc-cta">شوف اللعبة ←</span></div>
+          </div>
+        </a>
+
+        <a class="gcard rough reveal" href="/dlala">
+          <div class="gc-img"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><span class="gc-ribbon new">🔥 جديدة</span></div>
+          <div class="gc-body">
+            <h3>دلالة</h3>
+            <p class="gc-hook">بدّل، عيّط، و لمّ السلعة قبل الكل. فوضى منظّمة تنخّي السوق و تخرّج البزناسي اللي فيك.</p>
+            <div class="gc-specs"><span>👥 3–8</span><span>⏱️ 20–30 دق</span><span>🎂 +8</span></div>
+            <div class="gc-foot"><div class="gc-price">2390 <small>دج</small></div><span class="gc-cta">شوف اللعبة ←</span></div>
+          </div>
+        </a>
+      </div>
+
+      <!-- BUNDLE / PACK — "The Duo" -->
+      <div class="bundle rough">
+        <div class="b-visual">
+          <div class="b-rays" id="b-rays"></div>
+          <div class="b-covers">
+            <figure class="b-cov b-a"><img src="/images/photo_5866352893554789634_y.jpg" alt="روبلة"><figcaption>روبلة</figcaption></figure>
+            <figure class="b-cov b-b"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><figcaption>دلالة</figcaption></figure>
+            <div class="b-plus">+</div>
+            <div class="b-spark" id="b-spark"></div>
+          </div>
+        </div>
+        <div class="b-pitch">
+          <span class="tag">🎁 أحسن صفقة</span>
+          <h3 class="b-title">اديهم في الزوج<br>واستفاد من تخفيض واعر.</h3>
+          <p class="b-benefit">روبلة + دلالة فدار وحدة — تكفيك لكل عرضة و كل قعدة، و <b>تربح 790 دج</b>.</p>
+          <div class="b-deal">
+            <span class="b-old">4,780 دج</span>
+            <div class="b-nowrow"><b id="b-num">3,990</b><small>دج</small><span class="save">وفّر 790</span></div>
+          </div>
+          <button class="order" id="packcta"><span>🛒 اطلب الباك</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — THE WHY / CURIO STORY -->
+  <section class="block why halftone" id="why">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">علاش كيوريو</div>
+        <h2 class="why-h">نآمنو بلي أفضل متعة، كي نكونو كامل <span class="y">مع بعض</span>.</h2>
+        <p class="why-lead">ماشي غير قاعدين فغرفة وحدة و كل واحد غارق فتيليفونو. القعدة تع الصح فيها ضحك، متعة تشراجينا، و ذكريات ما تتنساش — لهذا نصنعو ألعاب جزائرية بالدارجة، للصغير و الكبير.</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar p1 rough reveal"><div class="pem">👨‍👩‍👧‍👦</div><h4>للكل</h4><p>من الصغير للكبير — الكل يلعب و يضحك في نفس الطابلة.</p></div>
+        <div class="pillar p2 rough reveal"><div class="pem">🎉</div><h4>بعيدا على الشاشات</h4><p>قعدات و لحظات تع الصح مشي فالكاميرا برك</p></div>
+        <div class="pillar p3 rough reveal"><div class="pem"><svg class="dz-flag" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="علم الجزائر"><rect width="24" height="32" fill="#006233"/><rect x="24" width="24" height="32" fill="#ffffff"/><circle cx="24" cy="16" r="8.5" fill="#d21034"/><circle cx="27.6" cy="16" r="6.9" fill="#ffffff"/><path transform="translate(30 16)" d="M0,-4.5 L1.01,-1.39 L4.28,-1.39 L1.64,0.53 L2.64,3.64 L0,1.72 L-2.64,3.64 L-1.64,0.53 L-4.28,-1.39 L-1.01,-1.39 Z" fill="#d21034"/></svg></div><h4>جزائرية و نتاعنا</h4><p>بالدارجة، كل تفصيلة نصنعوها بكل حب و فخر.</p></div>
+      </div>
+      <div class="reveal">
+        <p class="why-hero-line">و انت؟ حبيناك تكون انت لي يجيب الفرحة لللمات لي تكون فيهم. 🎉</p>
+        <div class="why-cta"><button class="order" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})"><span>شوف الألعاب</span><span>👇</span></button></div>
+        <p class="why-sig">— كيوريو، من قلب الجزائر ❤️</p>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="wrap fwrap">
+      <div class="fcol fbrand">
+        <a href="#top"><img class="flogo" src="/curio-logo.jpg" alt="Curio"></a>
+        <p class="ftag">هنا نصنع متعة تجمع الجميع…<br>بعيدًا عن الشاشات 🎉</p>
+        <div class="fsoc">
+          <a href="https://instagram.com/curio_games_" target="_blank" rel="noopener">📸 Instagram</a>
+          <a href="https://tiktok.com/@curio_games_" target="_blank" rel="noopener">🎵 TikTok</a>
+        </div>
+        <div class="fhandle">@curio_games_</div>
+      </div>
+      <div class="fcol">
+        <h5>تصفّح</h5>
+        <a href="#products">الألعاب</a>
+        <a href="/roubla">روبلة</a>
+        <a href="/dlala">دلالة</a>
+        <a href="#why">علاش كيوريو</a>
+      </div>
+      <div class="fcol ftrustcol">
+        <h5>الطلب و التوصيل</h5>
+        <span>💵 الدفع عند الاستلام</span>
+        <span>🚚 توصيل لكل 58 ولاية</span>
+        <span>📞 نعيّطولك نأكدو قبل ما نرسلو</span>
+        <span>❤️ صنع بحب في الجزائر</span>
+      </div>
+    </div>
+    <div class="wrap fbottom">
+      <span>© 2026 Curio · كيوريو</span>
+      <span>ألعاب و نشاطات جزائرية بالدارجة</span>
+    </div>
+  </footer>
+
+  <!-- PACK ORDER POP-UP (express checkout for the Roubla+Dlala pack) -->
+  <div class="mscrim" id="packModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="اطلب الباك">
+      <div class="mhead">
+        <button class="mclose" id="mclose" aria-label="سكّر">✕</button>
+        <div class="mtag">🎁 الباك — روبلة + دلالة</div>
+        <h3>واجد تخلط القعدة؟</h3>
+        <div class="mdeal"><span class="mold" id="p-old">4,380 دج</span><span class="mnow" id="p-now">3,800 <small>دج</small></span><span class="msave" id="p-save">توفّر 580</span></div>
+      </div>
+      <div class="mbody">
+        <form id="packForm" onsubmit="return submitPack(event)">
+          <div class="mg2">
+            <div><label class="mlabel">الاسم</label><input class="min" id="p-name" required placeholder="الاسم الكامل"></div>
+            <div><label class="mlabel">الهاتف</label><input class="min" id="p-phone" required type="tel" inputmode="tel" placeholder="06 / 05 / 07"></div>
+          </div>
+          <div class="mg2 mfield">
+            <div><label class="mlabel">الولاية</label>
+              <select class="min" id="p-wilaya" required>
+                <option value="" data-h="0" data-o="0">اختر الولاية…</option>
+                <option data-h="1650" data-o="850">01 - أدرار</option>
+                <option data-h="700" data-o="450">02 - الشلف</option>
+                <option data-h="850" data-o="450">03 - الأغواط</option>
+                <option data-h="850" data-o="450">04 - أم البواقي</option>
+                <option data-h="850" data-o="450">05 - باتنة</option>
+                <option data-h="850" data-o="450">06 - بجاية</option>
+                <option data-h="850" data-o="650">07 - بسكرة</option>
+                <option data-h="1200" data-o="650">08 - بشار</option>
+                <option data-h="650" data-o="400">09 - البليدة</option>
+                <option data-h="650" data-o="450">10 - البويرة</option>
+                <option data-h="1800" data-o="1000">11 - تمنراست</option>
+                <option data-h="850" data-o="450">12 - تبسة</option>
+                <option data-h="850" data-o="450">13 - تلمسان</option>
+                <option data-h="850" data-o="450">14 - تيارت</option>
+                <option data-h="650" data-o="450">15 - تيزي وزو</option>
+                <option data-h="450" data-o="300">16 - الجزائر</option>
+                <option data-h="850" data-o="450">17 - الجلفة</option>
+                <option data-h="850" data-o="450">18 - جيجل</option>
+                <option data-h="850" data-o="450">19 - سطيف</option>
+                <option data-h="850" data-o="450">20 - سعيدة</option>
+                <option data-h="850" data-o="450">21 - سكيكدة</option>
+                <option data-h="850" data-o="450">22 - سيدي بلعباس</option>
+                <option data-h="850" data-o="450">23 - عنابة</option>
+                <option data-h="850" data-o="450">24 - قالمة</option>
+                <option data-h="850" data-o="450">25 - قسنطينة</option>
+                <option data-h="650" data-o="450">26 - المدية</option>
+                <option data-h="850" data-o="450">27 - مستغانم</option>
+                <option data-h="850" data-o="450">28 - المسيلة</option>
+                <option data-h="850" data-o="450">29 - معسكر</option>
+                <option data-h="1000" data-o="500">30 - ورقلة</option>
+                <option data-h="850" data-o="450">31 - وهران</option>
+                <option data-h="850" data-o="450">32 - البيض</option>
+                <option data-h="0" data-o="0">33 - إليزي</option>
+                <option data-h="650" data-o="450">34 - برج بوعريريج</option>
+                <option data-h="650" data-o="400">35 - بومرداس</option>
+                <option data-h="850" data-o="550">36 - الطارف</option>
+                <option data-h="1650" data-o="700">37 - تندوف</option>
+                <option data-h="850" data-o="450">38 - تيسمسيلت</option>
+                <option data-h="950" data-o="600">39 - الوادي</option>
+                <option data-h="850" data-o="450">40 - خنشلة</option>
+                <option data-h="850" data-o="450">41 - سوق أهراس</option>
+                <option data-h="650" data-o="450">42 - تيبازة</option>
+                <option data-h="850" data-o="450">43 - ميلة</option>
+                <option data-h="650" data-o="450">44 - عين الدفلى</option>
+                <option data-h="950" data-o="500">45 - النعامة</option>
+                <option data-h="850" data-o="450">46 - عين تموشنت</option>
+                <option data-h="950" data-o="650">47 - غرداية</option>
+                <option data-h="850" data-o="450">48 - غليزان</option>
+                <option data-h="1650" data-o="850">49 - تيميمون</option>
+                <option data-h="2000" data-o="1200">50 - برج باجي مختار</option>
+                <option data-h="950" data-o="450">51 - أولاد جلال</option>
+                <option data-h="1300" data-o="650">52 - بني عباس</option>
+                <option data-h="1650" data-o="850">53 - عين صالح</option>
+                <option data-h="2000" data-o="1200">54 - عين قزام</option>
+                <option data-h="950" data-o="500">55 - تقرت</option>
+                <option data-h="0" data-o="0">56 - جانت</option>
+                <option data-h="950" data-o="500">57 - المغير</option>
+                <option data-h="950" data-o="500">58 - المنيعة</option>
+              </select>
+            </div>
+            <div><label class="mlabel">التوصيل</label>
+              <div class="mseg"><button type="button" id="pd-home" class="on" onclick="setPDel('home')">🏠 دار</button><button type="button" id="pd-office" onclick="setPDel('office')">🏢 مكتب</button></div>
+            </div>
+          </div>
+          <div class="mfield" id="p-commune-wrap"><label class="mlabel" id="p-commune-label">البلدية</label>
+            <select class="min" id="p-commune" required disabled><option value="">اختر الولاية أولاً…</option></select>
+          </div>
+          <div class="mfield" id="p-addr-wrap"><label class="mlabel" id="p-addr-label">العنوان بالتفصيل</label><input class="min" id="p-addr" placeholder="الحي، رقم الدار/العمارة، الطابق، معلم قريب…"></div>
+          <div class="mfoot">
+            <div><label class="mlabel">شحال من باك؟</label>
+              <div class="mqty"><button type="button" onclick="pq(-1)" aria-label="نقّص">−</button><span id="pq">1</span><button type="button" onclick="pq(1)" aria-label="زيد">+</button></div>
+            </div>
+            <div class="mtot"><span class="mtotlbl">المجموع</span><b id="p-grand">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
+          </div>
+          <button class="msubmit" type="submit"><span>✓</span><span>أكّد طلب الباك</span></button>
+          <div class="mtrust">💵 الدفع عند الاستلام · 📞 نعيّطولك نأكدو قبل ما نرسلو</div>
+        </form>
+        <div class="mdone" id="packDone" style="display:none">
+          <div class="big">✅ وصلنا طلبك!</div>
+          <div class="num" id="packNum">#000</div>
+          <p>راح نعيّطولك قريب باش نأكدو الباك. شكراً على ثقتك في كيوريو 🎉</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/cms.js" defer></script>
+<script src="/lib/gsap/gsap.min.js"></script>
+<script src="/lib/gsap/ScrollTrigger.min.js"></script>
+<script>
+  // scroll progress
+  const prog=document.getElementById('prog');
+  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+  // hero entrance (robust: rAF for smooth play + timeout fallback so the hero is NEVER left hidden)
+  (function(){var h=document.getElementById('hero');var go=function(){if(h)h.classList.add('in');};requestAnimationFrame(go);setTimeout(go,120);})();
+
+  // mobile menu (burger dropdown)
+  (function(){var burger=document.getElementById('burger'),hdr=document.getElementById('hdr'),mob=document.getElementById('mobmenu');
+    if(!burger||!mob)return;
+    burger.addEventListener('click',function(){var open=hdr.classList.toggle('menuopen');burger.setAttribute('aria-expanded',open);burger.textContent=open?'✕':'☰';});
+    mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('menuopen');burger.textContent='☰';burger.setAttribute('aria-expanded','false');});});
+  })();
+
+  // reveal on scroll
+  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // ===== PACK ORDER POP-UP (Roubla+Dlala bundle → live Ecotrack wilaya/commune) =====
+  const API=(window.CURIO_API||(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'http://localhost:5522':'https://stirring-marigold-3dd8e9.netlify.app'));
+  const PACK_SLUG='roubla-dlala-pack';
+  let PACK_PRICE=3800, PACK_COMPARE=4380;      // defaults = current DB values; refreshed from /api/pricing
+  let pqv=1,pdel='home',DELIVERY=[],pByCode={};
+  const loadedAtP=Date.now();
+  const pModal=document.getElementById('packModal'),pWsel=document.getElementById('p-wilaya'),pCsel=document.getElementById('p-commune');
+  const pAddrWrap=document.getElementById('p-addr-wrap');
+  const fmtP=n=>n.toLocaleString('en')+' دج';
+  function openPack(){pModal.classList.add('open');document.body.classList.add('mlock');pModal.setAttribute('aria-hidden','false');setTimeout(()=>{const n=document.getElementById('p-name');if(n)n.focus();},60);}
+  function closePack(){pModal.classList.remove('open');document.body.classList.remove('mlock');pModal.setAttribute('aria-hidden','true');}
+  function pCurFee(){const w=pByCode[pWsel.value];if(!w)return null;const f=pdel==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
+  function pRecalc(){const sub=PACK_PRICE*pqv,fee=pCurFee();
+    document.getElementById('p-grand').textContent=fee==null?fmtP(sub):fmtP(sub+fee);
+    document.getElementById('p-hint').textContent=fee==null?'+ التوصيل حسب الولاية':'شامل التوصيل ('+fmtP(fee)+')';}
+  function pq(d){pqv=Math.max(1,pqv+d);document.getElementById('pq').textContent=pqv;pRecalc();}
+  function pPopulateWilayas(){pWsel.innerHTML='<option value="">اختر الولاية…</option>';DELIVERY.forEach(w=>{const o=document.createElement('option');o.value=String(w.code);o.textContent=(w.code<10?'0'+w.code:w.code)+' - '+w.ar;pWsel.appendChild(o);});}
+  function pPopulateCommunes(){const w=pByCode[pWsel.value];pCsel.innerHTML='';if(!w){pCsel.disabled=true;pCsel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}let list=w.communes||[];if(pdel==='office')list=list.filter(c=>c.desk);const ph=document.createElement('option');ph.value='';ph.textContent=list.length?(pdel==='office'?'اختر مكتب ستوب ديسك…':'اختر البلدية…'):'ماكانش '+(pdel==='office'?'مكتب':'توصيل')+' لهاذ الولاية';pCsel.appendChild(ph);list.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;pCsel.appendChild(o);});pCsel.disabled=list.length===0;}
+  function setPDel(t){pdel=t;
+    document.getElementById('pd-home').classList.toggle('on',t==='home');
+    document.getElementById('pd-office').classList.toggle('on',t==='office');
+    document.getElementById('p-commune-label').textContent=t==='home'?'البلدية':'مكتب ستوب ديسك (Anderson)';
+    pAddrWrap.style.display=t==='home'?'':'none';
+    pPopulateCommunes();pRecalc();}
+  async function submitPack(e){e.preventDefault();
+    if(!pWsel.value||pCurFee()==null){pWsel.focus();return false;}
+    if(!pCsel.value){pCsel.focus();return false;}
+    if(pdel==='home' && !document.getElementById('p-addr').value.trim()){document.getElementById('p-addr').focus();return false;}
+    const btn=document.querySelector('.msubmit'); if(btn){if(btn.__busy)return false;btn.__busy=true;}
+    const payload={customerName:document.getElementById('p-name').value.trim(),customerPhone:document.getElementById('p-phone').value.trim(),wilayaCode:pWsel.value,deliveryType:pdel==='home'?'HOME':'OFFICE',items:[{slug:PACK_SLUG,quantity:pqv}],_t:loadedAtP};
+    if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{payload.officeCommune=pCsel.value;}
+    try{
+      const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const j=await res.json().catch(()=>({}));
+      if(!res.ok||!j.success){if(btn)btn.__busy=false;alert(j.error||'صار مشكل، عاود حاول');return false;}
+      document.getElementById('packForm').style.display='none';
+      const d=document.getElementById('packDone');d.style.display='block';
+      document.getElementById('packNum').textContent='#'+j.orderNumber;
+    }catch(err){if(btn)btn.__busy=false;alert('مشكل في الشبكة، عاود حاول');}
+    return false;}
+  pWsel.addEventListener('change',()=>{pPopulateCommunes();pRecalc();});
+  pCsel.addEventListener('change',pRecalc);
+  pRecalc();
+  // Resilient JSON loader: retries a few times (the big delivery payload can
+  // get dropped in the burst of requests at page load).
+  function pFetchJSON(u,n){return fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).catch(()=>{if(n>0)return new Promise(z=>setTimeout(z,700)).then(()=>pFetchJSON(u,n-1));return null;});}
+  // live delivery + pricing
+  pFetchJSON(API+'/api/delivery',4).then(d=>{if(!d||!d.wilayas)return;DELIVERY=d.wilayas;pByCode={};DELIVERY.forEach(w=>pByCode[String(w.code)]=w);pPopulateWilayas();pPopulateCommunes();});
+  pFetchJSON(API+'/api/pricing',4).then(p=>{const b=p&&p[PACK_SLUG];if(!b)return;PACK_PRICE=b.price;if(b.compareAt)PACK_COMPARE=b.compareAt;
+    const now=document.getElementById('p-now'),old=document.getElementById('p-old'),sv=document.getElementById('p-save');
+    if(now)now.innerHTML=PACK_PRICE.toLocaleString('en')+' <small>دج</small>';
+    if(old)old.textContent=PACK_COMPARE.toLocaleString('en')+' دج';
+    if(sv)sv.textContent='توفّر '+(PACK_COMPARE-PACK_PRICE).toLocaleString('en');
+    pRecalc();}).catch(()=>{});
+  document.getElementById('packcta').addEventListener('click',openPack);
+  document.getElementById('mclose').addEventListener('click',closePack);
+  pModal.addEventListener('click',e=>{if(e.target===pModal)closePack();});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&pModal.classList.contains('open'))closePack();});
+  window.pq=pq;window.setPDel=setPDel;window.submitPack=submitPack;
+
+  // ===== PACK "Duo" card animation (GSAP) =====
+  if(window.gsap && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    gsap.registerPlugin(ScrollTrigger);
+    const spark=(host)=>{if(!host)return;const cols=['#ec2c24','#facc15','#5cb335','#ffffff'];for(let i=0;i<18;i++){const p=document.createElement('i');p.className='particle';p.style.background=cols[i%4];host.appendChild(p);const a=Math.random()*Math.PI*2,d=45+Math.random()*80;gsap.fromTo(p,{x:0,y:0,scale:1,opacity:1,rotate:0},{x:Math.cos(a)*d,y:Math.sin(a)*d,scale:0,opacity:0,rotate:Math.random()*360-180,duration:.75,ease:'power2.out',onComplete:()=>p.remove()});}};
+    const cEl=document.getElementById('b-num');
+    const countTo=(from,to)=>{if(!cEl)return;const o={v:from};gsap.to(o,{v:to,duration:1,ease:'power1.out',onUpdate:()=>cEl.textContent=Math.round(o.v).toLocaleString('en')});};
+    const rays=document.getElementById('b-rays');if(rays)gsap.to(rays,{rotation:360,duration:44,repeat:-1,ease:'none'});
+    gsap.timeline({scrollTrigger:{trigger:'.bundle',start:'top 80%',once:true}})
+      .from('.b-a',{x:150,rotation:26,opacity:0,duration:.6,ease:'power3.out'})
+      .from('.b-b',{x:-150,rotation:-26,opacity:0,duration:.6,ease:'power3.out'},'<')
+      .from('.b-cov figcaption',{y:10,opacity:0,stagger:.1,duration:.35},'-=.2')
+      .from('.b-plus',{scale:0,rotation:180,duration:.5,ease:'back.out(2.4)'},'-=.25')
+      .add(()=>spark(document.getElementById('b-spark')),'-=.05')
+      .from('.b-pitch > *',{y:20,opacity:0,stagger:.09,duration:.4},'-=.2')
+      .add(()=>countTo(PACK_COMPARE,PACK_PRICE),'-=.3');
+  }
+</script>
+
+
+</body>
+</html>
