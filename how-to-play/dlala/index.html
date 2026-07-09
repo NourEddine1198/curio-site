@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>كيفاش تلعب دلالة — Curio</title>
+<meta name="description" content="شوف فيديو كيفاش تتلعب دلالة من Curio.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="كيفاش تلعب دلالة — Curio">
+<meta property="og:description" content="شوف فيديو كيفاش تتلعب دلالة.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#fbf6ec;--bg2:#fffdf7;--ink:#161310;--ink-soft:#675b4c;
+    --red:#e23b2e;--yellow:#facc15;--blue:#2aa9e0;--green:#1b7a3e;
+    --amber:#f5a623;   /* Dlala box ground */
+    --ease:cubic-bezier(.16,1,.3,1)
+  }
+  html{scroll-behavior:smooth}
+  /* DLALA skin — warm amber ground, green + red pop-art */
+  body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--amber);overflow-x:clip;min-height:100vh;display:flex;flex-direction:column;position:relative}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(0,0,0,.09) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.5;z-index:0}
+  a{color:inherit;text-decoration:none}
+  img,video{max-width:100%;display:block}
+  .wrap{position:relative;z-index:1;width:100%;max-width:680px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+
+  .rough{border-color:transparent!important;position:relative}
+  .rough::after{content:"";position:absolute;inset:0;border:3px solid var(--ink);border-radius:inherit;filter:url(#rough);pointer-events:none;z-index:4}
+
+  /* floating header */
+  header{position:sticky;top:8px;z-index:100;margin:8px clamp(12px,3vw,28px) 0;border:2px solid var(--ink);border-radius:14px;background:var(--bg2);box-shadow:0 6px 16px rgba(22,19,16,.2)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px clamp(12px,3vw,18px)}
+  .logo{height:34px;mix-blend-mode:multiply}
+  .shop{background:var(--green);color:#fff;border:2px solid var(--ink);border-radius:11px;padding:7px 14px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem}
+
+  /* hero */
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(26px,6vw,44px) 0 clamp(30px,7vw,52px)}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem;padding:7px 16px;border:2.5px solid var(--ink);border-radius:999px;box-shadow:3px 3px 0 var(--ink);transform:rotate(-2deg)}
+  .gtitle{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(3.4rem,17vw,6.5rem);line-height:.9;margin:16px 0 6px;color:#fff;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:5px 5px 0 var(--ink)}
+  .sub{font-weight:700;font-size:clamp(1.05rem,3.8vw,1.3rem);line-height:1.5;color:var(--ink);max-width:28ch;margin-inline:auto}
+
+  /* video — the star (portrait ≈ 9:16 to match the real vertical video, sized to fit the screen) */
+  .video-wrap{width:min(100%,calc(74vh * 464 / 848));margin:26px auto 0}
+  .video{position:relative;aspect-ratio:464/848;border:4px solid var(--ink);border-radius:22px;overflow:hidden;background:#000;box-shadow:9px 9px 0 var(--green)}
+  .video video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;object-fit:cover}
+  /* placeholder (no Dlala video yet) */
+  .video .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;background:linear-gradient(135deg,#14351f,#1b7a3e);text-align:center;padding:20px}
+  .playbtn{width:78px;height:78px;border-radius:50%;background:var(--red);border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+  .playbtn::after{content:"";display:block;width:0;height:0;border-inline-start:24px solid #fff;border-block:15px solid transparent;margin-inline-start:6px}
+  .video .ph b{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.25rem}
+  .video .ph small{opacity:.85;font-weight:700}
+
+  /* note: rules are in the box */
+  .note{margin:24px auto 0;display:inline-flex;align-items:center;gap:9px;background:var(--bg2);border:2.5px solid var(--ink);border-radius:14px;padding:11px 18px;font-weight:700;font-size:.95rem;color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+  .note b{color:var(--green)}
+
+  footer{position:relative;z-index:1;text-align:center;padding:22px 16px;font-weight:700;color:#5a4000;font-size:.85rem;border-top:2px solid rgba(22,19,16,.25)}
+  footer a{color:var(--ink);font-weight:800}
+
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter>
+</svg>
+
+<header><div class="bar">
+  <img class="logo" src="../assets/curio-logo.jpg" alt="Curio">
+  <a class="shop" href="https://curiodz.com">← المتجر</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <span class="eyebrow">🎥 شوف الفيديو</span>
+  <h1 class="gtitle">دلالة</h1>
+  <p class="sub">شوف كيفاش تتلعب في دقيقتين</p>
+
+  <div class="video-wrap">
+    <div class="video">
+      <!-- REPLACE with the real Dlala video once filmed:
+           <video controls playsinline preload="metadata" src="../assets/dlala-how-to.mp4#t=0.1"></video> -->
+      <div class="ph">
+        <div class="playbtn" aria-hidden="true"></div>
+        <b>الفيديو قريباً</b>
+        <small>رانا نصوّرو شرح دلالة — قريب يكون هنا</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">📖 الشرح الكامل مكتوب في <b>الكارطونة</b></div>
+</div></section>
+
+<footer>
+  Curio — ألعاب ونشاطات جزائرية، بعاد على لاسكران · <a href="https://curiodz.com">المتجر</a>
+</footer>
+
+</body>
+</html>
