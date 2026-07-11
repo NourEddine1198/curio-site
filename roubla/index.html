@@ -377,10 +377,28 @@
   </section>
 
   <!-- BLACK MOVING TRUST LINE (carries the old green-bar text) -->
-  <div class="marq" style="margin-top:0" aria-hidden="true"><div class="run">
-    <span>👨‍👩‍👧‍👦 تلعبها العائلة كاملة</span><span>•</span><span><b>😂 ضحك مضمون</b></span><span>•</span><span>⚡ ساهلة و سريعة</span><span>•</span><span><b>🇩🇿 صنع في الجزائر</b></span><span>•</span>
-    <span>👨‍👩‍👧‍👦 تلعبها العائلة كاملة</span><span>•</span><span><b>😂 ضحك مضمون</b></span><span>•</span><span>⚡ ساهلة و سريعة</span><span>•</span><span><b>🇩🇿 صنع في الجزائر</b></span><span>•</span>
-  </div></div>
+  <!-- The 4 phrases exist ONCE here (class "mq" = editable via the CMS).
+       The script below clones them into a hidden duplicate so the scroll
+       loops seamlessly, and keeps the clone in sync whenever a phrase
+       changes (CMS load or live editing). -->
+  <div class="marq" style="margin-top:0"><div class="run" id="mqrun"><span class="mq">👨‍👩‍👧‍👦 تلعبها العائلة كاملة</span><span>•</span><span class="mq"><b>😂 ضحك مضمون</b></span><span>•</span><span class="mq">⚡ ساهلة و سريعة</span><span>•</span><span class="mq"><b>🇩🇿 صنع في الجزائر</b></span><span>•</span></div></div>
+  <script>
+  (function(){
+    var run=document.getElementById('mqrun');
+    var srcs=[].slice.call(run.children);
+    var dup=document.createElement('span');
+    dup.id='mqdup';
+    dup.setAttribute('aria-hidden','true');
+    dup.style.margin='0';
+    run.appendChild(dup);
+    function sync(){
+      dup.innerHTML=srcs.map(function(s){return '<span>'+s.innerHTML+'</span>';}).join('');
+    }
+    sync();
+    var mo=new MutationObserver(sync);
+    srcs.forEach(function(s){mo.observe(s,{childList:true,characterData:true,subtree:true});});
+  })();
+  </script>
 
   <div class="wrap">
     <!-- THE MOMENT -->
@@ -795,7 +813,5 @@
     el.keep.addEventListener('click',()=>{ if(getComputedStyle(el.keep).pointerEvents==='none')return; order('single'); });
   });
 </script>
-
-
 </body>
 </html>

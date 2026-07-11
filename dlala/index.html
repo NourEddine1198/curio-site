@@ -390,10 +390,28 @@
   </section>
 
   <!-- BLACK MOVING TRUST LINE -->
-  <div class="marq" style="margin-top:0" aria-hidden="true"><div class="run">
-    <span>🔔 الكل يلعب في نفس الوقت</span><span>•</span><span><b>😂 عياط و ضحك</b></span><span>•</span><span>⚡ تتعلّمها في دقيقتين</span><span>•</span><span><b>🇩🇿 صنع في الجزائر</b></span><span>•</span>
-    <span>🔔 الكل يلعب في نفس الوقت</span><span>•</span><span><b>😂 عياط و ضحك</b></span><span>•</span><span>⚡ تتعلّمها في دقيقتين</span><span>•</span><span><b>🇩🇿 صنع في الجزائر</b></span><span>•</span>
-  </div></div>
+  <!-- The 4 phrases exist ONCE here (class "mq" = editable via the CMS).
+       The script below clones them into a hidden duplicate so the scroll
+       loops seamlessly, and keeps the clone in sync whenever a phrase
+       changes (CMS load or live editing). -->
+  <div class="marq" style="margin-top:0"><div class="run" id="mqrun"><span class="mq">🔔 الكل يلعب في نفس الوقت</span><span>•</span><span class="mq"><b>😂 عياط و ضحك</b></span><span>•</span><span class="mq">⚡ تتعلّمها في دقيقتين</span><span>•</span><span class="mq"><b>🇩🇿 صنع في الجزائر</b></span><span>•</span></div></div>
+  <script>
+  (function(){
+    var run=document.getElementById('mqrun');
+    var srcs=[].slice.call(run.children);
+    var dup=document.createElement('span');
+    dup.id='mqdup';
+    dup.setAttribute('aria-hidden','true');
+    dup.style.margin='0';
+    run.appendChild(dup);
+    function sync(){
+      dup.innerHTML=srcs.map(function(s){return '<span>'+s.innerHTML+'</span>';}).join('');
+    }
+    sync();
+    var mo=new MutationObserver(sync);
+    srcs.forEach(function(s){mo.observe(s,{childList:true,characterData:true,subtree:true});});
+  })();
+  </script>
 
   <div class="wrap">
     <!-- THE MOMENT -->
@@ -811,7 +829,7 @@
     try{gsap.registerPlugin(ScrollTrigger,Draggable);}catch(e){}
     const GOODS=['dhahab','batrol','kabch','tmr','zit','sardin','tin','hmoud'];
     const SRC=i=>'/assets/dlala-cards/goods/'+i+'.png';
-    const BOX='../products/dlala/final/Untitled-1.jpg';
+    const BOX='/products/dlala/final/Untitled-1.jpg';
     const box=document.createElement('img');box.className='wi-box';box.src=BOX;box.alt='علبة دلالة';
     const guide=document.createElement('div');guide.className='wi-guide';guide.innerHTML='<span>📖</span><b>دليل اللعب</b><small>(صورة لاحقاً)</small>';
     const cards=GOODS.map(g=>{const im=document.createElement('img');im.className='wi-card';im.src=SRC(g);im.alt=g;return im;});
@@ -925,6 +943,4 @@
     el.keep.addEventListener('click',()=>{ if(getComputedStyle(el.keep).pointerEvents==='none')return; order('single'); });
   });
 </script>
-
-
 </body></html>

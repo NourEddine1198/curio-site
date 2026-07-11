@@ -71,7 +71,8 @@
         { sel: "footer", group: "Footer" },
         { sel: ".mbar .order span:last-of-type", group: "Mobile bar" },
         { sel: ".nav a", group: "Nav" },
-        { sel: ".cart", group: "Nav" }
+        { sel: ".cart", group: "Nav" },
+        { sel: ".marq .mq", group: "Trust marquee" }
       ],
       img: [
         { sel: ".logo", group: "Header" },
@@ -129,7 +130,8 @@
         { sel: "#sc-comment", group: "Stock counter" },
         { sel: "#sc-hint", group: "Stock counter" },
         { sel: ".sc-lbl", group: "Stock counter" },
-        { sel: ".sc-mini", group: "Stock counter" }
+        { sel: ".sc-mini", group: "Stock counter" },
+        { sel: ".marq .mq", group: "Trust marquee" }
       ],
       img: [
         { sel: ".logo", group: "Header" },
@@ -183,7 +185,8 @@
         { sel: ".msubmit span:last-child", group: "Pack popup" },
         { sel: ".mtrust", group: "Pack popup" },
         { sel: ".mdone .big", group: "Pack popup" },
-        { sel: ".mdone p", group: "Pack popup" }
+        { sel: ".mdone p", group: "Pack popup" },
+        { sel: ".marq .mq", group: "Trust marquee" }
       ],
       img: [
         { sel: ".logo", group: "Header" },
@@ -299,13 +302,24 @@
     });
   }
 
+  // Tell anyone listening (the visual editor) that the saved
+  // content has been applied — editing before this point would
+  // overwrite newer database values with the built-in defaults.
+  function markLoaded() {
+    window.CurioCMS.loaded = true;
+    try {
+      document.dispatchEvent(new CustomEvent("curio:cms-loaded"));
+    } catch (e) { /* very old browser — editor has its own fallback */ }
+  }
+
   function load() {
     var page = currentPage();
     if (!page) return;
     fetch(API + "/api/content?page=" + encodeURIComponent(page), { cache: "no-store" })
       .then(function (r) { return r.ok ? r.json() : {}; })
       .then(apply)
-      .catch(function () { /* offline / down → keep built-in text */ });
+      .catch(function () { /* offline / down → keep built-in text */ })
+      .then(markLoaded, markLoaded);
   }
 
   // ── Public hook for the seeding tool (admin setup) ──────────
@@ -313,6 +327,13 @@
   // value + a friendly label, so we can seed the database once.
   window.CurioCMS = {
     api: API,
+    loaded: false,
+    // Live references to every editable element on this page.
+    // The visual editor (cms-edit.js) uses this, so the editor and
+    // the loader always agree on which element owns which key.
+    items: function () {
+      return collectElements(currentPage());
+    },
     collect: function () {
       var page = currentPage();
       return collectElements(page).map(function (item) {
@@ -339,5 +360,27 @@
     document.addEventListener("DOMContentLoaded", load);
   } else {
     load();
+  }
+
+  // ── Edit mode for the founders ──────────────────────────────
+  // Add "#cms" to the end of the page address (e.g. /roubla#cms)
+  // and the visual editor loads on top of the real page. Normal
+  // visitors never have #cms, so they never download the editor.
+  // (Not "#edit" — that word wakes the old dormant review script.)
+  function maybeLoadEditor() {
+    if (location.hash !== "#cms") return;
+    if (document.getElementById("curio-cms-editor")) return;
+    var tag = document.querySelector('script[src*="cms.js"]');
+    var base = tag ? tag.getAttribute("src").replace(/cms\.js.*$/, "") : "";
+    var s = document.createElement("script");
+    s.id = "curio-cms-editor";
+    s.src = base + "cms-edit.js";
+    document.head.appendChild(s);
+  }
+  window.addEventListener("hashchange", maybeLoadEditor);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", maybeLoadEditor);
+  } else {
+    maybeLoadEditor();
   }
 })();
