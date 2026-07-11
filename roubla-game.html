@@ -252,7 +252,6 @@ const BOTS = [
 ];
 const SLAM_SHOUTS = ["عندي!","نوبتي!","ها هي!","ساهلة!"];
 const COMBO_STAMPS = ["يا الزربة!","واش هاد السرعة!","مشعل!","روبلاجي صح!"];
-const MOCKS = ["هههه شوف الموضوع مليح!","لالا، هاد الحرف ما يجيش!","ركّز خويا، ركّز!"];
 
 const $=s=>document.querySelector(s);
 const boardEl=$("#board"), handEl=$("#hand"), pileEl=$("#pile"), fxEl=$("#fx"),
@@ -305,10 +304,8 @@ function botMini(bot){
 
 /* ---------- build hand ---------- */
 function buildHand(){
-  const score={};
-  Object.values(CATS).forEach(c=>Object.keys(c.a).forEach(k=>score[k]=(score[k]||0)+1));
-  const pool=Object.keys(score).sort((x,y)=>score[y]-score[x]);
-  const chosen=shuffle(pool.slice(0,9)).slice(0,5);
+  // real-deck deal: any 5 letters — every card is playable (honor system)
+  const chosen=shuffle(Object.keys(LETTERS).filter(k=>k!=="wild")).slice(0,5);
   G.hand=chosen.map(k=>({k,bolts:LETTERS[k].bolts,played:false}));
   G.hand.push({k:"wild",bolts:0,played:false});
   G.hand=shuffle(G.hand);
@@ -508,20 +505,11 @@ function botSlam(bot,catKey,k){
 /* ---------- player ---------- */
 function playCard(el,card){
   if(!G.playing||card.played)return;
-  const cat=CATS[G.cat];
   const isWild=card.k==="wild";
-  if(!isWild&&!cat.a[card.k]){
-    sfx.bad();
-    gsap.fromTo(el,{x:card.fan.x},{x:card.fan.x+12,duration:.5,ease:"wig",onComplete:()=>gsap.set(el,{x:card.fan.x})});
-    showToast("هاد الحرف ما يمشيش مع الموضوع!");
-    if(Math.random()<.5){const b=pick(G.bots.filter(b=>b.cards.length>0));if(b)bubble(pick(MOCKS),b.el,{mock:true,who:b.name});}
-    return;
-  }
+  // honor system, like the real table: any letter counts — the answer is in the player's head
   card.played=true;el.classList.add("dead");el.disabled=true;
   G.usedAnswers.add(G.cat+":"+card.k);
   const ghost=throwFromHand(el);
-  const txt=isWild?"الجوكر! أي حرف يمشي — ضربة قانونية":cat.a[card.k];
-  bubble(txt,handEl,{me:true,who:"أنتَ"});
   sfx.good();
   G.combo++;
   if(isWild){burstAtPile(40);stamp("الجوكر!","green");}
