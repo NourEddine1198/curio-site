@@ -859,7 +859,7 @@ var currentPage = 1;
 var searchTimer = null;
 var allOrders = []; // cached for stats
 
-// Status labels in Darija
+// Status labels in Darija (incl. the agent-console v2 statuses)
 var STATUS_LABELS = {
   PENDING: 'في الانتظار',
   CONFIRMED: 'مأكد',
@@ -867,7 +867,16 @@ var STATUS_LABELS = {
   SHIPPED: 'مشحون',
   DELIVERED: 'تم التوصيل',
   CANCELLED: 'ملغي',
-  RETURNED: 'مرجع'
+  RETURNED: 'مرجع',
+  NO_ANSWER: 'ما ردش',
+  CALLBACK: 'معاودة الاتصال',
+  EXPIRED: 'منتهي (بلا رد)',
+  WRONG: 'رقم غالط',
+  DUPLICATE: 'مكرر',
+  OUT_FOR_DELIVERY: 'في التوزيع',
+  AT_STOPDESK: 'في المكتب',
+  DELIVERY_FAILED: 'فشل التسليم',
+  IN_RETURN: 'راجع في الطريق'
 };
 
 // ─── Auth ───────────────────────────────────────────────
