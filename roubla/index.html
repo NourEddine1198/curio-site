@@ -117,6 +117,15 @@
   .marq.green .run b{color:var(--ink)}
   @keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+  /* gift-card mode (كارطة الهدية) — everything stays hidden unless the
+     visitor arrived through /gift, which adds body.gift-on via JS */
+  .giftbar{display:none;background:var(--yellow);border:3px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink);padding:10px 14px;margin-bottom:14px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;text-align:center}
+  body.gift-on .giftbar{display:block}
+  .gift-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:12px 0 2px;font-weight:800;font-size:.95rem}
+  body.gift-on .gift-row{display:flex}
+  .price s{opacity:.4;font-size:.55em;font-weight:700;margin-inline-end:8px}
+  .mp s{opacity:.45;font-size:.72em;margin-inline-end:6px}
+
   /* full-bleed blocks */
   .block{position:relative;padding:clamp(36px,6vw,66px) 0}
   .block.cream{background:var(--bg2)}
@@ -344,6 +353,7 @@
   <!-- HERO INFO: proof, title, price, CTA, specs, description -->
   <section class="block hero-info">
     <div class="wrap">
+      <div class="giftbar">🎁 هدية ليك: <b>400 دج تخفيض</b> على روبلة — راهي محسوبة، اطلب برك ✓</div>
       <div class="proof">🏆 في شهر خلاصت الطبعة الاولى · +500 تباعت</div>
       <h1 class="ptitle">روبلة الطبعة الثانية</h1>
       <p class="hero-desc">صح صحّ، وقتاش آخر مرة قعدتو قعدة كامل مييتين بالضحك بلا تيليفونات؟<br><b>مع روبلة، كامل راح تعيشوها</b> 💥💥</p>
@@ -565,6 +575,8 @@
 
         <div class="fr" id="addr-wrap"><label class="fl" id="addr-label">العنوان بالتفصيل</label><input class="in" id="f-addr" placeholder="الحي، رقم الدار/العمارة، الطابق، معلم قريب…"></div>
 
+        <div class="gift-row"><span>🎁 هدية الكارطة</span><b>−400 دج</b></div>
+
         <div class="g2 fr" style="align-items:center">
           <div><label class="fl">الكمية</label>
             <div class="cqty"><button type="button" onclick="cq(-1)" aria-label="نقّص">−</button><span id="cq">1</span><button type="button" onclick="cq(1)" aria-label="زيد">+</button></div>
@@ -633,8 +645,25 @@
   const addrWrap=document.getElementById('addr-wrap');
   const fmt=n=>n.toLocaleString('en')+' دج';
 
+  // ===== GIFT CARD (كارطة الهدية) =====
+  // A scanned gift card lands on /gift → forwards here with ?gift=CODE.
+  // The code is remembered for the visit, the yellow gift UI appears, the
+  // shown prices drop by 400, and the code travels with the order — the
+  // SERVER applies the real discount (front-end numbers are display only).
+  const GIFT_OFF=400;
+  const GIFT_CODE=(function(){try{
+    const q=new URLSearchParams(location.search).get('gift');
+    if(q){sessionStorage.setItem('curio-gift',q);return q;}
+    return sessionStorage.getItem('curio-gift')||'';
+  }catch(e){return '';}})();
+  if(GIFT_CODE){
+    document.body.classList.add('gift-on');
+    const old=PRICE.toLocaleString('en'), neo=(PRICE-GIFT_OFF).toLocaleString('en');
+    document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML='<s>'+old+'</s> '+neo+' <small>دج</small>';});
+  }
+
   function curFee(){const w=byCode[wsel.value];if(!w)return null;const f=delType==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function recalc(){const sub=PRICE*cqv;const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
+  function recalc(){const sub=Math.max(0,PRICE*cqv-(GIFT_CODE?GIFT_OFF:0));const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
   function populateWilayas(){
@@ -689,6 +718,7 @@
     };
     if(delType==='home'){ payload.commune=csel.value; payload.address=(document.getElementById('f-addr').value||'').trim(); }
     else { payload.officeCommune=csel.value; }
+    if(GIFT_CODE) payload.couponCode=GIFT_CODE;
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
     return { ok: res.ok && j.success, orderNumber: j.orderNumber, error: j.error||'صار مشكل، عاود حاول' };

@@ -19,6 +19,15 @@
   to = "/merci.html"
   status = 200
 
+# Gift-card QR (printed "هدية ليك" hang-tags) → Roubla with the 400 DA
+# coupon auto-applied. 302 (NOT 301) on purpose: browsers/scanners must
+# never cache it permanently, so we can repoint every printed card later
+# without reprinting — this line is the "smart gift door".
+[[redirects]]
+  from = "/gift"
+  to = "/roubla/?gift=HADIA400"
+  status = 302
+
 # ─── Security headers (all pages) ────────────────────────────
 # CSP allows: our own assets + inline scripts/styles (the pages use inline
 # code), Google Fonts, images over https, and API calls to the store + Web3Forms.
