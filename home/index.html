@@ -253,6 +253,15 @@
     .hero-el,.reveal{opacity:1!important;transform:none!important}
     .hero-h1 .mark::after{transform:scaleX(1)}
   }
+  /* coupon code field in the pack pop-up (أكواد التخفيض / المؤثرين) */
+  .coupon-line{display:flex;gap:8px}
+  .coupon-line input{flex:1;direction:ltr;text-align:center;text-transform:uppercase;font-weight:800;letter-spacing:.06em}
+  .coupon-btn{border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:0 18px;font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer}
+  .coupon-btn:active{transform:translateY(1px)}
+  .coupon-msg{font-size:.8rem;font-weight:700;margin-top:5px;min-height:1em;color:#1e7d43}
+  .coupon-msg.bad{color:#c0392b}
+  .coupon-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:10px 0 2px;font-weight:800;font-size:.95rem}
+  .coupon-row.on{display:flex}
 </style>
 </head>
 <body data-cms-page="home">
@@ -507,6 +516,15 @@
             <select class="min" id="p-commune" required disabled><option value="">اختر الولاية أولاً…</option></select>
           </div>
           <div class="mfield" id="p-addr-wrap"><label class="mlabel" id="p-addr-label">العنوان بالتفصيل</label><input class="min" id="p-addr" placeholder="الحي، رقم الدار/العمارة، الطابق، معلم قريب…"></div>
+          <div class="mfield">
+            <label class="mlabel">عندك كود تخفيض؟ (اختياري)</label>
+            <div class="coupon-line">
+              <input class="min" id="p-coupon" placeholder="اكتب الكود هنا" autocomplete="off" autocapitalize="characters">
+              <button type="button" class="coupon-btn" onclick="pApplyCoupon()">طبّق</button>
+            </div>
+            <div class="coupon-msg" id="p-coupon-msg"></div>
+          </div>
+          <div class="coupon-row" id="p-coupon-row"><span id="p-coupon-row-label"></span><b id="p-coupon-row-off"></b></div>
           <div class="mfoot">
             <div><label class="mlabel">شحال من باك؟</label>
               <div class="mqty"><button type="button" onclick="pq(-1)" aria-label="نقّص">−</button><span id="pq">1</span><button type="button" onclick="pq(1)" aria-label="زيد">+</button></div>
@@ -556,10 +574,47 @@
   const pModal=document.getElementById('packModal'),pWsel=document.getElementById('p-wilaya'),pCsel=document.getElementById('p-commune');
   const pAddrWrap=document.getElementById('p-addr-wrap');
   const fmtP=n=>n.toLocaleString('en')+' دج';
+
+  // ===== COUPON CODE in the pack pop-up (كود تخفيض / أكواد المؤثرين) =====
+  // Typed (or arrives via ?code= in the URL, like an influencer's link) —
+  // checked live against the store so the shown total drops immediately.
+  // The SERVER re-validates and applies the real discount on submit.
+  let P_COUPON_CODE='', P_COUPON_OFF=0;
+  async function pApplyCoupon(silent){
+    const inp=document.getElementById('p-coupon'), msg=document.getElementById('p-coupon-msg'), row=document.getElementById('p-coupon-row');
+    const code=(inp.value||'').trim().toUpperCase();
+    P_COUPON_CODE='';P_COUPON_OFF=0;row.classList.remove('on');msg.classList.remove('bad');msg.textContent='';
+    if(!code){try{sessionStorage.removeItem('curio-code');}catch(e){} pRecalc();return;}
+    msg.textContent='نتأكدو من الكود…';
+    try{
+      const r=await fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,slugs:[PACK_SLUG]})});
+      const j=await r.json();
+      if(j&&j.valid){
+        P_COUPON_CODE=code;P_COUPON_OFF=(+j.discount||0);
+        try{sessionStorage.setItem('curio-code',code);}catch(e){}
+        msg.textContent='';
+        document.getElementById('p-coupon-row-label').textContent='كود التخفيض: '+code;
+        document.getElementById('p-coupon-row-off').textContent=P_COUPON_OFF>0?('−'+P_COUPON_OFF.toLocaleString('en')+' دج'):'✓ محسوب';
+        row.classList.add('on');
+      }else{
+        try{sessionStorage.removeItem('curio-code');}catch(e){}
+        if(!silent){msg.textContent=(j&&j.reason==='products')?'هاذ الكود ما يخدمش مع الباك':'الكود ما هوش صحيح، تأكد منّو';msg.classList.add('bad');}
+      }
+    }catch(e){ if(!silent){msg.textContent='ما قدرناش نتأكدو من الكود — عاود جرب';msg.classList.add('bad');} }
+    pRecalc();
+  }
+  document.getElementById('p-coupon').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pApplyCoupon();}});
+  (function(){try{
+    const q=new URLSearchParams(location.search).get('code');
+    const saved=q||sessionStorage.getItem('curio-code')||'';
+    if(saved){document.getElementById('p-coupon').value=saved;pApplyCoupon(true);}
+  }catch(e){}})();
+  window.pApplyCoupon=pApplyCoupon;
+
   function openPack(){pModal.classList.add('open');document.body.classList.add('mlock');pModal.setAttribute('aria-hidden','false');setTimeout(()=>{const n=document.getElementById('p-name');if(n)n.focus();},60);}
   function closePack(){pModal.classList.remove('open');document.body.classList.remove('mlock');pModal.setAttribute('aria-hidden','true');}
   function pCurFee(){const w=pByCode[pWsel.value];if(!w)return null;const f=pdel==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function pRecalc(){const sub=PACK_PRICE*pqv,fee=pCurFee();
+  function pRecalc(){const sub=Math.max(0,PACK_PRICE*pqv-P_COUPON_OFF),fee=pCurFee();
     document.getElementById('p-grand').textContent=fee==null?fmtP(sub):fmtP(sub+fee);
     document.getElementById('p-hint').textContent=fee==null?'+ التوصيل حسب الولاية':'شامل التوصيل ('+fmtP(fee)+')';}
   function pq(d){pqv=Math.max(1,pqv+d);document.getElementById('pq').textContent=pqv;pRecalc();}
@@ -578,6 +633,7 @@
     const btn=document.querySelector('.msubmit'); if(btn){if(btn.__busy)return false;btn.__busy=true;}
     const payload={customerName:document.getElementById('p-name').value.trim(),customerPhone:document.getElementById('p-phone').value.trim(),wilayaCode:pWsel.value,deliveryType:pdel==='home'?'HOME':'OFFICE',items:[{slug:PACK_SLUG,quantity:pqv}],_t:loadedAtP};
     if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{payload.officeCommune=pCsel.value;}
+    if(P_COUPON_CODE)payload.couponCode=P_COUPON_CODE;
     try{
       const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const j=await res.json().catch(()=>({}));

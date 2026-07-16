@@ -320,7 +320,16 @@
   .choice .sub{font-size:.7rem;font-weight:700;opacity:.95}
   .cdone .bundle-note{margin-top:12px;display:inline-block;background:var(--yellow);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem}
 
-  </style>
+    /* coupon code field (أكواد التخفيض / المؤثرين) */
+  .coupon-line{display:flex;gap:8px}
+  .coupon-line .in{flex:1;direction:ltr;text-align:center;text-transform:uppercase;font-weight:800;letter-spacing:.06em}
+  .coupon-btn{border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:0 18px;font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer}
+  .coupon-btn:active{transform:translateY(1px)}
+  .coupon-msg{font-size:.8rem;font-weight:700;margin-top:5px;min-height:1em;color:#1e7d43}
+  .coupon-msg.bad{color:#c0392b}
+  .coupon-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:12px 0 2px;font-weight:800;font-size:.95rem}
+  .coupon-row.on{display:flex}
+</style>
 </head>
 <body data-cms-page="dlala">
 
@@ -601,6 +610,16 @@
 
         <div class="fr" id="addr-wrap"><label class="fl" id="addr-label">العنوان بالتفصيل</label><input class="in" id="f-addr" placeholder="الحي، رقم الدار/العمارة، الطابق، معلم قريب…"></div>
 
+        <div class="fr coupon-wrap">
+          <label class="fl">عندك كود تخفيض؟ <span style="font-weight:500;color:var(--ink-soft)">(اختياري)</span></label>
+          <div class="coupon-line">
+            <input class="in" id="f-coupon" placeholder="اكتب الكود هنا" autocomplete="off" autocapitalize="characters">
+            <button type="button" class="coupon-btn" onclick="curioApplyCoupon()">طبّق</button>
+          </div>
+          <div class="coupon-msg" id="coupon-msg"></div>
+        </div>
+        <div class="coupon-row" id="coupon-row"><span id="coupon-row-label"></span><b id="coupon-row-off"></b></div>
+
         <div class="g2 fr" style="align-items:center">
           <div><label class="fl">الكمية</label>
             <div class="cqty"><button type="button" onclick="cq(-1)" aria-label="نقّص">−</button><span id="cq">1</span><button type="button" onclick="cq(1)" aria-label="زيد">+</button></div>
@@ -669,8 +688,45 @@
   const addrWrap=document.getElementById('addr-wrap');
   const fmt=n=>n.toLocaleString('en')+' دج';
 
+  // ===== COUPON CODE (كود تخفيض / أكواد المؤثرين) =====
+  // Typed (or arrives via ?code= in the URL, like an influencer's link) —
+  // checked live against the store so the shown total drops immediately.
+  // The SERVER re-validates and applies the real discount on submit; these
+  // numbers are display only.
+  let COUPON_CODE='', COUPON_OFF=0;
+  async function curioApplyCoupon(silent){
+    const inp=document.getElementById('f-coupon'), msg=document.getElementById('coupon-msg'), row=document.getElementById('coupon-row');
+    const code=(inp.value||'').trim().toUpperCase();
+    COUPON_CODE='';COUPON_OFF=0;row.classList.remove('on');msg.classList.remove('bad');msg.textContent='';
+    if(!code){try{sessionStorage.removeItem('curio-code');}catch(e){} recalc();return;}
+    msg.textContent='نتأكدو من الكود…';
+    try{
+      const r=await fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,slugs:[PRODUCT_SLUG]})});
+      const j=await r.json();
+      if(j&&j.valid){
+        COUPON_CODE=code;COUPON_OFF=(+j.discount||0);
+        try{sessionStorage.setItem('curio-code',code);}catch(e){}
+        msg.textContent='';
+        document.getElementById('coupon-row-label').textContent='كود التخفيض: '+code;
+        document.getElementById('coupon-row-off').textContent=COUPON_OFF>0?('−'+COUPON_OFF.toLocaleString('en')+' دج'):'✓ محسوب';
+        row.classList.add('on');
+      }else{
+        try{sessionStorage.removeItem('curio-code');}catch(e){}
+        if(!silent){msg.textContent=(j&&j.reason==='products')?'هاذ الكود ما يخدمش مع هاذ المنتج':'الكود ما هوش صحيح، تأكد منّو';msg.classList.add('bad');}
+      }
+    }catch(e){ if(!silent){msg.textContent='ما قدرناش نتأكدو من الكود — عاود جرب';msg.classList.add('bad');} }
+    recalc();
+  }
+  document.getElementById('f-coupon').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();curioApplyCoupon();}});
+  (function(){try{
+    const q=new URLSearchParams(location.search).get('code');
+    const saved=q||sessionStorage.getItem('curio-code')||'';
+    if(saved){document.getElementById('f-coupon').value=saved;curioApplyCoupon(true);}
+  }catch(e){}})();
+  window.curioApplyCoupon=curioApplyCoupon;
+
   function curFee(){const w=byCode[wsel.value];if(!w)return null;const f=delType==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function recalc(){const sub=PRICE*cqv;const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
+  function recalc(){const sub=Math.max(0,PRICE*cqv-COUPON_OFF);const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
   function populateWilayas(){
@@ -723,6 +779,7 @@
     };
     if(delType==='home'){ payload.commune=csel.value; payload.address=(document.getElementById('f-addr').value||'').trim(); }
     else { payload.officeCommune=csel.value; }
+    if(COUPON_CODE) payload.couponCode=COUPON_CODE;
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
     return { ok: res.ok && j.success, orderNumber: j.orderNumber, error: j.error||'صار مشكل، عاود حاول' };
