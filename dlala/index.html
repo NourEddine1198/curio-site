@@ -77,6 +77,19 @@
   .specrow .l{font-weight:800;font-size:.72rem;color:var(--ink-soft);margin-top:3px}
   .price{font-family:"Anton";font-size:2.9rem;line-height:1;margin-top:8px}
   .price small{font-size:1rem;color:var(--ink-soft)}
+
+  /* warm-launch mode (عرض العائلة) — everything stays hidden unless the
+     visitor arrived through /vip, which adds body.launch-on via JS */
+  .launchbar{display:none;background:var(--yellow);border:3px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink);padding:10px 14px;margin:14px 0 4px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;text-align:center}
+  body.launch-on .launchbar{display:block}
+  .launchbar .lleft{display:none;font-size:.82rem;margin-top:3px}
+  .launchbar-over{display:none;background:var(--bg2);border:3px dashed var(--ink);border-radius:14px;padding:10px 14px;margin:14px 0 4px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem;text-align:center}
+  body.launch-over .launchbar-over{display:block}
+  .launch-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:12px 0 2px;font-weight:800;font-size:.95rem}
+  body.launch-on .launch-row{display:flex}
+  body.launch-on .price s,body.launch-on .mp s{font-size:.55em;color:var(--ink-soft);opacity:.8;margin-inline-end:4px}
+  /* a VIP visitor already has the best offer applied — no code typing */
+  body.launch-on .coupon-wrap{display:none}
   .order{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:440px;border:3px solid var(--ink);border-radius:14px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.35rem;padding:15px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
   .order:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
   .order:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
@@ -369,6 +382,8 @@
       <div class="proof">مستوحاة من Pit من أكثر الألعاب مبيعا فالعالم</div>
       <h1 class="ptitle">دلالة</h1>
       <p class="hero-desc">فوضى&nbsp;منظمة، الكل يبرّز، يبدّل البطاقات، ويعيّط في نفس الوقت بش يلمّ نفس السلعة ويخبط الطابلة.<b>تكسر الروتين وتخرج 'البزناسي المخفي' اللي داخل كل واحد فالدار!</b>&nbsp;🔔</p>
+      <div class="launchbar">🎉 عرض العائلة — ليك نتا برك: دلالة بـ <b>1750 دج</b> بلاصت 2200 ✓ التخفيض راه محسوب وحدو<span class="lleft" id="launch-left">⚡ ما بقاوش بزاف: <b id="launch-n"></b> وحدة برك بهاذ السعر</span></div>
+      <div class="launchbar-over">😅 صحّيت! عرض الـ150 الأولين كمّل قاع — بصح دلالة راهي هنا و القعدة تستنى فيك 👇</div>
       <div class="price">1990 <small>دج</small></div>
       <button class="order rough" id="order"><span>🛒 واجد تروبل القعدة ؟</span></button>
       <div class="trust"><span>✓ الدفع عند الاستلام</span><span>✓ 58 ولاية</span><span>✓ نأكدو بالتلفون</span></div>
@@ -620,6 +635,8 @@
         </div>
         <div class="coupon-row" id="coupon-row"><span id="coupon-row-label"></span><b id="coupon-row-off"></b></div>
 
+        <div class="launch-row"><span>🎉 عرض العائلة (أول 150)</span><b>−450 دج</b></div>
+
         <div class="g2 fr" style="align-items:center">
           <div><label class="fl">الكمية</label>
             <div class="cqty"><button type="button" onclick="cq(-1)" aria-label="نقّص">−</button><span id="cq">1</span><button type="button" onclick="cq(1)" aria-label="زيد">+</button></div>
@@ -688,6 +705,37 @@
   const addrWrap=document.getElementById('addr-wrap');
   const fmt=n=>n.toLocaleString('en')+' دج';
 
+  // ===== WARM LAUNCH (عرض العائلة) =====
+  // The WhatsApp /vip link lands here with ?launch=CODE. The code is kept for
+  // the visit and checked against the store (first-150 cap). Only a live code
+  // shows the launch UI: 2200 crossed → 1750, and the typed-coupon field is
+  // hidden (a VIP already has the best offer — no stacking). The SERVER
+  // applies the real discount and enforces the cap — display only here.
+  const LAUNCH_WAS=2200, LAUNCH_NOW=1750, LAUNCH_OFF=PRICE-LAUNCH_NOW;
+  let LAUNCH_ON=false;
+  const LAUNCH_CODE=(function(){try{
+    const q=new URLSearchParams(location.search).get('launch');
+    if(q){sessionStorage.setItem('curio-launch',q);return q;}
+    return sessionStorage.getItem('curio-launch')||'';
+  }catch(e){return '';}})();
+  function launchCheck(){return fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:LAUNCH_CODE,slugs:[PRODUCT_SLUG]})}).then(r=>r.json());}
+  function launchShow(rem){
+    LAUNCH_ON=true;document.body.classList.remove('launch-over');document.body.classList.add('launch-on');
+    document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML='<s>'+LAUNCH_WAS.toLocaleString('en')+'</s>'+LAUNCH_NOW.toLocaleString('en')+' <small>دج</small>';});
+    if(rem>0&&rem<=30){const w=document.getElementById('launch-left');if(w){w.style.display='block';document.getElementById('launch-n').textContent=rem;}}
+    recalc();
+  }
+  function launchOver(){
+    LAUNCH_ON=false;document.body.classList.remove('launch-on');document.body.classList.add('launch-over');
+    document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML=PRICE.toLocaleString('en')+' <small>دج</small>';});
+    recalc();
+  }
+  if(LAUNCH_CODE){
+    launchCheck()
+      .then(j=>{if(j&&j.valid)launchShow(j.remaining||0);else if(j&&j.reason==='exhausted')launchOver();})
+      .catch(()=>launchShow(0)); // network hiccup: show the offer — the server still enforces the cap at submit
+  }
+
   // ===== COUPON CODE (كود تخفيض / أكواد المؤثرين) =====
   // Typed (or arrives via ?code= in the URL, like an influencer's link) —
   // checked live against the store so the shown total drops immediately.
@@ -726,7 +774,7 @@
   window.curioApplyCoupon=curioApplyCoupon;
 
   function curFee(){const w=byCode[wsel.value];if(!w)return null;const f=delType==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function recalc(){const sub=Math.max(0,PRICE*cqv-COUPON_OFF);const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
+  function recalc(){const sub=Math.max(0,PRICE*cqv-(LAUNCH_ON?LAUNCH_OFF:COUPON_OFF));const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
   function populateWilayas(){
@@ -779,9 +827,15 @@
     };
     if(delType==='home'){ payload.commune=csel.value; payload.address=(document.getElementById('f-addr').value||'').trim(); }
     else { payload.officeCommune=csel.value; }
-    if(COUPON_CODE) payload.couponCode=COUPON_CODE;
+    if(LAUNCH_ON&&LAUNCH_CODE) payload.couponCode=LAUNCH_CODE;
+    else if(COUPON_CODE) payload.couponCode=COUPON_CODE;
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
+    if(!(res.ok&&j.success)&&LAUNCH_ON&&LAUNCH_CODE){
+      // maybe the last discounted copies went while they were filling the form —
+      // flip the page back to the normal price so a retry goes through clean
+      try{const c=await launchCheck();if(c&&c.valid===false&&c.reason==='exhausted')launchOver();}catch(e){}
+    }
     return { ok: res.ok && j.success, orderNumber: j.orderNumber, error: j.error||'صار مشكل، عاود حاول' };
   }
   window.cq=cq;window.setDelivery=setDelivery;window.curFee=curFee;window.curioPlaceOrder=curioPlaceOrder;
