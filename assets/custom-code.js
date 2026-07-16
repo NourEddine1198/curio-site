@@ -1704,15 +1704,8 @@
         })
         .then(function (result) {
           if (result.ok && result.data.success) {
-            // Fire Meta Pixel Purchase event if pixel is loaded
-            if (typeof fbq === 'function') {
-              fbq('track', 'Purchase', {
-                value: result.data.total,
-                currency: 'DZD',
-                content_type: 'product',
-                order_id: result.data.orderNumber
-              });
-            }
+            // Meta Purchase fires ONLY on /merci (single source — firing here
+            // too made every sale count twice in Ads Manager)
             // Fire TikTok Pixel Purchase event
             if (typeof ttq !== 'undefined') {
               ttq.track('CompletePayment', {

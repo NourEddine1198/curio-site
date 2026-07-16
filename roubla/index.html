@@ -332,6 +332,18 @@
   /* a gift card already IS a code — one code per order, so hide the field in gift mode */
   body.gift-on .coupon-wrap{display:none}
 </style>
+<!-- Meta Pixel Code (base + PageView; Purchase fires once on order success) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '587121070888027');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body data-cms-page="roubla">
   <!-- hand-drawn roughen filter (gentle) -->
@@ -781,6 +793,8 @@
     if(COUPON_CODE) payload.couponCode=COUPON_CODE; else if(GIFT_CODE) payload.couponCode=GIFT_CODE;
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
+    // Meta Purchase: once EVER per order (refresh-proof), eventID for future server-side dedup
+    if(res.ok&&j.success){try{const _fk='fbq-o'+j.orderNumber;if(typeof fbq==='function'&&!localStorage.getItem(_fk)){fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',order_id:j.orderNumber},{eventID:'order-'+j.orderNumber});localStorage.setItem(_fk,'1');}}catch(e){}}
     return { ok: res.ok && j.success, orderNumber: j.orderNumber, error: j.error||'صار مشكل، عاود حاول' };
   }
   window.cq=cq;window.setDelivery=setDelivery;window.curFee=curFee;window.curioPlaceOrder=curioPlaceOrder;

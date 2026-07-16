@@ -306,14 +306,21 @@ if (!orderNumber) {
 
         '<a href="/" class="back-link">ارجع للصفحة الرئيسية</a>';
 
-      // Fire Meta Pixel Purchase event if pixel is loaded
-      if (typeof fbq === 'function') {
+      // Meta Pixel Purchase — the ONE place it fires for the old-site flow.
+      // Guard: fire once EVER per order (refresh / revisiting the link must
+      // not re-count a sale). eventID lets Meta dedupe if a server-side
+      // (Conversions API) event is ever added for the same order.
+      var fbqKey = 'fbq-o' + order.orderNumber;
+      var fbqDone = false;
+      try { fbqDone = !!localStorage.getItem(fbqKey); } catch (e) {}
+      if (typeof fbq === 'function' && !fbqDone) {
         fbq('track', 'Purchase', {
           value: order.total,
           currency: 'DZD',
           content_type: 'product',
           order_id: order.orderNumber
-        });
+        }, { eventID: 'order-' + order.orderNumber });
+        try { localStorage.setItem(fbqKey, '1'); } catch (e) {}
       }
     })
     .catch(function() {

@@ -46,4 +46,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://stirring-marigold-3dd8e9.netlify.app https://api.web3forms.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com"
+    # script-src/connect-src include Meta + TikTok pixel hosts — the Jul 10
+    # hardening accidentally blocked both pixels (zero events since); if you
+    # ever tighten this again, keep connect.facebook.net + analytics.tiktok.com.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://connect.facebook.net https://analytics.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://stirring-marigold-3dd8e9.netlify.app https://api.web3forms.com https://connect.facebook.net https://www.facebook.com https://analytics.tiktok.com; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com"

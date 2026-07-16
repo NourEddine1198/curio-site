@@ -263,6 +263,18 @@
   .coupon-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:10px 0 2px;font-weight:800;font-size:.95rem}
   .coupon-row.on{display:flex}
 </style>
+<!-- Meta Pixel Code (base + PageView; Purchase fires once on order success) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '587121070888027');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body data-cms-page="home">
   <!-- hand-drawn roughen filter (gentle) -->
@@ -641,6 +653,7 @@
       document.getElementById('packForm').style.display='none';
       const d=document.getElementById('packDone');d.style.display='block';
       document.getElementById('packNum').textContent='#'+j.orderNumber;
+      try{const _fk='fbq-o'+j.orderNumber;if(typeof fbq==='function'&&!localStorage.getItem(_fk)){fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',order_id:j.orderNumber},{eventID:'order-'+j.orderNumber});localStorage.setItem(_fk,'1');}}catch(e){}
     }catch(err){if(btn)btn.__busy=false;alert('مشكل في الشبكة، عاود حاول');}
     return false;}
   pWsel.addEventListener('change',()=>{pPopulateCommunes();pRecalc();});
