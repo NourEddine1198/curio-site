@@ -1126,6 +1126,14 @@
               </div>
             </fieldset>
 
+            <div class="field-group" id="curio-commune-group">
+              <label for="curio-commune">البلدية</label>
+              <select id="curio-commune" name="commune" aria-label="البلدية" autocomplete="address-level2" required>
+                <option value="">اختار الولاية أولا</option>
+              </select>
+              <input id="curio-commune-text" name="commune_text" type="text" aria-label="البلدية" placeholder="اكتب البلدية تاعك" autocomplete="address-level2" style="display:none">
+            </div>
+
             <div class="field-group" id="curio-address-group">
               <label for="curio-address">العنوان بالتفصيل</label>
               <textarea id="curio-address" name="address" placeholder="الحي، رقم الدار/العمارة، الطابق، معالم قريبة..." aria-label="العنوان بالتفصيل" autocomplete="street-address" required></textarea>

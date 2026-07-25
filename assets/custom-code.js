@@ -52,12 +52,17 @@
         name: 'الاسم',
         phone: 'رقم الهاتف',
         wilaya: 'الولاية',
+        commune: 'البلدية',
         coupon: 'كود التخفيض'
       },
       placeholders: {
         wilaya: 'اختار الولاية',
         office: 'اختار المكتب',
         officeBeforeWilaya: 'اختار الولاية أولا',
+        commune: 'اختار البلدية',
+        communeBeforeWilaya: 'اختار الولاية أولا',
+        communeLoading: 'لحظة، نحضرو البلديات...',
+        communeTyped: 'اكتب البلدية تاعك',
         coupon: 'إذا عندك كود، دخلو هنا'
       },
       hints: {
@@ -81,6 +86,7 @@
         chooseWilayaBeforeContinue: 'اختار الولاية قبل ما تكمل.',
         chooseWilaya: 'اختار الولاية.',
         shippingUnavailable: 'ثمن التوصيل لهذه الولاية مازال ما تضبطش.',
+        chooseCommune: 'اختار البلدية.',
         enterAddressLong: 'دخل العنوان بالتفصيل باش نوصلوه حتى للدار.',
         enterAddressShort: 'دخل العنوان بالتفصيل.',
         noOfficesAvailable: 'ماكانش مكاتب متاحة لهذه الولاية حاليا.',
@@ -192,6 +198,12 @@
 
   var DELIVERY_DATA = [{"code":1,"label":"01 - أدرار","home":1650,"office":850,"offices":{"label":"Station Adrar - Adrar","station":"Station Adrar","commune":"Adrar","phone":["0660709353"]}},{"code":2,"label":"02 - الشلف","home":700,"office":450,"offices":{"label":"Station Chlef - Chlef","station":"Station Chlef","commune":"Chlef","phone":["0770511166","0670675881"]}},{"code":3,"label":"03 - الأغواط","home":850,"office":450,"offices":[{"label":"Station Laghouat - Laghouat","station":"Station Laghouat","commune":"Laghouat","phone":[]},{"label":"Station Laghouat New - Laghouat","station":"Station Laghouat New","commune":"Laghouat","phone":["0770953193"]}]},{"code":4,"label":"04 - أم البواقي","home":850,"office":450,"offices":[{"label":"Station Oum El Bouaghi - Oum El Bouaghi","station":"Station Oum El Bouaghi","commune":"Oum El Bouaghi","phone":["0660877228","0660128008"]},{"label":"Station Ain Fekroune - Ain Fekroune","station":"Station Ain Fekroune","commune":"Ain Fekroune","phone":[]},{"label":"Station AÃ¯n M\u0027lila - Ain M\u0027lila","station":"Station AÃ¯n M\u0027lila","commune":"Ain M\u0027lila","phone":["0770531702"]}]},{"code":5,"label":"05 - باتنة","home":850,"office":450,"offices":[{"label":"Station Batna - CitÃ© El Amrani - Oued Chaaba","station":"Station Batna - CitÃ© El Amrani","commune":"Oued Chaaba","phone":["0770531028"]},{"label":"Station Batna - Batna","station":"Station Batna","commune":"Batna","phone":["0770637788","0770518901"]}]},{"code":6,"label":"06 - بجاية","home":850,"office":450,"offices":[{"label":"Station BÃ©jaÃ¯a - Akbou - Akbou","station":"Station BÃ©jaÃ¯a - Akbou","commune":"Akbou","phone":["0550295278","0770807317"]},{"label":"Station BÃ©jaÃ¯a - Bejaia","station":"Station BÃ©jaÃ¯a","commune":"Bejaia","phone":["0560250529","0770753564"]},{"label":"Station El Kseur - El Kseur","station":"Station El Kseur","commune":"El Kseur","phone":["0560817050"]}]},{"code":7,"label":"07 - بسكرة","home":850,"office":650,"offices":{"label":"Station Biskra - Biskra","station":"Station Biskra","commune":"Biskra","phone":["0770522149"]}},{"code":8,"label":"08 - بشار","home":1200,"office":650,"offices":{"label":"Station BÃ©char - Bechar","station":"Station BÃ©char","commune":"Bechar","phone":["0671559677"]}},{"code":9,"label":"09 - البليدة","home":650,"office":400,"offices":[{"label":"Station Blida - Boufarik - Boufarik","station":"Station Blida - Boufarik","commune":"Boufarik","phone":["0770808317"]},{"label":"Station Blida - Blida","station":"Station Blida","commune":"Blida","phone":["0784602779","0770967048"]}]},{"code":10,"label":"10 - البويرة","home":650,"office":450,"offices":{"label":"Station Bouira - Bouira","station":"Station Bouira","commune":"Bouira","phone":["0770780702"]}},{"code":11,"label":"11 - تمنراست","home":1800,"office":1000,"offices":{"label":"Station Tamanrasset - Tamanrasset","station":"Station Tamanrasset","commune":"Tamanrasset","phone":["0770780713"]}},{"code":12,"label":"12 - تبسة","home":850,"office":450,"offices":{"label":"Station TÃ©bessa - Tebessa","station":"Station TÃ©bessa","commune":"Tebessa","phone":["0770507961"]}},{"code":13,"label":"13 - تلمسان","home":850,"office":450,"offices":[{"label":"Station Maghnia - Maghnia","station":"Station Maghnia","commune":"Maghnia","phone":["0770845020"]},{"label":"Station Tlemcen - Tlemcen","station":"Station Tlemcen","commune":"Tlemcen","phone":["0770451113"]}]},{"code":14,"label":"14 - تيارت","home":850,"office":450,"offices":{"label":"Station Tiaret - Tiaret","station":"Station Tiaret","commune":"Tiaret","phone":["0770750979"]}},{"code":15,"label":"15 - تيزي وزو","home":650,"office":450,"offices":[{"label":"Station Tizi Ouzou - Tizi Ouzou","station":"Station Tizi Ouzou","commune":"Tizi Ouzou","phone":["0795006815"]},{"label":"Station Azazga - Tizi Ouzou","station":"Station Azazga","commune":"Tizi Ouzou","phone":["0770898601"]},{"label":"Station Tizi Ouzou Nouvelle Ville - Tizi Ouzou","station":"Station Tizi Ouzou Nouvelle Ville","commune":"Tizi Ouzou","phone":["0563009791"]},{"label":"Station Boghni - Boghni","station":"Station Boghni","commune":"Boghni","phone":["0563009792"]}]},{"code":16,"label":"16 - الجزائر","home":450,"office":300,"offices":[{"label":"Station Alger Ain Naadja - Djasr Kasentina","station":"Station Alger Ain Naadja","commune":"Djasr Kasentina","phone":["0770531704"]},{"label":"Station Alger Draria - Draria","station":"Station Alger Draria","commune":"Draria","phone":["0771110157","0770808759"]},{"label":"Station Alger Ain Benian - Ain Benian","station":"Station Alger Ain Benian","commune":"Ain Benian","phone":["0770530775"]},{"label":"Station Alger Bab El Oued - Bab El Oued","station":"Station Alger Bab El Oued","commune":"Bab El Oued","phone":["0770845062"]},{"label":"Station Alger SacrÃ© Coeur - Alger Centre","station":"Station Alger SacrÃ© Coeur","commune":"Alger Centre","phone":["0770898643"]},{"label":"Station Alger Reghaia - Reghaia","station":"Station Alger Reghaia","commune":"Reghaia","phone":["0770012586"]},{"label":"Station Alger Eucalyptus - Les Eucalyptus","station":"Station Alger Eucalyptus","commune":"Les Eucalyptus","phone":["0770163989"]},{"label":"Station Alger Dely Brahim - Dely Ibrahim","station":"Station Alger Dely Brahim","commune":"Dely Ibrahim","phone":["0770530923"]},{"label":"Station Alger Oued Smar - Oued Smar","station":"Station Alger Oued Smar","commune":"Oued Smar","phone":["0770118225"]},{"label":"Station Alger Cheraga - Cheraga","station":"Station Alger Cheraga","commune":"Cheraga","phone":["0563009787"]},{"label":"Station Alger Kouba - Kouba","station":"Station Alger Kouba","commune":"Kouba","phone":["0770486105"]}]},{"code":17,"label":"17 - الجلفة","home":850,"office":450,"offices":[{"label":"Station Djelfa - Djelfa","station":"Station Djelfa","commune":"Djelfa","phone":["0770753611"]},{"label":"Station Djelfa - Ain Oussera - Ain Oussera","station":"Station Djelfa - Ain Oussera","commune":"Ain Oussera","phone":["0770953266"]}]},{"code":18,"label":"18 - جيجل","home":850,"office":450,"offices":{"label":"Station Jijel - Jijel","station":"Station Jijel","commune":"Jijel","phone":["0770976207"]}},{"code":19,"label":"19 - سطيف","home":850,"office":450,"offices":[{"label":"Station SÃ©tif - El Eulma - El Eulma","station":"Station SÃ©tif - El Eulma","commune":"El Eulma","phone":["0770521261"]},{"label":"Station Ain Azel - Ain Azel","station":"Station Ain Azel","commune":"Ain Azel","phone":["0770899367"]},{"label":"Station SÃ©tif - CitÃ© Bouaroua - Setif","station":"Station SÃ©tif - CitÃ© Bouaroua","commune":"Setif","phone":["0770898787"]},{"label":"Station SÃ©tif El Hidab - Setif","station":"Station SÃ©tif El Hidab","commune":"Setif","phone":["0770751080","0771823802"]},{"label":"Station SÃ©tif - Ain Oulmene - Ain Oulmane","station":"Station SÃ©tif - Ain Oulmene","commune":"Ain Oulmane","phone":["0770751081"]}]},{"code":20,"label":"20 - سعيدة","home":850,"office":450,"offices":{"label":"Station SaÃ¯da - Saida","station":"Station SaÃ¯da","commune":"Saida","phone":["0770751017"]}},{"code":21,"label":"21 - سكيكدة","home":850,"office":450,"offices":{"label":"Station Skikda - Skikda","station":"Station Skikda","commune":"Skikda","phone":["0770451085"]}},{"code":22,"label":"22 - سيدي بلعباس","home":850,"office":450,"offices":[{"label":"Station Telagh - Telagh","station":"Station Telagh","commune":"Telagh","phone":["0770164534"]},{"label":"Station Sidi Bel AbbÃ¨s - Sidi Bel Abbes","station":"Station Sidi Bel AbbÃ¨s","commune":"Sidi Bel Abbes","phone":["0770486538"]}]},{"code":23,"label":"23 - عنابة","home":850,"office":450,"offices":[{"label":"Station Annaba - Annaba","station":"Station Annaba","commune":"Annaba","phone":["0561869178","0770451061"]},{"label":"Station Annaba El Bouni - El Bouni","station":"Station Annaba El Bouni","commune":"El Bouni","phone":["0770773406","0770336039"]}]},{"code":24,"label":"24 - قالمة","home":850,"office":450,"offices":{"label":"Station Guelma - Guelma","station":"Station Guelma","commune":"Guelma","phone":["0772421972","0770520817"]}},{"code":25,"label":"25 - قسنطينة","home":850,"office":450,"offices":[{"label":"Station Constantine - Ali Mendjeli - El Khroub","station":"Station Constantine - Ali Mendjeli","commune":"El Khroub","phone":["0770911838"]},{"label":"Station Constantine - Sidi Mebrouk - Didouche Mourad","station":"Station Constantine - Sidi Mebrouk","commune":"Didouche Mourad","phone":["0770797329"]}]},{"code":26,"label":"26 - المدية","home":650,"office":450,"offices":{"label":"Station MÃ©dÃ©a - Medea","station":"Station MÃ©dÃ©a","commune":"Medea","phone":["0770797168","0770091207"]}},{"code":27,"label":"27 - مستغانم","home":850,"office":450,"offices":[{"label":"Station Mostaganem 2 - Mostaganem","station":"Station Mostaganem 2","commune":"Mostaganem","phone":["0770845070"]},{"label":"Station Mostaganem - Hadjadj","station":"Station Mostaganem","commune":"Hadjadj","phone":["0770371420"]}]},{"code":28,"label":"28 - المسيلة","home":850,"office":450,"offices":[{"label":"Station M\u0027Sila New - M\u0027sila","station":"Station M\u0027Sila New","commune":"M\u0027sila","phone":["0770164280"]},{"label":"Station M\u0027Sila - M\u0027Sila","station":"Station M\u0027Sila","commune":"M\u0027Sila","phone":[]},{"label":"Station BoussaÃ¢da - Bou Saada","station":"Station BoussaÃ¢da","commune":"Bou Saada","phone":["0778979623"]}]},{"code":29,"label":"29 - معسكر","home":850,"office":450,"offices":[{"label":"Station Mascara - Sig - Sig","station":"Station Mascara - Sig","commune":"Sig","phone":["0770797163"]},{"label":"Station Mascara - Mascara","station":"Station Mascara","commune":"Mascara","phone":["0770775964"]}]},{"code":30,"label":"30 - ورقلة","home":1000,"office":500,"offices":[{"label":"Station Ouargla - Ouargla","station":"Station Ouargla","commune":"Ouargla","phone":["0661186606"]},{"label":"Station Ouargla - Hassi Messaoud - Hassi Messaoud","station":"Station Ouargla - Hassi Messaoud","commune":"Hassi Messaoud","phone":["0674273120"]}]},{"code":31,"label":"31 - وهران","home":850,"office":450,"offices":[{"label":"Station Oran Es Senia (Maraval) - Es Senia","station":"Station Oran Es Senia (Maraval)","commune":"Es Senia","phone":["0770898647","0770898629"]},{"label":"Station Oran - Hai Sabah - Bir El Djir","station":"Station Oran - Hai Sabah","commune":"Bir El Djir","phone":["0770753696"]},{"label":"Station Oran Khemisti - Mers El Kebir","station":"Station Oran Khemisti","commune":"Mers El Kebir","phone":["0770163993","0770164228"]},{"label":"Station Oran Gambetta - Oran","station":"Station Oran Gambetta","commune":"Oran","phone":["0770911476"]}]},{"code":32,"label":"32 - البيض","home":850,"office":450,"offices":{"label":"Station El Bayadh - El Bayadh","station":"Station El Bayadh","commune":"El Bayadh","phone":["0675265384"]}},{"code":33,"label":"33 - إليزي","home":null,"office":null,"offices":[{"label":"Station Illizi - Illizi","station":"Station Illizi","commune":"Illizi","phone":["0791917907"]},{"label":"Station In Amenas - In Amenas","station":"Station In Amenas","commune":"In Amenas","phone":["0658305407"]}]},{"code":34,"label":"34 - برج بوعريريج","home":650,"office":450,"offices":{"label":"Station Bordj Bou Arreridj - Bordj Bou Arreridj","station":"Station Bordj Bou Arreridj","commune":"Bordj Bou Arreridj","phone":["0675553122"]}},{"code":35,"label":"35 - بومرداس","home":650,"office":400,"offices":[{"label":"Station BoumerdÃ¨s - Boumerdes","station":"Station BoumerdÃ¨s","commune":"Boumerdes","phone":["0770912531","0770898605"]},{"label":"Station Bordj Menaiel - Bordj Menaiel","station":"Station Bordj Menaiel","commune":"Bordj Menaiel","phone":["0770772556"]},{"label":"Station Dellys - Dellys","station":"Station Dellys","commune":"Dellys","phone":["0770912056"]}]},{"code":36,"label":"36 - الطارف","home":850,"office":550,"offices":[{"label":"Station El Tarf - El Tarf","station":"Station El Tarf","commune":"El Tarf","phone":[]},{"label":"Station El Tarf New - El Tarf","station":"Station El Tarf New","commune":"El Tarf","phone":["0652668097","0770936164"]}]},{"code":37,"label":"37 - تندوف","home":1650,"office":700,"offices":{}},{"code":38,"label":"38 - تيسمسيلت","home":850,"office":450,"offices":{"label":"Station Tissemsilt - Tissemsilt","station":"Station Tissemsilt","commune":"Tissemsilt","phone":["0672852152"]}},{"code":39,"label":"39 - الوادي","home":950,"office":600,"offices":{"label":"Station El Oued - El Oued","station":"Station El Oued","commune":"El Oued","phone":["0654707097","0770771833"]}},{"code":40,"label":"40 - خنشلة","home":850,"office":450,"offices":{"label":"Station Khenchela - Khenchela","station":"Station Khenchela","commune":"Khenchela","phone":["0770521072"]}},{"code":41,"label":"41 - سوق أهراس","home":850,"office":450,"offices":{"label":"Station Souk Ahras - Souk Ahras","station":"Station Souk Ahras","commune":"Souk Ahras","phone":["0770776689"]}},{"code":42,"label":"42 - تيبازة","home":650,"office":450,"offices":[{"label":"Station KolÃ©a - Kolea","station":"Station KolÃ©a","commune":"Kolea","phone":["0770912305"]},{"label":"Station Tipaza - Tipaza","station":"Station Tipaza","commune":"Tipaza","phone":["0770797338"]},{"label":"Station Hadjout - Hadjout","station":"Station Hadjout","commune":"Hadjout","phone":["0770807997"]}]},{"code":43,"label":"43 - ميلة","home":850,"office":450,"offices":[{"label":"Station Chelghoum LaÃ¯d - Chelghoum Laid","station":"Station Chelghoum LaÃ¯d","commune":"Chelghoum Laid","phone":["0770898639"]},{"label":"Station Mila - Mila","station":"Station Mila","commune":"Mila","phone":["0770738712"]}]},{"code":44,"label":"44 - عين الدفلى","home":650,"office":450,"offices":{"label":"Station AÃ¯n Defla - Ain Defla","station":"Station AÃ¯n Defla","commune":"Ain Defla","phone":["0770780589"]}},{"code":45,"label":"45 - النعامة","home":950,"office":500,"offices":{"label":"Station NaÃ¢ma - Mechria - Mecheria","station":"Station NaÃ¢ma - Mechria","commune":"Mecheria","phone":["0668426646"]}},{"code":46,"label":"46 - عين تموشنت","home":850,"office":450,"offices":[{"label":"Station AÃ¯n TÃ©mouchent - Beni Saf - Beni Saf","station":"Station AÃ¯n TÃ©mouchent - Beni Saf","commune":"Beni Saf","phone":["0770797349"]},{"label":"Station AÃ¯n TÃ©mouchent - Ain Temouchent","station":"Station AÃ¯n TÃ©mouchent","commune":"Ain Temouchent","phone":["0770868817"]}]},{"code":47,"label":"47 - غرداية","home":950,"office":650,"offices":{"label":"Station GhardaÃ¯a - Ghardaia","station":"Station GhardaÃ¯a","commune":"Ghardaia","phone":["0770531062","0770531289"]}},{"code":48,"label":"48 - غليزان","home":850,"office":450,"offices":[{"label":"Station Oued Rhiou - Oued Rhiou","station":"Station Oued Rhiou","commune":"Oued Rhiou","phone":["0770899295"]},{"label":"Station Relizane - Relizane","station":"Station Relizane","commune":"Relizane","phone":["0770783044"]}]},{"code":49,"label":"49 - تيميمون","home":1650,"office":850,"offices":{}},{"code":50,"label":"50 - برج باجي مختار","home":2000,"office":1200,"offices":{}},{"code":51,"label":"51 - أولاد جلال","home":950,"office":450,"offices":{"label":"Station Ouled Djellal - Ouled Djellal","station":"Station Ouled Djellal","commune":"Ouled Djellal","phone":["0550576439","0555132822"]}},{"code":52,"label":"52 - بني عباس","home":1300,"office":650,"offices":{}},{"code":53,"label":"53 - عين صالح","home":1650,"office":850,"offices":{"label":"Station In Salah - In Salah","station":"Station In Salah","commune":"In Salah","phone":["0670152552","0554006696"]}},{"code":54,"label":"54 - عين قزام","home":2000,"office":1200,"offices":{}},{"code":55,"label":"55 - تقرت","home":950,"office":500,"offices":{"label":"Station Touggourt - Touggourt","station":"Station Touggourt","commune":"Touggourt","phone":["0770999634","0697052872"]}},{"code":56,"label":"56 - جانت","home":null,"office":null,"offices":[{"label":"Station Djanet - Djanet","station":"Station Djanet","commune":"Djanet","phone":["0698502737"]},{"label":"Station Djanet New - Djanet","station":"Station Djanet New","commune":"Djanet","phone":["0698502737"]}]},{"code":57,"label":"57 - المغير","home":950,"office":500,"offices":{"label":"Station El M\u0027Ghair - El M\u0027ghair","station":"Station El M\u0027Ghair","commune":"El M\u0027ghair","phone":["0770898640"]}},{"code":58,"label":"58 - المنيعة","home":950,"office":500,"offices":{}}];
   var DELIVERY_BY_CODE = {};
+  // Live commune (بلدية) directory per wilaya code — the order API refuses
+  // HOME orders without a commune, and Ecotrack needs a valid commune name,
+  // so this is fetched from the store's /api/delivery like the new pages do.
+  var COMMUNES_BY_CODE = {};
+  var communesLoadFailed = false;
+  var communesReadyCallbacks = [];
   var PRODUCT_BY_ID = {};
   var CP1252_EXTRA_BYTES = {
     8364: 128,
@@ -813,6 +825,68 @@
     }
   }
 
+  function loadCommuneDirectory(attemptsLeft) {
+    fetch(CURIO_API + '/api/delivery', { cache: 'no-store' })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('bad-status');
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data || !data.wilayas || !data.wilayas.length) {
+          throw new Error('empty');
+        }
+        data.wilayas.forEach(function (wilaya) {
+          COMMUNES_BY_CODE[String(wilaya.code)] = (wilaya.communes || []).map(function (communeEntry) {
+            return communeEntry.name;
+          }).filter(Boolean);
+        });
+        communesReadyCallbacks.forEach(function (callback) { callback(); });
+      })
+      .catch(function () {
+        if (attemptsLeft > 0) {
+          setTimeout(function () { loadCommuneDirectory(attemptsLeft - 1); }, 700);
+        } else {
+          communesLoadFailed = true;
+          communesReadyCallbacks.forEach(function (callback) { callback(); });
+        }
+      });
+  }
+
+  function populateCommuneSelect(select, record, selectedValue) {
+    if (!select) {
+      return;
+    }
+
+    select.innerHTML = '';
+
+    var communes = record ? (COMMUNES_BY_CODE[String(record.code)] || []) : [];
+    var placeholder = document.createElement('option');
+    placeholder.value = '';
+    if (!record) {
+      placeholder.textContent = repairText(STORE_COPY.common.placeholders.communeBeforeWilaya);
+    } else if (!communes.length) {
+      placeholder.textContent = repairText(STORE_COPY.common.placeholders.communeLoading);
+    } else {
+      placeholder.textContent = repairText(STORE_COPY.common.placeholders.commune);
+    }
+    select.appendChild(placeholder);
+
+    communes.forEach(function (name) {
+      var option = document.createElement('option');
+      option.value = name;
+      option.textContent = name;
+      select.appendChild(option);
+    });
+
+    select.disabled = communes.length === 0;
+
+    if (selectedValue) {
+      select.value = selectedValue;
+    }
+  }
+
   function buildExtraPayload(product, record, mode, address, officeLabel) {
     var total = record && record.hasFees ? product.price + (mode === 'office' ? record.office : record.home) : null;
     var lines = [
@@ -1105,6 +1179,13 @@
       '              </label>',
       '            </div>',
       '          </fieldset>',
+      '          <div class="curio-home-field" id="curio-commune-group">',
+      '            <label for="curio-commune">' + STORE_COPY.common.labels.commune + '</label>',
+      '            <select id="curio-commune" name="commune" aria-label="' + STORE_COPY.common.labels.commune + '" autocomplete="address-level2" required>',
+      '              <option value="">' + STORE_COPY.common.placeholders.communeBeforeWilaya + '</option>',
+      '            </select>',
+      '            <input id="curio-commune-text" name="commune_text" type="text" aria-label="' + STORE_COPY.common.labels.commune + '" placeholder="' + STORE_COPY.common.placeholders.communeTyped + '" autocomplete="address-level2" style="display:none">',
+      '          </div>',
       '          <div class="curio-home-field" id="curio-address-group">',
       '            <label for="curio-address" data-curio-copy-path="home.order.addressLabel">' + homeCopy.order.addressLabel + '</label>',
       '            <textarea id="curio-address" name="address" aria-label="' + homeCopy.order.addressLabel + '" autocomplete="street-address" placeholder="' + homeCopy.order.addressPlaceholder + '" required></textarea>',
@@ -1370,6 +1451,9 @@
     var addressInput = form.querySelector('#curio-address');
     var officeGroup = form.querySelector('#curio-office-group');
     var officeSelect = form.querySelector('#curio-office');
+    var communeGroup = form.querySelector('#curio-commune-group');
+    var communeSelect = form.querySelector('#curio-commune');
+    var communeTextInput = form.querySelector('#curio-commune-text');
     var submitButton = form.querySelector('#curio-submit-btn');
     var message = form.querySelector('#curio-form-message');
     var productGroup = form.querySelector('#curio-product-group');
@@ -1400,6 +1484,31 @@
 
     populateWilayaSelect(wilayaSelect, '');
     bindPhoneInput(phoneInput, phoneGroup, message);
+
+    // Commune (بلدية) field: dropdown fed by the live delivery directory.
+    // If the directory can't be loaded at all, fall back to free typing so
+    // the customer can still order — the phone confirmation cleans it up.
+    function refreshCommuneField() {
+      if (!communeSelect || !communeTextInput) {
+        return;
+      }
+      if (communesLoadFailed) {
+        communeSelect.style.display = 'none';
+        communeTextInput.style.display = '';
+        return;
+      }
+      populateCommuneSelect(communeSelect, getDeliveryRecordByLabel(wilayaSelect.value), communeSelect.value);
+    }
+
+    function getCommuneValue() {
+      if (communesLoadFailed) {
+        return communeTextInput ? communeTextInput.value.trim() : '';
+      }
+      return communeSelect ? communeSelect.value : '';
+    }
+
+    communesReadyCallbacks.push(refreshCommuneField);
+    loadCommuneDirectory(4);
 
     function getSelectedHomeProduct() {
       return getProductByKey(productSelect.value);
@@ -1494,6 +1603,10 @@
 
       addressGroup.classList.toggle('is-hidden', mode !== 'home');
       officeGroup.classList.toggle('is-hidden', mode !== 'office');
+      if (communeGroup) {
+        communeGroup.classList.toggle('is-hidden', mode !== 'home');
+      }
+      refreshCommuneField();
 
       if (record) {
         populateOfficeSelect(officeSelect, record, officeValue);
@@ -1540,6 +1653,7 @@
       setFieldInvalid(nameGroup, false);
       setFieldInvalid(phoneGroup, false);
       setFieldInvalid(wilayaGroup, false);
+      setFieldInvalid(communeGroup, false);
       setFieldInvalid(addressGroup, false);
       setFieldInvalid(officeGroup, false);
 
@@ -1563,6 +1677,10 @@
         valid = false;
         setFieldInvalid(wilayaGroup, true);
         showMessage(message, 'error', STORE_COPY.common.messages.shippingUnavailable);
+      } else if (mode === 'home' && !getCommuneValue()) {
+        valid = false;
+        setFieldInvalid(communeGroup, true);
+        showMessage(message, 'error', STORE_COPY.common.messages.chooseCommune);
       } else if (mode === 'home' && !addressInput.value.trim()) {
         valid = false;
         setFieldInvalid(addressGroup, true);
@@ -1641,6 +1759,9 @@
     });
     addressInput.addEventListener('input', updateHomeState);
     officeSelect.addEventListener('change', updateHomeState);
+    if (communeSelect) {
+      communeSelect.addEventListener('change', updateHomeState);
+    }
     form.querySelectorAll('input[name="delivery_mode"]').forEach(function (radio) {
       radio.addEventListener('change', updateHomeState);
     });
@@ -1681,6 +1802,7 @@
         wilayaCode: wilayaCode,
         deliveryType: mode === 'office' ? 'OFFICE' : 'HOME',
         address: mode === 'home' ? addressInput.value.trim() : null,
+        commune: mode === 'home' ? getCommuneValue() : null,
         officeName: selectedOffice ? selectedOffice.station : null,
         officeCommune: selectedOffice ? selectedOffice.commune : null,
         couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null,
