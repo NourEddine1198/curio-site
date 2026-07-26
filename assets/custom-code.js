@@ -1886,15 +1886,15 @@
       var els = document.querySelectorAll('[data-stock-for="' + key + '"]');
       for (var i = 0; i < els.length; i++) {
         var el = els[i];
+        // Never show the remaining quantity to customers \u2014 it hands our
+        // inventory to anyone who looks, and a big number kills urgency.
+        // Only the sold-out state is worth saying out loud.
         el.classList.remove('is-low', 'is-zero');
         if (item.stock <= 0) {
           el.classList.add('is-zero');
           el.textContent = '\u0631\u0627\u062D\u062A \u0639\u0644\u064A\u0643 \u0647\u0627\u0630\u064A! \u0648\u0644\u0627 \u0644\u0627\u0644\u0627 \u2014 \u0633\u062C\u0651\u0644 \u0648\u0646\u062E\u0644\u064A\u0648\u0644\u0643 \u0646\u0633\u062E\u062A\u0643 \u0644\u0644\u0637\u0628\u0639\u0629 \u0627\u0644\u062C\u0627\u064A\u0629 \uD83D\uDCE6';
-        } else if (item.stock <= 10) {
-          el.classList.add('is-low');
-          el.textContent = '\uD83D\uDD34 \u0628\u0627\u0642\u064A ' + item.stock + ' \u0646\u0633\u062E\u0629';
         } else {
-          el.textContent = '\uD83D\uDD34 \u0628\u0627\u0642\u064A ' + item.stock + ' \u0646\u0633\u062E\u0629';
+          el.textContent = '';
         }
       }
 
