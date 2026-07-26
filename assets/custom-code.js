@@ -24,7 +24,7 @@
     roubla: {
       key: 'roubla',
       label: 'Ø±ÙˆØ¨Ù„Ø©',
-      price: 2390,
+      price: 2400,
       id: 'a1475df7-4f99-43dc-b6c8-ab14f05c83d6',
       url: 'https://curio-games.youcan.store/products/roubla',
       cover: 'https://cdn.youcan.shop/stores/ff74f4ffdad9c4ed8f3aa026fd949f86/products/aUY8yhxSYUJG16DJkillgzmsqlZkJkdJ3ueSAJic_lg.jpg',
@@ -974,13 +974,13 @@
     });
 
     var valueSpan = document.querySelector('.express-checkout-form-section .product-price .value');
-    if (valueSpan && valueSpan.textContent.indexOf('2390') > -1) {
-      valueSpan.textContent = valueSpan.textContent.replace(/2390/g, '2,390');
+    if (valueSpan && valueSpan.textContent.indexOf('2400') > -1) {
+      valueSpan.textContent = valueSpan.textContent.replace(/2400/g, '2,400');
     }
 
     var priceSpan = document.querySelector('.express-checkout-form-section .product-price');
-    if (priceSpan && priceSpan.textContent.indexOf('2390') > -1) {
-      priceSpan.innerHTML = priceSpan.innerHTML.replace(/2390/g, '2,390');
+    if (priceSpan && priceSpan.textContent.indexOf('2400') > -1) {
+      priceSpan.innerHTML = priceSpan.innerHTML.replace(/2400/g, '2,400');
     }
 
     document.querySelectorAll('a[target="_blank"]').forEach(function (link) {
