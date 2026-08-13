@@ -19,6 +19,14 @@
   to = "/merci.html"
   status = 200
 
+# /home was the staged homepage before launch (Aug 13 2026) — now promoted
+# to root index.html. Redirect any old links/bookmarks straight to /.
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+  force = true
+
 # Gift-card QR (printed "هدية ليك" hang-tags) → Roubla with the 400 DA
 # coupon auto-applied. 302 (NOT 301) on purpose: browsers/scanners must
 # never cache it permanently, so we can repoint every printed card later

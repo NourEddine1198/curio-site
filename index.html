@@ -1,1336 +1,700 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curio | نَصنع العابا تَصنع ذكريات لا تُنسى</title>
-  <meta name="description" content="أول ألعاب كارط جزائرية بالدارجة. قول بلا متقول + روبلة. اطلب دروك، التوصيل لكل الولايات 📦">
-  <!-- Open Graph tags — controls what Facebook/Instagram shows in ads and link previews -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://curiodz.com">
-  <meta property="og:title" content="Curio | نَصنع العابا تَصنع ذكريات لا تُنسى">
-  <meta property="og:description" content="أول ألعاب كارط جزائرية بالدارجة. قول بلا متقول + روبلة. اطلب دروك، التوصيل لكل الولايات 📦">
-  <meta property="og:image" content="https://curiodz.com/images/photo_5866352893554789631_y.jpg">
-  <meta property="og:locale" content="ar_DZ">
-  <!-- Meta Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '587121070888027');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel Code -->
-
-  <!-- TikTok Pixel Code Start -->
-  <script>
-    !function (w, d, t) {
-      w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
-      var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
-      ;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
-      ttq.load('D72PRIRC77UCBSL4O260');
-      ttq.page();
-    }(window, document, 'ttq');
-  </script>
-  <!-- TikTok Pixel Code End -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    :root {
-      --bg: #fbf4ea;
-      --bg-2: #fffaf3;
-      --surface: rgba(255, 255, 255, 0.86);
-      --surface-strong: #ffffff;
-      --ink: #21162f;
-      --ink-soft: #675874;
-      --line: rgba(33, 22, 47, 0.1);
-      --shadow: 0 24px 56px rgba(33, 22, 47, 0.08);
-      --red: #e5424d;
-      --red-dark: #c53039;
-      --yellow: #f5cb48;
-      --yellow-dark: #d7a800;
-      --blue: #457b9d;
-      --green: #1e9f62;
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
-      --max: 1180px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Tajawal", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top right, rgba(245, 203, 72, 0.26), transparent 24%),
-        radial-gradient(circle at left 18%, rgba(69, 123, 157, 0.16), transparent 28%),
-        linear-gradient(180deg, #fff9f1 0%, var(--bg) 100%);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(33, 22, 47, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(33, 22, 47, 0.025) 1px, transparent 1px);
-      background-size: 52px 52px;
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 72%);
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    .shell {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    .top-strip {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding: 14px 16px;
-      background: linear-gradient(90deg, rgba(229, 66, 77, 0.95), rgba(197, 48, 57, 0.95));
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.15px;
-    }
-
-    .top-strip span {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .top-strip span::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    .hero {
-      padding: 34px 0 28px;
-    }
-
-    .hero-grid {
-      display: grid;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .brand-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(69, 123, 157, 0.22);
-      background: rgba(255, 255, 255, 0.72);
-      font-weight: 700;
-      color: var(--blue);
-      margin-bottom: 18px;
-      box-shadow: 0 12px 32px rgba(69, 123, 157, 0.08);
-    }
-
-    .brand-badge strong {
-      font-family: "Changa", sans-serif;
-      font-size: 1.05rem;
-      color: var(--ink);
-    }
-
-    .hero-copy {
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-xl);
-      padding: 28px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-copy::before {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      top: -120px;
-      left: -80px;
-      background: radial-gradient(circle, rgba(69, 123, 157, 0.18), transparent 72%);
-      pointer-events: none;
-    }
-
-    .hero-copy h1 {
-      margin: 0 0 14px;
-      font-family: "Changa", sans-serif;
-      font-size: clamp(2rem, 5.8vw, 3.6rem);
-      line-height: 1.15;
-    }
-
-    .hero-copy h1 span {
-      color: var(--red);
-    }
-
-    .hero-copy p {
-      margin: 0;
-      color: var(--ink-soft);
-      line-height: 1.85;
-      font-size: 1.05rem;
-      max-width: 62ch;
-    }
-
-    .hero-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 11px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.86);
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      font-weight: 700;
-      box-shadow: 0 10px 24px rgba(33, 22, 47, 0.05);
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 24px;
-    }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 54px;
-      padding: 0 24px;
-      border-radius: 16px;
-      border: none;
-      font-family: "Changa", sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-
-    .cta:hover {
-      transform: translateY(-2px);
-    }
-
-    .cta-primary {
-      color: #fff;
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
-      box-shadow: 0 18px 32px rgba(229, 66, 77, 0.28);
-    }
-
-    .cta-secondary {
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(33, 22, 47, 0.12);
-      box-shadow: 0 12px 24px rgba(33, 22, 47, 0.06);
-    }
-
-    .quick-order {
-      background: var(--surface-strong);
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      padding: 26px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .quick-order::before {
-      content: "";
-      position: absolute;
-      inset: auto auto -80px -70px;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 203, 72, 0.24), transparent 68%);
-      pointer-events: none;
-    }
-
-    .quick-order h2 {
-      margin: 0 0 8px;
-      font-family: "Changa", sans-serif;
-      font-size: 1.7rem;
-    }
-
-    .quick-order > p {
-      margin: 0 0 20px;
-      color: var(--ink-soft);
-      line-height: 1.8;
-    }
-
-    .order-form {
-      display: grid;
-      gap: 14px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .field-group {
-      display: grid;
-      gap: 8px;
-    }
-
-    fieldset.field-group {
-      margin: 0;
-      padding: 0;
-      border: 0;
-    }
-
-    .field-group label {
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .field-group legend {
-      padding: 0;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .field-group input,
-    .field-group select,
-    .field-group textarea {
-      width: 100%;
-      min-height: 52px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(33, 22, 47, 0.12);
-      background: rgba(255, 255, 255, 0.92);
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .field-group textarea {
-      min-height: 106px;
-      resize: vertical;
-    }
-
-    .field-group input:focus,
-    .field-group select:focus,
-    .field-group textarea:focus {
-      border-color: rgba(69, 123, 157, 0.85);
-      box-shadow: 0 0 0 4px rgba(69, 123, 157, 0.12);
-    }
-
-    .field-group.is-invalid input,
-    .field-group.is-invalid select,
-    .field-group.is-invalid textarea {
-      border-color: rgba(229, 66, 77, 0.95);
-      box-shadow: 0 0 0 4px rgba(229, 66, 77, 0.1);
-    }
-
-    .field-note {
-      margin: 4px 0 0;
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .mode-grid {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .mode-card {
-      display: block;
-      cursor: pointer;
-    }
-
-    .mode-card input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .mode-card span {
-      display: grid;
-      gap: 4px;
-      min-height: 100%;
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(33, 22, 47, 0.1);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-    }
-
-    .mode-card small {
-      color: var(--ink-soft);
-      line-height: 1.5;
-    }
-
-    .mode-card input:checked + span {
-      border-color: rgba(69, 123, 157, 0.95);
-      box-shadow: 0 14px 28px rgba(69, 123, 157, 0.15);
-      transform: translateY(-1px);
-    }
-
-    .summary-box {
-      border-radius: 20px;
-      padding: 18px;
-      background: linear-gradient(180deg, rgba(69, 123, 157, 0.07), rgba(245, 203, 72, 0.14));
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      display: grid;
-      gap: 12px;
-    }
-
-    .summary-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      font-weight: 700;
-    }
-
-    .summary-row span:last-child {
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    .summary-row.total {
-      padding-top: 12px;
-      border-top: 1px dashed rgba(33, 22, 47, 0.18);
-      font-family: "Changa", sans-serif;
-      font-size: 1.06rem;
-    }
-
-    .summary-note {
-      color: var(--ink-soft);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .form-message {
-      display: none;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-weight: 700;
-      line-height: 1.6;
-    }
-
-    .form-message.is-error {
-      display: block;
-      background: rgba(229, 66, 77, 0.09);
-      color: var(--red-dark);
-      border: 1px solid rgba(229, 66, 77, 0.18);
-    }
-
-    .form-message.is-success {
-      display: block;
-      background: rgba(30, 159, 98, 0.09);
-      color: #10643d;
-      border: 1px solid rgba(30, 159, 98, 0.18);
-    }
-
-    .form-message.is-info {
-      display: block;
-      background: rgba(69, 123, 157, 0.08);
-      color: var(--blue);
-      border: 1px solid rgba(69, 123, 157, 0.16);
-    }
-
-    .coupon-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .coupon-row input {
-      flex: 1;
-    }
-
-    .coupon-apply-btn {
-      min-height: 52px;
-      padding: 0 20px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, var(--gold), #e6b800);
-      color: var(--ink);
-      font-family: "Changa", sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-      white-space: nowrap;
-    }
-
-    .coupon-apply-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .coupon-apply-btn:disabled {
-      opacity: 0.5;
-      cursor: default;
-      transform: none;
-    }
-
-    .coupon-note-success {
-      color: #10643d;
-      font-weight: 700;
-    }
-
-    .coupon-note-error {
-      color: var(--red-dark);
-      font-weight: 700;
-    }
-
-    .summary-row.discount span {
-      color: #10643d;
-    }
-
-    .submit-btn {
-      min-height: 58px;
-      width: 100%;
-      border-radius: 16px;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      font-family: "Changa", sans-serif;
-      font-size: 1.04rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--ink), #3b2752);
-      box-shadow: 0 18px 34px rgba(33, 22, 47, 0.24);
-      transition: transform 0.18s ease, opacity 0.18s ease;
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .submit-btn.is-loading {
-      opacity: 0.76;
-      pointer-events: none;
-    }
-
-    .products {
-      padding: 8px 0 8px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-family: "Changa", sans-serif;
-      font-size: clamp(1.6rem, 4.6vw, 2.45rem);
-      line-height: 1.2;
-    }
-
-    .section-head p {
-      margin: 8px 0 0;
-      max-width: 60ch;
-      color: var(--ink-soft);
-      line-height: 1.75;
-      font-size: 1rem;
-    }
-
-    .section-head strong {
-      display: inline-block;
-      font-size: 0.92rem;
-      color: var(--red);
-      margin-bottom: 8px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .products-grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .product-card {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      gap: 18px;
-      padding: 20px;
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      background: rgba(255, 255, 255, 0.84);
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-
-    .product-card::before {
-      content: "";
-      position: absolute;
-      inset: auto -40px -70px auto;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .product-card:hover,
-    .product-card.is-selected {
-      transform: translateY(-3px);
-      box-shadow: 0 28px 54px rgba(33, 22, 47, 0.12);
-    }
-
-    .product-card.goul {
-      border-top: 5px solid var(--red);
-    }
-
-    .product-card.goul::before {
-      background: radial-gradient(circle, rgba(229, 66, 77, 0.16), transparent 72%);
-    }
-
-    .product-card.roubla {
-      border-top: 5px solid var(--yellow-dark);
-    }
-
-    .product-card.roubla::before {
-      background: radial-gradient(circle, rgba(245, 203, 72, 0.22), transparent 72%);
-    }
-
-    .product-card.bundle {
-      border-top: 5px solid var(--blue);
-    }
-
-    .product-card.bundle::before {
-      background: radial-gradient(circle, rgba(69, 123, 157, 0.18), transparent 72%);
-    }
-
-    .product-visual {
-      overflow: hidden;
-      border-radius: 18px;
-      aspect-ratio: 1.18 / 1;
-      background: rgba(255, 255, 255, 0.88);
-      border: 1px solid rgba(33, 22, 47, 0.06);
-    }
-
-    .product-visual img {
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .product-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 12px;
-    }
-
-    .product-top h3 {
-      margin: 0;
-      font-family: "Changa", sans-serif;
-      font-size: 1.45rem;
-      line-height: 1.25;
-    }
-
-    .product-top p {
-      margin: 6px 0 0;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
-    .price-chip {
-      min-width: 94px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(33, 22, 47, 0.1);
-      text-align: center;
-      font-family: "Changa", sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      box-shadow: 0 10px 18px rgba(33, 22, 47, 0.05);
-    }
-
-    .old-price {
-      display: block;
-      margin-bottom: 2px;
-      color: rgba(103, 88, 116, 0.85);
-      font-family: "Tajawal", sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-decoration: line-through;
-    }
-
-    .specs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .spec {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      background: rgba(255, 255, 255, 0.88);
-      font-weight: 700;
-      font-size: 0.88rem;
-    }
-
-    .stock-line {
-      margin: 0;
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-
-    .stock-line.is-low {
-      color: var(--red);
-      font-weight: 700;
-    }
-
-    .stock-line.is-zero {
-      color: var(--green);
-      font-weight: 700;
-      font-size: 0.84rem;
-    }
-
-    .card-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: auto;
-    }
-
-    .card-link,
-    .card-pick {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .card-link:hover,
-    .card-pick:hover {
-      transform: translateY(-2px);
-    }
-
-    .card-link {
-      color: var(--ink);
-      border: 1px solid rgba(33, 22, 47, 0.12);
-      background: rgba(255, 255, 255, 0.92);
-    }
-
-    .card-pick {
-      border: none;
-      color: #fff;
-    }
-
-    .product-card.goul .card-pick {
-      background: linear-gradient(135deg, var(--red), var(--red-dark));
-    }
-
-    .product-card.roubla .card-pick {
-      background: linear-gradient(135deg, #2d2d39, #171722);
-    }
-
-    .product-card.bundle .card-pick {
-      background: linear-gradient(135deg, var(--blue), #2b5f7f);
-    }
-
-    .trust-row {
-      padding: 18px 0 46px;
-    }
-
-    .trust-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .trust-card {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      box-shadow: 0 18px 34px rgba(33, 22, 47, 0.06);
-    }
-
-    .trust-card strong {
-      display: block;
-      margin-bottom: 6px;
-      font-family: "Changa", sans-serif;
-      font-size: 1.08rem;
-    }
-
-    .trust-card p {
-      margin: 0;
-      color: var(--ink-soft);
-      line-height: 1.7;
-    }
-
-    footer {
-      padding: 0 0 46px;
-    }
-
-    .footer-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      padding: 18px 22px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(33, 22, 47, 0.08);
-      color: var(--ink-soft);
-      box-shadow: 0 16px 32px rgba(33, 22, 47, 0.05);
-    }
-
-    .footer-box strong {
-      color: var(--ink);
-      font-family: "Changa", sans-serif;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    .is-hidden {
-      display: none !important;
-    }
-
-    @media (min-width: 920px) {
-      .hero-grid {
-        grid-template-columns: minmax(0, 1.1fr) minmax(380px, 440px);
-      }
-
-      .products-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .trust-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 919px) {
-      .hero-copy,
-      .quick-order {
-        padding: 22px;
-      }
-
-      .mode-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        align-items: start;
-        flex-direction: column;
-      }
-    }
-
-  </style>
-
-  <!-- JSON-LD: Organization + FAQPage (LLM-friendly structured data) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://curiodz.com/#organization",
-        "name": "Curio",
-        "alternateName": ["Curio Games", "كيوريو", "Curio DZ"],
-        "url": "https://curiodz.com",
-        "logo": "https://curiodz.com/images/photo_5866352893554789631_y.jpg",
-        "description": "Curio is an Algerian tabletop game publisher founded in 2026 in Algiers. Curio designs and publishes party card games in Algerian Darija and is the first active brand to do so at scale.",
-        "foundingDate": "2026-02-01",
-        "foundingLocation": { "@type": "Place", "name": "Algiers, Algeria" },
-        "address": { "@type": "PostalAddress", "addressLocality": "Algiers", "addressCountry": "DZ" },
-        "slogan": "Card games made Algerian",
-        "knowsLanguage": ["ar-DZ", "ar", "fr", "en"],
-        "areaServed": { "@type": "Country", "name": "Algeria" },
-        "sameAs": [
-          "https://www.instagram.com/curio_games_",
-          "https://www.tiktok.com/@curio_games_"
-        ]
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://curiodz.com/#website",
-        "url": "https://curiodz.com",
-        "name": "Curio",
-        "inLanguage": "ar-DZ",
-        "publisher": { "@id": "https://curiodz.com/#organization" }
-      },
-      {
-        "@type": ["Product", "Game"],
-        "@id": "https://curiodz.com/#goul-bla-matgoul",
-        "name": "Goul Bla Matgoul",
-        "alternateName": ["قول بلا متقول", "Algerian Taboo"],
-        "description": "An Algerian Darija word-guessing party card game in the Taboo tradition, published by Curio. One player describes a target word while avoiding listed forbidden words; teammates race to guess.",
-        "brand": { "@id": "https://curiodz.com/#organization" },
-        "manufacturer": { "@id": "https://curiodz.com/#organization" },
-        "category": "Party Card Game",
-        "gameItem": "Card Deck",
-        "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 4, "maxValue": 10 },
-        "typicalAgeRange": "12-99",
-        "inLanguage": "ar-DZ",
-        "image": "https://curiodz.com/images/photo_5866352893554789631_y.jpg",
-        "offers": {
-          "@type": "Offer",
-          "url": "https://curiodz.com/#goul-bla-matgoul",
-          "price": "2390",
-          "priceCurrency": "DZD",
-          "availability": "https://schema.org/InStock",
-          "areaServed": { "@type": "Country", "name": "Algeria" },
-          "seller": { "@id": "https://curiodz.com/#organization" }
-        }
-      },
-      {
-        "@type": ["Product", "Game"],
-        "@id": "https://curiodz.com/#roubla",
-        "name": "Roubla",
-        "alternateName": ["روبلة", "Algerian Speedbac", "Algerian Scattergories"],
-        "description": "A fast-paced Algerian Darija speed-category card game in the Scattergories / Petit Bac tradition, published by Curio. A letter card and a category card flip simultaneously; players race to shout a word that fits both.",
-        "brand": { "@id": "https://curiodz.com/#organization" },
-        "manufacturer": { "@id": "https://curiodz.com/#organization" },
-        "category": "Party Card Game",
-        "gameItem": "Card Deck",
-        "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 4, "maxValue": 10 },
-        "typicalAgeRange": "12-99",
-        "inLanguage": "ar-DZ",
-        "image": "https://curiodz.com/images/photo_5866352893554789631_y.jpg",
-        "offers": {
-          "@type": "Offer",
-          "url": "https://curiodz.com/#roubla",
-          "price": "2400",
-          "priceCurrency": "DZD",
-          "availability": "https://schema.org/InStock",
-          "areaServed": { "@type": "Country", "name": "Algeria" },
-          "seller": { "@id": "https://curiodz.com/#organization" }
-        }
-      },
-      {
-        "@type": "Product",
-        "@id": "https://curiodz.com/#eid-pack",
-        "name": "Curio Eid Pack 2026",
-        "alternateName": "باك العيد 2026",
-        "description": "Bundle of both Curio card games — Goul Bla Matgoul and Roubla — at a discounted Eid 2026 price.",
-        "brand": { "@id": "https://curiodz.com/#organization" },
-        "isRelatedTo": [
-          { "@id": "https://curiodz.com/#goul-bla-matgoul" },
-          { "@id": "https://curiodz.com/#roubla" }
-        ],
-        "offers": {
-          "@type": "Offer",
-          "url": "https://curiodz.com/#eid-pack",
-          "price": "4000",
-          "priceCurrency": "DZD",
-          "availability": "https://schema.org/InStock",
-          "seller": { "@id": "https://curiodz.com/#organization" }
-        }
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is Curio?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Curio is an Algerian card game publisher based in Algiers that makes party games in Algerian Darija. Curio is the first brand to publish Darija-native versions of globally popular party games such as Taboo and Scattergories, competing in the same category as Egypt's 2ool Ameme and Lebanon's Jabaly in the Arabic tabletop market."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Where can I buy Curio card games in Algeria?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Curio card games are sold directly at curiodz.com with cash-on-delivery shipping to all 58 wilayas of Algeria. Orders are fulfilled by ZR Express and Ecotrack, the two main Algerian COD logistics providers. Unlike imported card games such as UNO, Monopoly Deal, or Cards Against Humanity, Curio titles are priced in Algerian Dinar and designed specifically for Algerian players."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What games does Curio publish?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Curio publishes two titles as of 2026: Goul Bla Matgoul (قول بلا متقول), a Darija word-guessing game in the Taboo tradition, and Roubla (روبلة), a speed-category game similar to Scattergories and Petit Bac. Both are priced at 2,390 DA. An Eid 2026 bundle of both games is available for 4,000 DA."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Are Curio games similar to Cards Against Humanity or Taboo?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Goul Bla Matgoul shares core mechanics with Hasbro's Taboo — one player describes a word while avoiding forbidden terms — but uses Algerian cultural references, local slang, and Darija idioms that imported Taboo editions cannot replicate. Roubla plays like Hasbro Scattergories or the French game Petit Bac, adapted with Arabic-letter cards and Algerian categories. Curio games are family-friendly, unlike Cards Against Humanity."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Who founded Curio and when?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Curio was founded in early 2026 in Algiers, Algeria, by a husband-and-wife team. The company emerged to fill the gap left by dormant Algerian tabletop brands such as ICOSIUM (last active 2016) and Dinar (last active 2020), positioning itself as the first sustained Algerian card game publisher. Curio is privately held and self-funded."
-            }
-          }
-        ]
-      }
-    ]
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curio كيوريو — الفرحة للكل، بعاد على لاسكران</title>
+<meta name="description" content="روبلة و دلالة — ألعاب جزائرية بالدارجة، بعيدة على الشاشات. الدفع عند الاستلام، التوصيل لكل 58 ولاية 🎉">
+<link rel="canonical" href="https://curiodz.com/">
+<meta property="og:title" content="Curio كيوريو — الفرحة للكل، بعاد على لاسكران">
+<meta property="og:description" content="روبلة و دلالة — ألعاب جزائرية بالدارجة، بعيدة على الشاشات. الدفع عند الاستلام، التوصيل لكل 58 ولاية 🎉">
+<meta property="og:image" content="https://curiodz.com/images/photo_5866352893554789634_y.jpg">
+<meta property="og:url" content="https://curiodz.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#fbf6ec;--bg2:#fffdf7;--ink:#161310;--ink-soft:#675b4c;
+    --red:#ec2c24;--yellow:#facc15;--blue:#2aa9e0;--green:#5cb335;
+    --ease:cubic-bezier(.16,1,.3,1)
   }
-  </script>
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--bg);overflow-x:clip}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,36px)}
+
+  /* ===== hand-drawn IMPERFECT lines (signature) ===== */
+  .rough{border-color:transparent!important;position:relative}
+  .rough::after{content:"";position:absolute;inset:0;border:3px solid var(--ink);border-radius:inherit;filter:url(#rough);pointer-events:none;z-index:4}
+  .roughf{filter:url(#rough)}
+
+  /* scroll progress */
+  .progress{position:fixed;top:0;inset-inline:0;height:5px;z-index:140;background:transparent}
+  .progress i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--yellow),var(--red),var(--green))}
+  .tagchip{position:fixed;left:14px;bottom:14px;z-index:80;background:var(--ink);color:#fff;font-size:.7rem;font-weight:700;padding:5px 10px;border-radius:999px;opacity:.8}
+
+  /* floating header */
+  header{position:sticky;top:8px;z-index:100;margin:8px clamp(12px,3vw,28px) 0;border:2px solid var(--ink);border-radius:14px;background:var(--bg2);box-shadow:0 6px 16px rgba(22,19,16,.15)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px clamp(12px,3vw,18px)}
+  .burger{font-size:1.3rem;border:2px solid var(--ink);background:var(--yellow);border-radius:9px;width:38px;height:38px;cursor:pointer;box-shadow:none}
+  @media(min-width:760px){.burger{display:none}}
+  .logo{height:34px;mix-blend-mode:multiply}
+  .nav{display:none;gap:18px;font-weight:800;font-size:.92rem;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
+  @media(min-width:760px){.nav{display:flex}}
+  .nav a{position:relative}
+  .nav a::after{content:"";position:absolute;inset-inline:0;bottom:-4px;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:right;transition:transform .25s}
+  .nav a:hover::after{transform:scaleX(1)}
+  .cart{background:var(--yellow);border:2px solid var(--ink);border-radius:11px;padding:6px 12px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;box-shadow:none;font-size:.88rem}
+
+  /* mobile dropdown menu (burger) */
+  #hdr{overflow:hidden}
+  .mobmenu{display:none;flex-direction:column;gap:2px;padding:4px 8px 8px}
+  .mobmenu a{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;padding:10px;border-radius:9px;color:var(--ink)}
+  .mobmenu a:hover,.mobmenu a:active{background:var(--yellow)}
+  header.menuopen .mobmenu{display:flex;border-top:2px solid var(--ink);margin-top:2px}
+  @media(min-width:760px){.mobmenu{display:none!important}}
+  /* small Algerian flag graphic (renders everywhere, unlike the 🇩🇿 emoji) */
+  .dz-flag{width:56px;height:auto;border:2.5px solid var(--ink);border-radius:6px;box-shadow:2px 2px 0 var(--ink);display:inline-block;vertical-align:middle}
+
+  /* ===== HERO — big brand statement (cream, premium, calm) ===== */
+  .hero{position:relative;overflow:hidden;background:var(--bg2)}
+  .hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:clamp(26px,6vw,60px);padding-bottom:clamp(42px,8vw,92px)}
+  /* faint printed-paper dots + soft brand wash */
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(0,0,0,.06) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.5;z-index:0}
+  /* subtle floating decoration chips (desktop only, low-key) */
+  .hdeco{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .hdeco span{position:absolute;width:46px;height:46px;border:3px solid var(--ink);border-radius:12px;opacity:.16;filter:url(#rough)}
+  .hdeco .d1{top:14%;inset-inline-start:7%;background:var(--red);transform:rotate(-12deg)}
+  .hdeco .d2{top:20%;inset-inline-end:9%;background:var(--blue);border-radius:50%;transform:rotate(8deg)}
+  .hdeco .d3{bottom:22%;inset-inline-start:12%;background:var(--green);border-radius:50%}
+  .hdeco .d4{bottom:16%;inset-inline-end:8%;background:var(--yellow);transform:rotate(14deg)}
+  @media(max-width:760px){.hdeco{display:none}}
+
+  .hero-logo{height:clamp(56px,11vw,82px);width:auto;mix-blend-mode:multiply}
+  .hero-eyebrow{margin-top:16px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.98rem;color:var(--ink-soft)}
+  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2.9rem,12.5vw,6.2rem);line-height:.98;margin-top:12px}
+  .hero-h1 .c-red{color:var(--red)}
+  .hero-h1 .mark{white-space:nowrap;background:linear-gradient(transparent 60%, var(--yellow) 60%);padding:0 .04em}
+  .hero-lead{margin-top:18px;font-size:clamp(1.05rem,2.7vw,1.28rem);font-weight:700;line-height:1.62;max-width:40ch;color:var(--ink)}
+  .hero-cta{margin-top:26px}
+  .order{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:3px solid var(--ink);border-radius:14px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.28rem;padding:15px 32px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .order:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .order:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .proof{margin-top:20px;display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);font-weight:600;font-size:.82rem;opacity:.9}
+  .trust{margin-top:11px;display:flex;flex-wrap:wrap;justify-content:center;gap:7px 15px;color:var(--ink-soft);font-weight:700;font-size:.84rem}
+
+  /* hero entrance (premium staggered fade-up) */
+  .hero-el{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .7s var(--ease)}
+  .hero-logo.hero-el{transform:translateY(0) scale(.82) rotate(-6deg)}
+  .hero.in .hero-el{opacity:1;transform:none}
+  .hero.in .hero-logo{transition-delay:.02s}
+  .hero.in .hero-eyebrow{transition-delay:.12s}
+  .hero.in .hero-h1{transition-delay:.20s}
+  .hero.in .hero-lead{transition-delay:.34s}
+  .hero.in .hero-cta{transition-delay:.46s}
+  .hero.in .proof{transition-delay:.56s}
+  .hero.in .trust{transition-delay:.62s}
+
+  /* scrolling trust marquee */
+  .marq{background:var(--ink);color:#fff;overflow:hidden;border-block:3px solid var(--ink);white-space:nowrap;padding:11px 0}
+  .marq .run{display:inline-block;animation:run 24s linear infinite;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.02rem}
+  .marq .run span{margin:0 20px}
+  .marq .run b{color:var(--yellow)}
+  @keyframes run{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* full-bleed blocks */
+  .block{position:relative;padding:clamp(36px,6vw,66px) 0}
+  .block.cream{background:var(--bg2)}
+  .eyebrow{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;opacity:.92}
+  .h2{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.1rem);line-height:1.1;margin-top:4px}
+  .sub{font-weight:700;margin-top:8px;font-size:1.05rem;opacity:.9;max-width:54ch}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ===== SECTION: THE GAMES (blue) + bundle offer ===== */
+  .games{background:var(--blue);color:#fff}
+  .games .head{text-align:center}
+  .games .head .eyebrow{color:#fff}
+  .games .head .sub{margin-inline:auto;color:rgba(255,255,255,.92);opacity:1}
+  .gcards{display:grid;gap:18px;margin-top:28px;grid-template-columns:1fr}
+  @media(min-width:720px){.gcards{grid-template-columns:1fr 1fr}}
+  .gcard{position:relative;display:flex;flex-direction:column;background:var(--bg2);border-radius:20px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);color:var(--ink);transition:transform .3s var(--ease)}
+  .gcard:hover{transform:translateY(-6px)}
+  .gc-img{position:relative;aspect-ratio:4/3;background:#0c0c0c;overflow:hidden}
+  .gc-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+  .gc-ribbon{position:absolute;top:12px;inset-inline-start:12px;z-index:3;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.8rem;padding:6px 13px;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-3deg)}
+  .gc-ribbon.new{background:var(--green)}
+  .gc-body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+  .gc-body h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.7rem;line-height:1}
+  .gc-hook{color:var(--ink-soft);font-weight:700;line-height:1.55;margin-top:8px;font-size:.97rem}
+  .gc-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .gc-specs span{background:var(--bg);border:2px solid var(--ink);border-radius:8px;padding:4px 9px;font-weight:800;font-size:.75rem}
+  .gc-foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .gc-price{font-family:"Anton";font-size:1.85rem;line-height:1}
+  .gc-price small{font-size:.85rem;color:var(--ink-soft);font-family:"Noto Sans Arabic",sans-serif}
+  .gc-cta{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:#fff;border-radius:11px;padding:11px 17px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.96rem;transition:transform .15s;white-space:nowrap}
+  .gcard:hover .gc-cta{transform:scale(1.04)}
+
+  /* ===== PACK / BUNDLE — "The Duo" (2-col, covers-hero) ===== */
+  .tag{display:inline-block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.82rem}
+  .save{display:inline-block;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.85rem;padding:4px 12px;border-radius:999px;border:2px solid var(--ink)}
+  .particle{position:absolute;left:50%;top:50%;width:11px;height:11px;border:2px solid var(--ink);border-radius:2px;pointer-events:none;z-index:8}
+  .bundle{position:relative;margin-top:20px;background:var(--bg2);color:var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:clamp(22px,4vw,38px);display:grid;grid-template-columns:1fr;gap:24px;align-items:center}
+  @media(min-width:760px){.bundle{grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,44px)}}
+  .b-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:230px}
+  .b-rays{position:absolute;width:min(96%,340px);aspect-ratio:1;border-radius:50%;z-index:0;background:radial-gradient(circle,rgba(250,204,21,.55),rgba(250,204,21,0) 62%),repeating-conic-gradient(from 0deg,rgba(236,44,36,.10) 0 9deg,transparent 9deg 18deg)}
+  .b-covers{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+  .b-cov{position:relative}
+  .b-cov img{width:clamp(122px,30vw,178px);aspect-ratio:1;object-fit:cover;border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);background:#000}
+  .b-cov figcaption{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.76rem;padding:3px 12px;border-radius:999px;white-space:nowrap;z-index:3}
+  .b-a{transform:rotate(-7deg)}
+  .b-b{transform:rotate(7deg);margin-inline-start:-22px}
+  .b-plus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;width:50px;height:50px;background:var(--yellow);border:3px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:"Anton",sans-serif;font-size:1.9rem;box-shadow:3px 3px 0 var(--ink)}
+  .b-spark{position:absolute;left:50%;top:50%;width:1px;height:1px;z-index:5}
+  .b-pitch{text-align:center}
+  @media(min-width:760px){.b-pitch{text-align:right}}
+  .b-pitch .tag{color:var(--red)}
+  .b-title{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.05;margin-top:6px}
+  .b-benefit{font-weight:700;color:var(--ink-soft);line-height:1.6;margin-top:12px;max-width:34ch;margin-inline:auto}
+  @media(min-width:760px){.b-benefit{margin-inline:0}}
+  .b-benefit b{color:var(--ink);background:linear-gradient(transparent 58%,var(--yellow) 58%);padding:0 2px}
+  .b-deal{margin-top:18px}
+  .b-old{display:block;color:var(--ink-soft);text-decoration:line-through;text-decoration-thickness:2px;font-weight:800;font-size:1rem}
+  .b-nowrow{display:flex;align-items:baseline;gap:10px;justify-content:center;margin-top:2px}
+  @media(min-width:760px){.b-nowrow{justify-content:flex-start}}
+  .b-nowrow b{font-family:"Anton",sans-serif;font-size:clamp(2.6rem,8vw,3.4rem);line-height:1}
+  .b-nowrow small{font-family:"Noto Sans Arabic",sans-serif;font-size:1rem;color:var(--ink-soft)}
+  .bundle .order{margin-top:18px}
+
+  /* ===== SECTION: THE WHY / CURIO STORY (ink) ===== */
+  .why{background:var(--ink);color:var(--bg);text-align:center}
+  .why .eyebrow{color:var(--yellow)}
+  .why-h{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2rem,6.4vw,3.5rem);line-height:1.14;margin:10px auto 0;max-width:19ch}
+  .why-h .y{color:var(--yellow)}
+  .why-lead{margin:18px auto 0;max-width:50ch;font-weight:700;line-height:1.75;color:rgba(255,255,255,.82);font-size:1.06rem}
+  .pillars{display:grid;gap:16px;margin-top:32px;grid-template-columns:1fr}
+  @media(min-width:720px){.pillars{grid-template-columns:repeat(3,1fr)}}
+  .pillar{border-radius:18px;padding:26px 20px;color:var(--ink);box-shadow:6px 6px 0 rgba(0,0,0,.55)}
+  .pillar.p1{background:var(--yellow)}
+  .pillar.p2{background:var(--blue);color:#fff}
+  .pillar.p3{background:var(--green);color:#fff}
+  .pillar .pem{font-size:2.5rem;line-height:1}
+  .pillar h4{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.3rem;margin-top:10px}
+  .pillar p{font-weight:700;margin-top:6px;line-height:1.5;font-size:.93rem}
+  .pillar.p1 p{color:#5a4d00}
+  .pillar.p2 p,.pillar.p3 p{color:rgba(255,255,255,.9)}
+  .why-hero-line{margin-top:34px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.25rem,3.8vw,1.75rem);color:var(--yellow)}
+  .why-cta{margin-top:18px}
+  .why-sig{margin-top:20px;font-weight:700;color:rgba(255,255,255,.58);font-size:.95rem}
+
+  /* placeholder for the next sections (built one by one) */
+  .soon{border:3px dashed var(--ink);border-radius:20px;background:var(--bg2);box-shadow:6px 6px 0 rgba(22,19,16,.12);padding:clamp(26px,5vw,44px);text-align:center;max-width:640px;margin:0 auto}
+  .soon .h2{margin-top:2px}
+
+  footer{border-top:3px solid var(--ink);background:var(--bg2);padding:clamp(36px,6vw,56px) 0 0;color:var(--ink-soft)}
+  .fwrap{display:grid;gap:28px;grid-template-columns:1fr}
+  @media(min-width:720px){.fwrap{grid-template-columns:1.5fr .7fr 1.2fr;gap:34px}}
+  .fcol h5{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.02rem;margin-bottom:13px;color:var(--ink)}
+  .fcol a{display:block;color:var(--ink-soft);font-weight:700;margin-bottom:9px;width:fit-content;transition:color .2s}
+  .fcol a:hover{color:var(--red)}
+  .flogo{height:46px;mix-blend-mode:multiply}
+  .ftag{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink);margin-top:14px;line-height:1.45;max-width:26ch}
+  .fsoc{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .fsoc a{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);border:2.5px solid var(--ink);border-radius:11px;padding:8px 14px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.9rem;box-shadow:3px 3px 0 var(--ink);color:var(--ink);margin:0;transition:transform .12s,box-shadow .12s}
+  .fsoc a:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink);color:var(--ink)}
+  .fhandle{margin-top:12px;font-family:"Anton",sans-serif;font-size:1.15rem;color:var(--ink-soft);letter-spacing:.02em}
+  .ftrustcol span{display:block;color:var(--ink-soft);font-weight:700;margin-bottom:10px;font-size:.95rem}
+  .fbottom{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;border-top:2px solid rgba(22,19,16,.14);margin-top:clamp(28px,5vw,44px);padding:20px 0 28px;color:var(--ink-soft);font-weight:700;font-size:.86rem}
+
+  /* ===== PACK ORDER MODAL (pop-up checkout) — compact ===== */
+  .mscrim{position:fixed;inset:0;z-index:200;background:rgba(22,19,16,.58);display:none;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto}
+  .mscrim.open{display:flex}
+  body.mlock{overflow:hidden}
+  .modal{position:relative;width:100%;max-width:500px;margin:auto;background:var(--bg2);border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);animation:modalin .3s var(--ease)}
+  @keyframes modalin{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+  .mhead{position:relative;background:var(--yellow);border-radius:17px 17px 0 0;border-bottom:3px solid var(--ink);padding:13px 18px}
+  .mclose{position:absolute;top:10px;inset-inline-end:10px;width:32px;height:32px;border:2.5px solid var(--ink);background:var(--bg2);border-radius:9px;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:2px 2px 0 var(--ink);display:grid;place-items:center;line-height:1}
+  .mtag{display:inline-block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.78rem;color:#5a4d00}
+  .mhead h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.12rem;margin-top:1px}
+  .mdeal{margin-top:4px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .mold{text-decoration:line-through;text-decoration-thickness:2px;color:#8a7a3a;font-weight:800;font-size:.9rem}
+  .mnow{font-family:"Anton",sans-serif;font-size:1.6rem;line-height:1}
+  .mnow small{font-family:"Noto Sans Arabic",sans-serif;font-size:.82rem;color:#5a4d00}
+  .msave{background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.74rem;padding:3px 9px;border-radius:999px;border:2px solid var(--ink)}
+  .mbody{padding:14px 18px 18px}
+  .mlabel{display:block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.78rem;margin-bottom:4px}
+  .min{width:100%;border:2.5px solid var(--ink);border-radius:10px;padding:9px 11px;font-family:"Noto Sans Arabic",sans-serif;font-size:.92rem;font-weight:600;background:#fff;color:var(--ink)}
+  .min:focus{outline:3px solid var(--yellow)}
+  .mg2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mfield{margin-top:10px}
+  .mseg{display:inline-flex;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;width:100%}
+  .mseg button{flex:1;border:0;background:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.86rem;padding:9px 4px;cursor:pointer;border-inline-start:2.5px solid var(--ink)}
+  .mseg button:first-child{border:0}
+  .mseg button.on{background:var(--yellow)}
+  .mfoot{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-top:13px}
+  .mqty{display:inline-flex;align-items:center;border:2.5px solid var(--ink);border-radius:11px;overflow:hidden}
+  .mqty button{width:40px;height:40px;border:0;background:var(--bg);font-family:"Anton",sans-serif;font-size:1.3rem;cursor:pointer}
+  .mqty button:hover{background:var(--yellow)}
+  .mqty span{width:42px;text-align:center;font-family:"Anton",sans-serif;font-size:1.3rem;border-inline:2.5px solid var(--ink);line-height:40px}
+  .mtot{text-align:left}
+  .mtotlbl{font-size:.72rem;color:var(--ink-soft);font-weight:700}
+  .mtot b{display:block;font-family:"Anton",sans-serif;font-size:1.7rem;line-height:1.05}
+  .mtothint{font-size:.68rem;color:var(--ink-soft);font-weight:700}
+  .msubmit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:3px solid var(--ink);border-radius:13px;background:var(--green);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.18rem;padding:13px;margin-top:13px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+  .msubmit:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .msubmit:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .mtrust{text-align:center;margin-top:9px;font-weight:700;font-size:.76rem;color:var(--ink-soft);line-height:1.55}
+  .mdone{text-align:center;padding:10px 0}
+  .mdone .big{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.35rem}
+  .mdone .num{font-family:"Anton",sans-serif;font-size:2rem;color:var(--green);margin-top:6px}
+  .mdone p{font-weight:700;color:var(--ink-soft);margin-top:8px}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .hero-el,.reveal{opacity:1!important;transform:none!important}
+    .hero-h1 .mark::after{transform:scaleX(1)}
+  }
+  /* coupon code field in the pack pop-up (أكواد التخفيض / المؤثرين) */
+  .coupon-line{display:flex;gap:8px}
+  .coupon-line input{flex:1;direction:ltr;text-align:center;text-transform:uppercase;font-weight:800;letter-spacing:.06em}
+  .coupon-btn{border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:0 18px;font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer}
+  .coupon-btn:active{transform:translateY(1px)}
+  .coupon-msg{font-size:.8rem;font-weight:700;margin-top:5px;min-height:1em;color:#1e7d43}
+  .coupon-msg.bad{color:#c0392b}
+  .coupon-row{display:none;justify-content:space-between;align-items:center;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:10px 0 2px;font-weight:800;font-size:.95rem}
+  .coupon-row.on{display:flex}
+</style>
+<!-- Meta Pixel Code (base + PageView; Purchase fires once on order success) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '587121070888027');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
-<body>
-  <div class="top-strip">
-    <span>الدفع عند الاستلام</span>
-    <span>التوصيل لكل الولايات</span>
-    <span>اختار للدار ولا للمكتب</span>
+<body data-cms-page="home">
+  <!-- hand-drawn roughen filter (gentle) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
+
+  <div class="progress"><i id="prog"></i></div>
+
+  <!-- FLOATING HEADER -->
+  <header id="hdr"><div class="bar">
+    <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
+    <a href="#top" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
+    <nav class="nav"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></nav>
+    <a class="cart">السلة · 0</a>
   </div>
+  <div class="mobmenu" id="mobmenu"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></div>
+  </header>
 
-  <main class="shell">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <div class="brand-badge">
-            <strong>Curio</strong>
-            <span>ألعاب كارت مصنوعة بالدارجة</span>
+  <!-- HERO — big brand statement -->
+  <main id="top">
+  <section class="hero" id="hero">
+    <div class="hdeco" aria-hidden="true"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+    <div class="wrap">
+      <img class="hero-logo hero-el" src="/curio-logo.jpg" alt="Curio كيوريو">
+      <div class="hero-eyebrow hero-el">ألعاب و نشاطات جزائرية.</div>
+      <h1 class="hero-h1 hero-el">FUN FOR <span class="c-red">EVERYONE</span><br>Far From <span class="mark">Screen</span></h1>
+      <p class="hero-lead hero-el">هنا نصنع متعة تجمع الجميع… بعيدًا عن الشاشات</p>
+      <div class="hero-cta hero-el"><button class="order" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})"><span>شوف المنتجات لي عندنا</span><span>👇</span></button></div>
+      <div class="proof hero-el">🏆 +1000 علبة تباعت في أول طبعة</div>
+      <div class="trust hero-el"><span>✓ الدفع عند الاستلام</span><span>✓ توصيل متوفر ل58 ولاية</span></div>
+    </div>
+  </section>
+
+  <!-- moving trust marquee (completes the top band) -->
+  <!-- The 5 phrases exist ONCE here (class "mq" = editable via the CMS).
+       The script below clones them into a hidden duplicate so the scroll
+       loops seamlessly, and keeps the clone in sync whenever a phrase
+       changes (CMS load or live editing). -->
+  <div class="marq"><div class="run" id="mqrun"><span class="mq">🎉 فرحة للكل</span><span>•</span><span class="mq"><b>😂 ضحك مضمون</b></span><span>•</span><span class="mq">👨‍👩‍👧‍👦 من الصغير للكبير</span><span>•</span><span class="mq"><b>صنع في الجزائر</b></span><span>•</span><span class="mq">💵 خلّص كي توصلك</span><span>•</span></div></div>
+  <script>
+  (function(){
+    var run=document.getElementById('mqrun');
+    var srcs=[].slice.call(run.children);
+    var dup=document.createElement('span');
+    dup.id='mqdup';
+    dup.setAttribute('aria-hidden','true');
+    dup.style.margin='0';
+    run.appendChild(dup);
+    function sync(){
+      dup.innerHTML=srcs.map(function(s){return '<span>'+s.innerHTML+'</span>';}).join('');
+    }
+    sync();
+    var mo=new MutationObserver(sync);
+    srcs.forEach(function(s){mo.observe(s,{childList:true,characterData:true,subtree:true});});
+  })();
+  </script>
+
+  <!-- SECTION 2 — THE GAMES + bundle offer -->
+  <section class="block games halftone" id="products">
+    <div class="wrap">
+      <div class="head reveal">
+        <div class="eyebrow">🎉 ألعاب القعدة</div>
+        <h2 class="h2">زوج ألعاب، و القعدة تخلط</h2>
+        <p class="sub">سرعة، عياط، و ضحك — تلعبها العائلة كاملة، من الصغير للكبير.</p>
+      </div>
+
+      <div class="gcards">
+        <a class="gcard rough reveal" href="/roubla">
+          <div class="gc-img"><img src="/images/photo_5866352893554789634_y.jpg" alt="روبلة"><span class="gc-ribbon">🏆 الأكثر مبيعاً</span></div>
+          <div class="gc-body">
+            <h3>روبلة</h3>
+            <p class="gc-hook">حرف + موضوع، و أسرع واحد يجاوب يربح. سبيدباك بالدارجة يخلّي الكل يعيّط.</p>
+            <div class="gc-specs"><span>👥 2–8</span><span>⏱️ 15–30 دق</span><span>🎂 +10</span></div>
+            <div class="gc-foot"><div class="gc-price">2400 <small>دج</small></div><span class="gc-cta">شوف اللعبة ←</span></div>
           </div>
+        </a>
 
-          <h1>اختار <span>اللعبة</span> لي تليق بالقعدة ديالك</h1>
-          <p>
-            عندك روبلة، قول بلا متقول، ولا خذ الباك بزوج. الصفحة هاذي بسيطة:
-            تشوف الألعاب، تختار واش تحب، وتطلب مباشرة من نفس المكان مع ثمن التوصيل
-            واضح قدامك.
-          </p>
-
-          <div class="hero-pills">
-            <span class="hero-pill">2400 دج للوحدة</span>
-            <span class="hero-pill">3900 دج للباك</span>
-            <span class="hero-pill">الطلب يتأكد معاك قبل الشحن</span>
+        <a class="gcard rough reveal" href="/dlala">
+          <div class="gc-img"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><span class="gc-ribbon new">🔥 جديدة</span></div>
+          <div class="gc-body">
+            <h3>دلالة</h3>
+            <p class="gc-hook">بدّل، عيّط، و لمّ السلعة قبل الكل. فوضى منظّمة تنخّي السوق و تخرّج البزناسي اللي فيك.</p>
+            <div class="gc-specs"><span>👥 3–8</span><span>⏱️ 20–30 دق</span><span>🎂 +8</span></div>
+            <div class="gc-foot"><div class="gc-price">2200 <small>دج</small></div><span class="gc-cta">شوف اللعبة ←</span></div>
           </div>
+        </a>
+      </div>
 
-          <div class="cta-row">
-            <a class="cta cta-primary" href="#curio-home-order">اطلب دروك</a>
-            <a class="cta cta-secondary" href="#curio-products">شوف الألعاب</a>
+      <!-- BUNDLE / PACK — "The Duo" -->
+      <div class="bundle rough">
+        <div class="b-visual">
+          <div class="b-rays" id="b-rays"></div>
+          <div class="b-covers">
+            <figure class="b-cov b-a"><img src="/images/photo_5866352893554789634_y.jpg" alt="روبلة"><figcaption>روبلة</figcaption></figure>
+            <figure class="b-cov b-b"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><figcaption>دلالة</figcaption></figure>
+            <div class="b-plus">+</div>
+            <div class="b-spark" id="b-spark"></div>
           </div>
         </div>
-
-        <aside class="quick-order" id="curio-home-order">
-          <h2>الطلب السريع</h2>
-          <p>اختار المنتج، دخّل معلوماتك، وشوف ثمن التوصيل والمجموع قبل ما تبعث الطلب.</p>
-
-          <form class="order-form" id="curio-home-order-form" novalidate>
-            <div class="field-group" id="curio-product-group">
-              <label for="curio-product-select">شنو تحب تطلب؟</label>
-              <select id="curio-product-select" name="product_key" aria-label="شنو تحب تطلب؟" required>
-                <option value="goul">قول بلا متقول</option>
-                <option value="roubla">روبلة</option>
-                <option value="bundle">باك العيد 2026</option>
-              </select>
-            </div>
-
-            <div class="field-group" id="curio-name-group">
-              <label for="curio-first-name">الاسم الكامل</label>
-              <input id="curio-first-name" name="first_name" type="text" placeholder="مثال: محمد بن علي" aria-label="الاسم الكامل" autocomplete="name" required>
-            </div>
-
-            <div class="field-group" id="curio-phone-group">
-              <label for="curio-phone">رقم الهاتف</label>
-              <input id="curio-phone" name="phone" type="tel" placeholder="06xxxxxxxx" aria-label="رقم الهاتف" inputmode="numeric" autocomplete="tel" required>
-            </div>
-
-            <div class="field-group" id="curio-wilaya-group">
-              <label for="curio-wilaya">الولاية</label>
-              <select id="curio-wilaya" name="city" aria-label="الولاية" data-curio-placeholder="اختار الولاية" autocomplete="address-level1" required>
-                <option value="">اختار الولاية</option>
-              </select>
-            </div>
-
-            <fieldset class="field-group" id="curio-mode-group">
-              <legend>نوع التوصيل</legend>
-              <div class="mode-grid">
-                <label class="mode-card">
-                  <input id="curio-delivery-home" type="radio" name="delivery_mode" value="home" aria-label="التوصيل للدار" checked>
-                  <span>
-                    <strong>للدار</strong>
-                    <small>تدخل العنوان بالتفصيل، والتوصيل يوصلك حتى لباب الدار.</small>
-                  </span>
-                </label>
-                <label class="mode-card">
-                  <input id="curio-delivery-office" type="radio" name="delivery_mode" value="office" aria-label="التوصيل للمكتب">
-                  <span>
-                    <strong>للمكتب</strong>
-                    <small>تختار الولاية ومن بعد تختار المكتب لي تحب تستلم منه.</small>
-                  </span>
-                </label>
-              </div>
-            </fieldset>
-
-            <div class="field-group" id="curio-commune-group">
-              <label for="curio-commune">البلدية</label>
-              <select id="curio-commune" name="commune" aria-label="البلدية" autocomplete="address-level2" required>
-                <option value="">اختار الولاية أولا</option>
-              </select>
-              <input id="curio-commune-text" name="commune_text" type="text" aria-label="البلدية" placeholder="اكتب البلدية تاعك" autocomplete="address-level2" style="display:none">
-            </div>
-
-            <div class="field-group" id="curio-address-group">
-              <label for="curio-address">العنوان بالتفصيل</label>
-              <textarea id="curio-address" name="address" placeholder="الحي، رقم الدار/العمارة، الطابق، معالم قريبة..." aria-label="العنوان بالتفصيل" autocomplete="street-address" required></textarea>
-            </div>
-
-            <div class="field-group is-hidden" id="curio-office-group">
-              <label for="curio-office">اختار المكتب</label>
-              <select id="curio-office" name="office_pickup" aria-label="اختار المكتب" autocomplete="off">
-                <option value="">اختار الولاية أولا</option>
-              </select>
-              <p class="field-note" id="curio-office-note">المكتب يتبدل حسب الولاية لي تختارها.</p>
-            </div>
-
-            <div class="field-group" id="curio-coupon-group">
-              <label for="curio-coupon-input">عندك كود تخفيض؟</label>
-              <div class="coupon-row">
-                <input id="curio-coupon-input" name="coupon" type="text" placeholder="دخل الكود هنا" aria-label="كود التخفيض" autocomplete="off">
-                <button type="button" id="curio-coupon-apply" class="coupon-apply-btn">طبّق</button>
-              </div>
-              <p class="field-note" id="curio-coupon-note"></p>
-            </div>
-
-            <div class="summary-box">
-              <div class="summary-row">
-                <span>المنتج</span>
-                <span id="curio-summary-product-label">قول بلا متقول</span>
-              </div>
-              <div class="summary-row">
-                <span>ثمن المنتج</span>
-                <span id="curio-summary-product-price">2,400 دج</span>
-              </div>
-              <div class="summary-row discount" id="curio-summary-discount-row" style="display:none;">
-                <span>التخفيض</span>
-                <span id="curio-summary-discount"></span>
-              </div>
-              <div class="summary-row">
-                <span>ثمن التوصيل</span>
-                <span id="curio-summary-delivery-price">اختار الولاية</span>
-              </div>
-              <div class="summary-row total">
-                <span>المجموع</span>
-                <span id="curio-summary-total">—</span>
-              </div>
-              <p class="summary-note" id="curio-summary-note">
-                السعر النهائي يبان هنا كي تختار الولاية ونوع التوصيل. الطلب يتأكد معاك بالتلفون قبل الشحن.
-              </p>
-            </div>
-
-            <div class="form-message" id="curio-form-message" aria-live="polite"></div>
-
-            <!-- Honeypot: invisible to humans, bots auto-fill it → order rejected -->
-            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true" tabindex="-1">
-              <label for="curio-website">Website</label>
-              <input id="curio-website" name="website" type="text" autocomplete="off" tabindex="-1">
-            </div>
-            <!-- Timestamp: set on page load, used to detect bots that submit too fast -->
-            <input type="hidden" id="curio-form-ts" name="_t" value="">
-
-            <button class="submit-btn" id="curio-submit-btn" type="submit">
-              ابعث الطلب
-            </button>
-          </form>
-        </aside>
-      </div>
-    </section>
-
-    <section class="products" id="curio-products">
-      <div class="section-head">
-        <div>
-          <strong>اختار مود القعدة</strong>
-          <h2>ثلاثة اختيارات واضحين</h2>
-          <p>
-            تحب لعبة كلمات؟ روح لقول بلا متقول. تحب السرعة والتنافس؟ روبلة.
-            تحبهم بزوج؟ خذ الباك مباشرة.
-          </p>
+        <div class="b-pitch">
+          <span class="tag">🎁 أحسن صفقة</span>
+          <h3 class="b-title">اديهم في الزوج<br>واستفاد من تخفيض واعر.</h3>
+          <p class="b-benefit">روبلة + دلالة فدار وحدة — تكفيك لكل عرضة و كل قعدة، و <b>تربح 800 دج</b>.</p>
+          <div class="b-deal">
+            <span class="b-old">4,600 دج</span>
+            <div class="b-nowrow"><b id="b-num">3,800</b><small>دج</small><span class="save">وفّر 800</span></div>
+          </div>
+          <button class="order" id="packcta"><span>🛒 اطلب الباك</span></button>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="products-grid">
-        <article class="product-card goul is-selected" data-curio-product-card="goul">
-          <div class="product-visual">
-            <img src="./images/photo_5866352893554789637_y.jpg" alt="قول بلا متقول">
-          </div>
-
-          <div class="product-top">
-            <div>
-              <h3>قول بلا متقول</h3>
-              <p>لعبة وصف وتخمام. كل مرة لازم تخرج من الموقف بلا ما تقول الكلمات الممنوعة.</p>
-            </div>
-            <div class="price-chip">2390 دج</div>
-          </div>
-
-          <div class="specs">
-            <span class="spec">4+ لاعبين</span>
-            <span class="spec">20-45 دقيقة</span>
-            <span class="spec">16 سنة وطالع</span>
-          </div>
-
-          <p class="stock-line" data-stock-for="goul"></p>
-
-          <div class="card-actions">
-            <button class="card-pick" type="button" data-curio-pick="goul">اختار هاذي</button>
-            <a class="card-link" href="https://curio-games.youcan.store/products/kol-bla-mtkol" target="_blank" rel="noopener noreferrer">شوف الصفحة</a>
-          </div>
-        </article>
-
-        <article class="product-card roubla" data-curio-product-card="roubla">
-          <div class="product-visual">
-            <img src="./images/photo_5866352893554789634_y.jpg" alt="روبلة">
-          </div>
-
-          <div class="product-top">
-            <div>
-              <h3>روبلة</h3>
-              <p>لعبة سرعة وتنافس. حرف وموضوع، واللي يجاوب قبل كامل هو اللي يربح.</p>
-            </div>
-            <div class="price-chip">2400 دج</div>
-          </div>
-
-          <div class="specs">
-            <span class="spec">2+ لاعبين</span>
-            <span class="spec">15-30 دقيقة</span>
-            <span class="spec">12 سنة وطالع</span>
-          </div>
-
-          <p class="stock-line" data-stock-for="roubla"></p>
-
-          <div class="card-actions">
-            <button class="card-pick" type="button" data-curio-pick="roubla">اختار هاذي</button>
-            <a class="card-link" href="https://curio-games.youcan.store/products/roubla" target="_blank" rel="noopener noreferrer">شوف الصفحة</a>
-          </div>
-        </article>
-
-        <article class="product-card bundle" data-curio-product-card="bundle">
-          <div class="product-visual">
-            <img src="./images/photo_5866352893554789632_y.jpg" alt="باك العيد 2026">
-          </div>
-
-          <div class="product-top">
-            <div>
-              <h3>باك العيد 2026</h3>
-              <p>روبلة + قول بلا متقول. ثمن أوفر من شراء كل لعبة وحدها، والسهرة تولي جاهزة مباشرة.</p>
-            </div>
-            <div class="price-chip">
-              <span class="old-price">4780 دج</span>
-              3900 دج
-            </div>
-          </div>
-
-          <div class="specs">
-            <span class="spec">زوج ألعاب</span>
-            <span class="spec">توفير 880 دج</span>
-            <span class="spec">كادو واجد</span>
-          </div>
-
-          <p class="stock-line" data-stock-for="bundle"></p>
-
-          <div class="card-actions">
-            <button class="card-pick" type="button" data-curio-pick="bundle">خذ الباك</button>
-            <a class="card-link" href="https://curio-games.youcan.store/products/eid-2026-bundle" target="_blank" rel="noopener noreferrer">شوف الصفحة</a>
-          </div>
-        </article>
+  <!-- SECTION 3 — THE WHY / CURIO STORY -->
+  <section class="block why halftone" id="why">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">علاش كيوريو</div>
+        <h2 class="why-h">نآمنو بلي أفضل متعة، كي نكونو كامل <span class="y">مع بعض</span>.</h2>
+        <p class="why-lead">ماشي غير قاعدين فغرفة وحدة و كل واحد غارق فتيليفونو. القعدة تع الصح فيها ضحك، متعة تشراجينا، و ذكريات ما تتنساش — لهذا نصنعو ألعاب جزائرية بالدارجة، للصغير و الكبير.</p>
       </div>
-    </section>
-
-    <section class="trust-row">
-      <div class="trust-grid">
-        <article class="trust-card">
-          <strong>التوصيل واضح</strong>
-          <p>تختار الولاية ونوع التوصيل، وثمن الشحن يبان قدامك بلا تخمين وبلا مفاجآت.</p>
-        </article>
-        <article class="trust-card">
-          <strong>اختيار المكتب</strong>
-          <p>إذا فضلت stop desk، تختار المكتب من نفس الولاية قبل ما تبعث الطلب.</p>
-        </article>
-        <article class="trust-card">
-          <strong>التأكيد قبل الشحن</strong>
-          <p>أي طلب يمر من تأكيد بالتلفون قبل ما يخرج، باش يكون كلش واضح ومضبوط.</p>
-        </article>
+      <div class="pillars">
+        <div class="pillar p1 rough reveal"><div class="pem">👨‍👩‍👧‍👦</div><h4>للكل</h4><p>من الصغير للكبير — الكل يلعب و يضحك في نفس الطابلة.</p></div>
+        <div class="pillar p2 rough reveal"><div class="pem">🎉</div><h4>بعيدا على الشاشات</h4><p>قعدات و لحظات تع الصح مشي فالكاميرا برك</p></div>
+        <div class="pillar p3 rough reveal"><div class="pem"><svg class="dz-flag" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="علم الجزائر"><rect width="24" height="32" fill="#006233"/><rect x="24" width="24" height="32" fill="#ffffff"/><circle cx="24" cy="16" r="8.5" fill="#d21034"/><circle cx="27.6" cy="16" r="6.9" fill="#ffffff"/><path transform="translate(30 16)" d="M0,-4.5 L1.01,-1.39 L4.28,-1.39 L1.64,0.53 L2.64,3.64 L0,1.72 L-2.64,3.64 L-1.64,0.53 L-4.28,-1.39 L-1.01,-1.39 Z" fill="#d21034"/></svg></div><h4>جزائرية و نتاعنا</h4><p>بالدارجة، كل تفصيلة نصنعوها بكل حب و فخر.</p></div>
       </div>
-    </section>
-
+      <div class="reveal">
+        <p class="why-hero-line">و انت؟ حبيناك تكون انت لي يجيب الفرحة لللمات لي تكون فيهم. 🎉</p>
+        <div class="why-cta"><button class="order" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})"><span>شوف الألعاب</span><span>👇</span></button></div>
+        <p class="why-sig">— كيوريو، من قلب الجزائر ❤️</p>
+      </div>
+    </div>
+  </section>
   </main>
 
-  <footer class="shell">
-    <div class="footer-box">
-      <div>
-        <strong>Curio</strong>
-        <span>ألعاب كارت جزائرية بالدارجة.</span>
+  <footer>
+    <div class="wrap fwrap">
+      <div class="fcol fbrand">
+        <a href="#top"><img class="flogo" src="/curio-logo.jpg" alt="Curio"></a>
+        <p class="ftag">هنا نصنع متعة تجمع الجميع…<br>بعيدًا عن الشاشات 🎉</p>
+        <div class="fsoc">
+          <a href="https://instagram.com/curio_games_" target="_blank" rel="noopener">📸 Instagram</a>
+          <a href="https://tiktok.com/@curio_games_" target="_blank" rel="noopener">🎵 TikTok</a>
+        </div>
+        <div class="fhandle">@curio_games_</div>
       </div>
-      <span>إذا حبيت التفاصيل أكثر، تلقى صفحات المنتجات الأصلية من أزرار “شوف الصفحة”.</span>
+      <div class="fcol">
+        <h5>تصفّح</h5>
+        <a href="#products">الألعاب</a>
+        <a href="/roubla">روبلة</a>
+        <a href="/dlala">دلالة</a>
+        <a href="#why">علاش كيوريو</a>
+      </div>
+      <div class="fcol ftrustcol">
+        <h5>الطلب و التوصيل</h5>
+        <span>💵 الدفع عند الاستلام</span>
+        <span>🚚 توصيل لكل 58 ولاية</span>
+        <span>📞 نعيّطولك نأكدو قبل ما نرسلو</span>
+        <span>❤️ صنع بحب في الجزائر</span>
+      </div>
+    </div>
+    <div class="wrap fbottom">
+      <span>© 2026 Curio · كيوريو</span>
+      <span>ألعاب و نشاطات جزائرية بالدارجة</span>
     </div>
   </footer>
-  <script src="./assets/custom-code.js"></script>
-  <script>
-    // Security: set form timestamp on page load (used to detect bots submitting too fast)
-    (function(){var ts=document.getElementById('curio-form-ts');if(ts)ts.value=String(Date.now());})();
-  </script>
+
+  <!-- PACK ORDER POP-UP (express checkout for the Roubla+Dlala pack) -->
+  <div class="mscrim" id="packModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="اطلب الباك">
+      <div class="mhead">
+        <button class="mclose" id="mclose" aria-label="سكّر">✕</button>
+        <div class="mtag">🎁 الباك — روبلة + دلالة</div>
+        <h3>واجد تخلط القعدة؟</h3>
+        <div class="mdeal"><span class="mold" id="p-old">4,600 دج</span><span class="mnow" id="p-now">3,800 <small>دج</small></span><span class="msave" id="p-save">توفّر 800</span></div>
+      </div>
+      <div class="mbody">
+        <form id="packForm" onsubmit="return submitPack(event)">
+          <div class="mg2">
+            <div><label class="mlabel">الاسم</label><input class="min" id="p-name" required placeholder="الاسم الكامل"></div>
+            <div><label class="mlabel">الهاتف</label><input class="min" id="p-phone" required type="tel" inputmode="tel" placeholder="06 / 05 / 07"></div>
+          </div>
+          <div class="mg2 mfield">
+            <div><label class="mlabel">الولاية</label>
+              <select class="min" id="p-wilaya" required>
+                <option value="" data-h="0" data-o="0">اختر الولاية…</option>
+                <option data-h="1650" data-o="850">01 - أدرار</option>
+                <option data-h="700" data-o="450">02 - الشلف</option>
+                <option data-h="850" data-o="450">03 - الأغواط</option>
+                <option data-h="850" data-o="450">04 - أم البواقي</option>
+                <option data-h="850" data-o="450">05 - باتنة</option>
+                <option data-h="850" data-o="450">06 - بجاية</option>
+                <option data-h="850" data-o="650">07 - بسكرة</option>
+                <option data-h="1200" data-o="650">08 - بشار</option>
+                <option data-h="650" data-o="400">09 - البليدة</option>
+                <option data-h="650" data-o="450">10 - البويرة</option>
+                <option data-h="1800" data-o="1000">11 - تمنراست</option>
+                <option data-h="850" data-o="450">12 - تبسة</option>
+                <option data-h="850" data-o="450">13 - تلمسان</option>
+                <option data-h="850" data-o="450">14 - تيارت</option>
+                <option data-h="650" data-o="450">15 - تيزي وزو</option>
+                <option data-h="450" data-o="300">16 - الجزائر</option>
+                <option data-h="850" data-o="450">17 - الجلفة</option>
+                <option data-h="850" data-o="450">18 - جيجل</option>
+                <option data-h="850" data-o="450">19 - سطيف</option>
+                <option data-h="850" data-o="450">20 - سعيدة</option>
+                <option data-h="850" data-o="450">21 - سكيكدة</option>
+                <option data-h="850" data-o="450">22 - سيدي بلعباس</option>
+                <option data-h="850" data-o="450">23 - عنابة</option>
+                <option data-h="850" data-o="450">24 - قالمة</option>
+                <option data-h="850" data-o="450">25 - قسنطينة</option>
+                <option data-h="650" data-o="450">26 - المدية</option>
+                <option data-h="850" data-o="450">27 - مستغانم</option>
+                <option data-h="850" data-o="450">28 - المسيلة</option>
+                <option data-h="850" data-o="450">29 - معسكر</option>
+                <option data-h="1000" data-o="500">30 - ورقلة</option>
+                <option data-h="850" data-o="450">31 - وهران</option>
+                <option data-h="850" data-o="450">32 - البيض</option>
+                <option data-h="0" data-o="0">33 - إليزي</option>
+                <option data-h="650" data-o="450">34 - برج بوعريريج</option>
+                <option data-h="650" data-o="400">35 - بومرداس</option>
+                <option data-h="850" data-o="550">36 - الطارف</option>
+                <option data-h="1650" data-o="700">37 - تندوف</option>
+                <option data-h="850" data-o="450">38 - تيسمسيلت</option>
+                <option data-h="950" data-o="600">39 - الوادي</option>
+                <option data-h="850" data-o="450">40 - خنشلة</option>
+                <option data-h="850" data-o="450">41 - سوق أهراس</option>
+                <option data-h="650" data-o="450">42 - تيبازة</option>
+                <option data-h="850" data-o="450">43 - ميلة</option>
+                <option data-h="650" data-o="450">44 - عين الدفلى</option>
+                <option data-h="950" data-o="500">45 - النعامة</option>
+                <option data-h="850" data-o="450">46 - عين تموشنت</option>
+                <option data-h="950" data-o="650">47 - غرداية</option>
+                <option data-h="850" data-o="450">48 - غليزان</option>
+                <option data-h="1650" data-o="850">49 - تيميمون</option>
+                <option data-h="2000" data-o="1200">50 - برج باجي مختار</option>
+                <option data-h="950" data-o="450">51 - أولاد جلال</option>
+                <option data-h="1300" data-o="650">52 - بني عباس</option>
+                <option data-h="1650" data-o="850">53 - عين صالح</option>
+                <option data-h="2000" data-o="1200">54 - عين قزام</option>
+                <option data-h="950" data-o="500">55 - تقرت</option>
+                <option data-h="0" data-o="0">56 - جانت</option>
+                <option data-h="950" data-o="500">57 - المغير</option>
+                <option data-h="950" data-o="500">58 - المنيعة</option>
+              </select>
+            </div>
+            <div><label class="mlabel">التوصيل</label>
+              <div class="mseg"><button type="button" id="pd-home" class="on" onclick="setPDel('home')">🏠 دار</button><button type="button" id="pd-office" onclick="setPDel('office')">🏢 مكتب</button></div>
+            </div>
+          </div>
+          <div class="mfield" id="p-commune-wrap"><label class="mlabel" id="p-commune-label">البلدية</label>
+            <select class="min" id="p-commune" required disabled><option value="">اختر الولاية أولاً…</option></select>
+          </div>
+          <div class="mfield" id="p-addr-wrap"><label class="mlabel" id="p-addr-label">العنوان بالتفصيل</label><input class="min" id="p-addr" placeholder="الحي، رقم الدار/العمارة، الطابق، معلم قريب…"></div>
+          <div class="mfield">
+            <label class="mlabel">عندك كود تخفيض؟ (اختياري)</label>
+            <div class="coupon-line">
+              <input class="min" id="p-coupon" placeholder="اكتب الكود هنا" autocomplete="off" autocapitalize="characters">
+              <button type="button" class="coupon-btn" onclick="pApplyCoupon()">طبّق</button>
+            </div>
+            <div class="coupon-msg" id="p-coupon-msg"></div>
+          </div>
+          <div class="coupon-row" id="p-coupon-row"><span id="p-coupon-row-label"></span><b id="p-coupon-row-off"></b></div>
+          <div class="mfoot">
+            <div><label class="mlabel">شحال من باك؟</label>
+              <div class="mqty"><button type="button" onclick="pq(-1)" aria-label="نقّص">−</button><span id="pq">1</span><button type="button" onclick="pq(1)" aria-label="زيد">+</button></div>
+            </div>
+            <div class="mtot"><span class="mtotlbl">المجموع</span><b id="p-grand">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
+          </div>
+          <button class="msubmit" type="submit"><span>✓</span><span>أكّد طلب الباك</span></button>
+          <div class="mtrust">💵 الدفع عند الاستلام · 📞 نعيّطولك نأكدو قبل ما نرسلو</div>
+        </form>
+        <div class="mdone" id="packDone" style="display:none">
+          <div class="big">✅ وصلنا طلبك!</div>
+          <div class="num" id="packNum">#000</div>
+          <p>راح نعيّطولك قريب باش نأكدو الباك. شكراً على ثقتك في كيوريو 🎉</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/cms.js" defer></script>
+<script src="/lib/gsap/gsap.min.js"></script>
+<script src="/lib/gsap/ScrollTrigger.min.js"></script>
+<script>
+  // scroll progress
+  const prog=document.getElementById('prog');
+  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+
+  // hero entrance (robust: rAF for smooth play + timeout fallback so the hero is NEVER left hidden)
+  (function(){var h=document.getElementById('hero');var go=function(){if(h)h.classList.add('in');};requestAnimationFrame(go);setTimeout(go,120);})();
+
+  // mobile menu (burger dropdown)
+  (function(){var burger=document.getElementById('burger'),hdr=document.getElementById('hdr'),mob=document.getElementById('mobmenu');
+    if(!burger||!mob)return;
+    burger.addEventListener('click',function(){var open=hdr.classList.toggle('menuopen');burger.setAttribute('aria-expanded',open);burger.textContent=open?'✕':'☰';});
+    mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('menuopen');burger.textContent='☰';burger.setAttribute('aria-expanded','false');});});
+  })();
+
+  // reveal on scroll
+  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // ===== PACK ORDER POP-UP (Roubla+Dlala bundle → live Ecotrack wilaya/commune) =====
+  const API=(window.CURIO_API||(/^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'http://localhost:5522':'https://stirring-marigold-3dd8e9.netlify.app'));
+  const PACK_SLUG='roubla-dlala-pack';
+  let PACK_PRICE=3800, PACK_COMPARE=4600;      // defaults = current DB values; refreshed from /api/pricing
+  let pqv=1,pdel='home',DELIVERY=[],pByCode={};
+  const loadedAtP=Date.now();
+  const pModal=document.getElementById('packModal'),pWsel=document.getElementById('p-wilaya'),pCsel=document.getElementById('p-commune');
+  const pAddrWrap=document.getElementById('p-addr-wrap');
+  const fmtP=n=>n.toLocaleString('en')+' دج';
+
+  // ===== COUPON CODE in the pack pop-up (كود تخفيض / أكواد المؤثرين) =====
+  // Typed (or arrives via ?code= in the URL, like an influencer's link) —
+  // checked live against the store so the shown total drops immediately.
+  // The SERVER re-validates and applies the real discount on submit.
+  let P_COUPON_CODE='', P_COUPON_OFF=0;
+  async function pApplyCoupon(silent){
+    const inp=document.getElementById('p-coupon'), msg=document.getElementById('p-coupon-msg'), row=document.getElementById('p-coupon-row');
+    const code=(inp.value||'').trim().toUpperCase();
+    P_COUPON_CODE='';P_COUPON_OFF=0;row.classList.remove('on');msg.classList.remove('bad');msg.textContent='';
+    if(!code){try{sessionStorage.removeItem('curio-code');}catch(e){} pRecalc();return;}
+    msg.textContent='نتأكدو من الكود…';
+    try{
+      const r=await fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,slugs:[PACK_SLUG]})});
+      const j=await r.json();
+      if(j&&j.valid){
+        P_COUPON_CODE=code;P_COUPON_OFF=(+j.discount||0);
+        try{sessionStorage.setItem('curio-code',code);}catch(e){}
+        msg.textContent='';
+        document.getElementById('p-coupon-row-label').textContent='كود التخفيض: '+code;
+        document.getElementById('p-coupon-row-off').textContent=P_COUPON_OFF>0?('−'+P_COUPON_OFF.toLocaleString('en')+' دج'):'✓ محسوب';
+        row.classList.add('on');
+      }else{
+        try{sessionStorage.removeItem('curio-code');}catch(e){}
+        if(!silent){msg.textContent=(j&&j.reason==='products')?'هاذ الكود ما يخدمش مع الباك':'الكود ما هوش صحيح، تأكد منّو';msg.classList.add('bad');}
+      }
+    }catch(e){ if(!silent){msg.textContent='ما قدرناش نتأكدو من الكود — عاود جرب';msg.classList.add('bad');} }
+    pRecalc();
+  }
+  document.getElementById('p-coupon').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pApplyCoupon();}});
+  (function(){try{
+    const q=new URLSearchParams(location.search).get('code');
+    const saved=q||sessionStorage.getItem('curio-code')||'';
+    if(saved){document.getElementById('p-coupon').value=saved;pApplyCoupon(true);}
+  }catch(e){}})();
+  window.pApplyCoupon=pApplyCoupon;
+
+  function openPack(){pModal.classList.add('open');document.body.classList.add('mlock');pModal.setAttribute('aria-hidden','false');setTimeout(()=>{const n=document.getElementById('p-name');if(n)n.focus();},60);}
+  function closePack(){pModal.classList.remove('open');document.body.classList.remove('mlock');pModal.setAttribute('aria-hidden','true');}
+  function pCurFee(){const w=pByCode[pWsel.value];if(!w)return null;const f=pdel==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
+  function pRecalc(){const sub=Math.max(0,PACK_PRICE*pqv-P_COUPON_OFF),fee=pCurFee();
+    document.getElementById('p-grand').textContent=fee==null?fmtP(sub):fmtP(sub+fee);
+    document.getElementById('p-hint').textContent=fee==null?'+ التوصيل حسب الولاية':'شامل التوصيل ('+fmtP(fee)+')';}
+  function pq(d){pqv=Math.max(1,pqv+d);document.getElementById('pq').textContent=pqv;pRecalc();}
+  function pPopulateWilayas(){pWsel.innerHTML='<option value="">اختر الولاية…</option>';DELIVERY.forEach(w=>{const o=document.createElement('option');o.value=String(w.code);o.textContent=(w.code<10?'0'+w.code:w.code)+' - '+w.ar;pWsel.appendChild(o);});}
+  function pPopulateCommunes(){const w=pByCode[pWsel.value];pCsel.innerHTML='';if(!w){pCsel.disabled=true;pCsel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}let list=w.communes||[];if(pdel==='office')list=list.filter(c=>c.desk);const ph=document.createElement('option');ph.value='';ph.textContent=list.length?(pdel==='office'?'اختر مكتب ستوب ديسك…':'اختر البلدية…'):'ماكانش '+(pdel==='office'?'مكتب':'توصيل')+' لهاذ الولاية';pCsel.appendChild(ph);list.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;pCsel.appendChild(o);});pCsel.disabled=list.length===0;}
+  function setPDel(t){pdel=t;
+    document.getElementById('pd-home').classList.toggle('on',t==='home');
+    document.getElementById('pd-office').classList.toggle('on',t==='office');
+    document.getElementById('p-commune-label').textContent=t==='home'?'البلدية':'مكتب ستوب ديسك (Anderson)';
+    pAddrWrap.style.display=t==='home'?'':'none';
+    pPopulateCommunes();pRecalc();}
+  async function submitPack(e){e.preventDefault();
+    if(!pWsel.value||pCurFee()==null){pWsel.focus();return false;}
+    if(!pCsel.value){pCsel.focus();return false;}
+    if(pdel==='home' && !document.getElementById('p-addr').value.trim()){document.getElementById('p-addr').focus();return false;}
+    const btn=document.querySelector('.msubmit'); if(btn){if(btn.__busy)return false;btn.__busy=true;}
+    const payload={customerName:document.getElementById('p-name').value.trim(),customerPhone:document.getElementById('p-phone').value.trim(),wilayaCode:pWsel.value,deliveryType:pdel==='home'?'HOME':'OFFICE',items:[{slug:PACK_SLUG,quantity:pqv}],_t:loadedAtP};
+    if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{payload.officeCommune=pCsel.value;}
+    if(P_COUPON_CODE)payload.couponCode=P_COUPON_CODE;
+    try{
+      const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const j=await res.json().catch(()=>({}));
+      if(!res.ok||!j.success){if(btn)btn.__busy=false;alert(j.error||'صار مشكل، عاود حاول');return false;}
+      document.getElementById('packForm').style.display='none';
+      const d=document.getElementById('packDone');d.style.display='block';
+      document.getElementById('packNum').textContent='#'+j.orderNumber;
+      try{const _fk='fbq-o'+j.orderNumber;if(typeof fbq==='function'&&!localStorage.getItem(_fk)){fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',order_id:j.orderNumber},{eventID:'order-'+j.orderNumber});localStorage.setItem(_fk,'1');}}catch(e){}
+    }catch(err){if(btn)btn.__busy=false;alert('مشكل في الشبكة، عاود حاول');}
+    return false;}
+  pWsel.addEventListener('change',()=>{pPopulateCommunes();pRecalc();});
+  pCsel.addEventListener('change',pRecalc);
+  pRecalc();
+  // Resilient JSON loader: retries a few times (the big delivery payload can
+  // get dropped in the burst of requests at page load).
+  function pFetchJSON(u,n){return fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).catch(()=>{if(n>0)return new Promise(z=>setTimeout(z,700)).then(()=>pFetchJSON(u,n-1));return null;});}
+  // live delivery + pricing
+  pFetchJSON(API+'/api/delivery',4).then(d=>{if(!d||!d.wilayas)return;DELIVERY=d.wilayas;pByCode={};DELIVERY.forEach(w=>pByCode[String(w.code)]=w);pPopulateWilayas();pPopulateCommunes();});
+  pFetchJSON(API+'/api/pricing',4).then(p=>{const b=p&&p[PACK_SLUG];if(!b)return;PACK_PRICE=b.price;if(b.compareAt)PACK_COMPARE=b.compareAt;
+    const now=document.getElementById('p-now'),old=document.getElementById('p-old'),sv=document.getElementById('p-save');
+    if(now)now.innerHTML=PACK_PRICE.toLocaleString('en')+' <small>دج</small>';
+    if(old)old.textContent=PACK_COMPARE.toLocaleString('en')+' دج';
+    if(sv)sv.textContent='توفّر '+(PACK_COMPARE-PACK_PRICE).toLocaleString('en');
+    pRecalc();}).catch(()=>{});
+  document.getElementById('packcta').addEventListener('click',openPack);
+  document.getElementById('mclose').addEventListener('click',closePack);
+  pModal.addEventListener('click',e=>{if(e.target===pModal)closePack();});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&pModal.classList.contains('open'))closePack();});
+  window.pq=pq;window.setPDel=setPDel;window.submitPack=submitPack;
+
+  // ===== PACK "Duo" card animation (GSAP) =====
+  if(window.gsap && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+    gsap.registerPlugin(ScrollTrigger);
+    const spark=(host)=>{if(!host)return;const cols=['#ec2c24','#facc15','#5cb335','#ffffff'];for(let i=0;i<18;i++){const p=document.createElement('i');p.className='particle';p.style.background=cols[i%4];host.appendChild(p);const a=Math.random()*Math.PI*2,d=45+Math.random()*80;gsap.fromTo(p,{x:0,y:0,scale:1,opacity:1,rotate:0},{x:Math.cos(a)*d,y:Math.sin(a)*d,scale:0,opacity:0,rotate:Math.random()*360-180,duration:.75,ease:'power2.out',onComplete:()=>p.remove()});}};
+    const cEl=document.getElementById('b-num');
+    const countTo=(from,to)=>{if(!cEl)return;const o={v:from};gsap.to(o,{v:to,duration:1,ease:'power1.out',onUpdate:()=>cEl.textContent=Math.round(o.v).toLocaleString('en')});};
+    const rays=document.getElementById('b-rays');if(rays)gsap.to(rays,{rotation:360,duration:44,repeat:-1,ease:'none'});
+    gsap.timeline({scrollTrigger:{trigger:'.bundle',start:'top 80%',once:true}})
+      .from('.b-a',{x:150,rotation:26,opacity:0,duration:.6,ease:'power3.out'})
+      .from('.b-b',{x:-150,rotation:-26,opacity:0,duration:.6,ease:'power3.out'},'<')
+      .from('.b-cov figcaption',{y:10,opacity:0,stagger:.1,duration:.35},'-=.2')
+      .from('.b-plus',{scale:0,rotation:180,duration:.5,ease:'back.out(2.4)'},'-=.25')
+      .add(()=>spark(document.getElementById('b-spark')),'-=.05')
+      .from('.b-pitch > *',{y:20,opacity:0,stagger:.09,duration:.4},'-=.2')
+      .add(()=>countTo(PACK_COMPARE,PACK_PRICE),'-=.3');
+  }
+</script>
 </body>
 </html>

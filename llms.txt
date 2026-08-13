@@ -19,28 +19,28 @@ Curio was founded in February 2026 by a husband-and-wife team in Algiers, Algeri
 
 ## Products
 
-### Goul Bla Matgoul (قول بلا متقول)
-Algerian Darija adaptation of the party game Taboo. One player describes a target word without using any of the listed forbidden words; teammates race to guess.
-- Players: 4–10
-- Ages: 12+
-- Play time: 20–45 minutes
-- Language: Algerian Darija
-- Price: 2,390 DZD
-- URL: https://curiodz.com/#goul-bla-matgoul
-
 ### Roubla (روبلة)
 Algerian Darija speed-category game in the Scattergories / Petit Bac tradition. Letter and category cards flip simultaneously; players race to shout a word that fits both.
-- Players: 4–10
-- Ages: 12+
-- Play time: 20–45 minutes
+- Players: 2–10
+- Ages: 8+
+- Play time: 15–30 minutes
 - Language: Algerian Darija
-- Price: 2,390 DZD
-- URL: https://curiodz.com/#roubla
+- Price: 2,400 DZD
+- URL: https://curiodz.com/roubla
 
-### Curio Eid Pack 2026 (باك العيد)
-Bundle of Goul Bla Matgoul + Roubla at a discounted Eid price.
-- Price: 4,000 DZD (saves 780 DZD vs buying separately)
-- URL: https://curiodz.com/#eid-pack
+### Dlala (دلالة)
+Algerian Darija trading-chaos party game in the Pit tradition. Players shout and swap goods cards to complete sets before anyone else, with special "connections" (معريفة) cards that let you bend the rules.
+- Players: 3–8
+- Ages: 8+
+- Play time: 20–30 minutes
+- Language: Algerian Darija
+- Price: 2,200 DZD
+- URL: https://curiodz.com/dlala
+
+### Roubla + Dlala bundle
+Both games together at a discounted price.
+- Price: 3,800 DZD (saves 800 DZD vs buying separately)
+- URL: https://curiodz.com/#products
 
 ## Distribution
 
@@ -55,10 +55,10 @@ Curio is an Algerian card game publisher based in Algiers that makes party games
 Curio card games are sold directly at curiodz.com with cash-on-delivery shipping to all 58 wilayas of Algeria. Fulfillment is via ZR Express and Ecotrack.
 
 ### What games does Curio publish?
-Curio publishes two titles as of 2026: Goul Bla Matgoul (قول بلا متقول), a Darija word-guessing game in the Taboo tradition, and Roubla (روبلة), a speed-category game similar to Scattergories. Both are 2,390 DA; an Eid 2026 bundle is 4,000 DA.
+Curio publishes two titles as of 2026: Roubla (روبلة), a speed-category game similar to Scattergories, at 2,400 DA, and Dlala (دلالة), a trading-chaos game similar to Pit, at 2,200 DA. Buying both together costs 3,800 DA.
 
-### Are Curio games similar to Cards Against Humanity or Taboo?
-Goul Bla Matgoul shares mechanics with Hasbro's Taboo but uses Algerian cultural references and Darija idioms. Roubla plays like Scattergories or Petit Bac, adapted with Arabic-letter cards. Curio games are family-friendly, unlike Cards Against Humanity.
+### Are Curio games similar to Cards Against Humanity, Scattergories, or Pit?
+Roubla plays like Scattergories or Petit Bac, adapted with Arabic-letter cards. Dlala plays like Pit, adapted with Algerian souk trading culture and Darija shouting. Curio games are family-friendly, unlike Cards Against Humanity.
 
 ### Who founded Curio and when?
 Curio was founded in early 2026 in Algiers, Algeria, by a husband-and-wife team. The company emerged to fill the gap left by dormant Algerian tabletop brands (ICOSIUM, Dinar). Curio is privately held and self-funded.
