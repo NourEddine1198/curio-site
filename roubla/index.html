@@ -798,10 +798,24 @@ fbq('track', 'PageView');
     if(COUPON_CODE) payload.couponCode=COUPON_CODE; else if(GIFT_CODE) payload.couponCode=GIFT_CODE;
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
-    // Meta Purchase: once EVER per order (refresh-proof), eventID for future server-side dedup
+    // Meta Purchase: once EVER per order (refresh-proof), eventID for future server-side dedup.
+    // Fires on CREATION, so an order still counts even if the customer leaves at
+    // the cross-sell. If they then take the upsell the reported value stays the
+    // single price - under-reporting is safer than counting a purchase twice.
     if(res.ok&&j.success){try{const _fk='fbq-o'+j.orderNumber;if(typeof fbq==='function'&&!localStorage.getItem(_fk)){fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',order_id:j.orderNumber},{eventID:'order-'+j.orderNumber});localStorage.setItem(_fk,'1');}}catch(e){}}
-    return { ok: res.ok && j.success, orderNumber: j.orderNumber, error: j.error||'صار مشكل، عاود حاول' };
+    return { ok: res.ok && j.success, orderNumber: j.orderNumber, total: j.total, upsellToken: j.upsellToken, error: j.error||'صار مشكل، عاود حاول' };
   }
+
+  // Add the paired game to an order that ALREADY exists. The order was saved
+  // when she pressed the confirm button - this only upgrades it to the pair.
+  async function curioUpsell(orderNumber, token){
+    try{
+      const r=await fetch(API+'/api/orders/'+orderNumber+'/upsell',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token})});
+      const j=await r.json().catch(()=>({}));
+      return { ok: r.ok && j.success, total: j.total, error: j.error||'ما قدرناش نزيدوها' };
+    }catch(e){ return { ok:false, error:'مشكل في الشبكة' }; }
+  }
+  window.curioUpsell=curioUpsell;
   window.cq=cq;window.setDelivery=setDelivery;window.curFee=curFee;window.curioPlaceOrder=curioPlaceOrder;
 
   // scroll progress + sticky bar appears after the hero
@@ -857,16 +871,14 @@ fbq('track', 'PageView');
       if(homeVisible && !a.value.trim()){a.focus();return false;}
       return true;
     }
-    async function order(kind){
-      if(el.__placing)return; el.__placing=true;
-      let result;
-      try{ result = await window.curioPlaceOrder(kind); }
-      catch(e){ result={ok:false,error:'مشكل في الشبكة، عاود حاول'}; }
-      el.__placing=false;
-      if(!result || !result.ok){ alert(result && result.error ? result.error : 'صار مشكل، عاود حاول'); return; }
+    // The order is saved BEFORE the cross-sell is shown, so this only reveals
+    // the success box for an order that already exists.
+    let placed=null;
+    function finish(isBundle){
+      if(!placed)return;
       el.cform.style.display='none';
-      document.getElementById('ordernum').textContent='#'+result.orderNumber;
-      const bn=document.getElementById('bundleNote'); if(bn)bn.style.display=kind==='bundle'?'inline-block':'none';
+      document.getElementById('ordernum').textContent='#'+placed.orderNumber;
+      const bn=document.getElementById('bundleNote'); if(bn)bn.style.display=isBundle?'inline-block':'none';
       el.cdone.style.display='block';
       el.cdone.scrollIntoView({behavior:'smooth',block:'center'});
     }
@@ -880,11 +892,21 @@ fbq('track', 'PageView');
     }
     function loading(){
       gsap.to(el.iconStage,{opacity:1,duration:.15});
-      let split;try{split=new SplitText(el.confirmText,{type:'chars'});}catch(e){}
+      let split;try{split=new SplitText(el.confirmText,{type:'chars'});el.__split=split;}catch(e){}
       if(split)gsap.to(split.chars,{y:-40,opacity:0,duration:.4,stagger:{amount:.1,from:'end'},ease:'power3.in'});else gsap.to(el.confirmText,{opacity:0,duration:.2});
       gsap.to(el.mainP,{morphSVG:LOAD,duration:.25,ease:'power3.out'});
       gsap.to(mPos,{x:100,s:.95,duration:.35,ease:'power3.out',onUpdate:applyMain});
       gsap.to(mPos,{r:'+=360',duration:1,repeat:-1,ease:'none',onUpdate:applyMain});
+    }
+    // Put the button back if the order could not be saved - the customer must
+    // be able to fix a field and try again.
+    function resetLoading(){
+      gsap.killTweensOf(mPos);
+      if(el.__split){try{el.__split.revert();}catch(e){} el.__split=null;}
+      gsap.set(el.confirmText,{opacity:1});
+      gsap.to(el.iconStage,{opacity:0,duration:.2});
+      gsap.to(el.mainP,{morphSVG:SEND,duration:.25});
+      mPos.x=80;mPos.y=15;mPos.s=.9;mPos.r=0;applyMain();
     }
     function runSplit(){
       gsap.killTweensOf(mPos);
@@ -917,9 +939,36 @@ fbq('track', 'PageView');
         .to(el.iconStage,{opacity:0,duration:.35,ease:'power2.out'},'split+=0.45');
       tl.timeScale(1.05);
     }
-    el.confirm.addEventListener('click',()=>{ if(busy)return; if(!validate())return; busy=true; loading(); setTimeout(runSplit,1500); });
-    el.up.addEventListener('click',()=>{ if(getComputedStyle(el.up).pointerEvents==='none')return; order('bundle'); });
-    el.keep.addEventListener('click',()=>{ if(getComputedStyle(el.keep).pointerEvents==='none')return; order('single'); });
+    // -- Confirm SAVES the order, THEN offers the cross-sell --
+    // It used to be the other way round: the spinner and the green tick ran
+    // first and the order was only created when she picked one of the two
+    // buttons. Anyone who closed the page at that point was lost completely -
+    // no name, no phone, nothing ever reached the server.
+    el.confirm.addEventListener('click',async ()=>{
+      if(busy)return; if(!validate())return;
+      busy=true; loading();
+      const started=Date.now();
+      let r;
+      try{ r=await window.curioPlaceOrder('single'); }
+      catch(e){ r={ok:false,error:'مشكل في الشبكة، عاود حاول'}; }
+      if(!r||!r.ok){ busy=false; resetLoading(); alert(r&&r.error?r.error:'صار مشكل، عاود حاول'); return; }
+      placed=r;
+      // Keep the spinner up long enough for the animation to read, even when
+      // the API answers instantly.
+      setTimeout(runSplit, Math.max(0, 900-(Date.now()-started)));
+    });
+    el.up.addEventListener('click',async ()=>{
+      if(getComputedStyle(el.up).pointerEvents==='none')return;
+      if(el.__upselling)return; el.__upselling=true;
+      el.up.style.opacity='.6';
+      const r=await window.curioUpsell(placed.orderNumber, placed.upsellToken);
+      el.__upselling=false; el.up.style.opacity='1';
+      // The order is safe either way - if adding the pair fails we say so and
+      // keep the single, rather than losing the whole thing.
+      if(!r.ok){ alert(r.error||'ما قدرناش نزيدوها'); finish(false); return; }
+      finish(true);
+    });
+    el.keep.addEventListener('click',()=>{ if(getComputedStyle(el.keep).pointerEvents==='none')return; finish(false); });
   });
 </script>
 </body>
