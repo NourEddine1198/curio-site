@@ -633,7 +633,13 @@ fbq('track', 'PageView');
     document.getElementById('p-grand').textContent=fee==null?fmtP(sub):fmtP(sub+fee);
     document.getElementById('p-hint').textContent=fee==null?'+ التوصيل حسب الولاية':'شامل التوصيل ('+fmtP(fee)+')';}
   function pq(d){pqv=Math.max(1,pqv+d);document.getElementById('pq').textContent=pqv;pRecalc();}
-  function pPopulateWilayas(){pWsel.innerHTML='<option value="">اختر الولاية…</option>';DELIVERY.forEach(w=>{const o=document.createElement('option');o.value=String(w.code);o.textContent=(w.code<10?'0'+w.code:w.code)+' - '+w.ar;pWsel.appendChild(o);});}
+  /* delivery.json gives the code as a plain number (1..58) but the API stores
+     it 2-digit ("01".."58") — always send the padded form. */
+  function pWcode(c){return String(c).padStart(2,'0');}
+  /* 33 إليزي and 56 جانت have no Ecotrack price at all — the API refuses them,
+     so don't offer them and make the customer fill the form for nothing. */
+  function pWDeliverable(w){return !!(w.home||w.stopdesk);}
+  function pPopulateWilayas(){pWsel.innerHTML='<option value="">اختر الولاية…</option>';DELIVERY.filter(pWDeliverable).forEach(w=>{const o=document.createElement('option');o.value=pWcode(w.code);o.textContent=pWcode(w.code)+' - '+w.ar;pWsel.appendChild(o);});}
   function pPopulateCommunes(){const w=pByCode[pWsel.value];pCsel.innerHTML='';if(!w){pCsel.disabled=true;pCsel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}let list=w.communes||[];if(pdel==='office')list=list.filter(c=>c.desk);const ph=document.createElement('option');ph.value='';ph.textContent=list.length?(pdel==='office'?'اختر مكتب ستوب ديسك…':'اختر البلدية…'):'ماكانش '+(pdel==='office'?'مكتب':'توصيل')+' لهاذ الولاية';pCsel.appendChild(ph);list.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;pCsel.appendChild(o);});pCsel.disabled=list.length===0;}
   function setPDel(t){pdel=t;
     document.getElementById('pd-home').classList.toggle('on',t==='home');
@@ -666,7 +672,7 @@ fbq('track', 'PageView');
   // get dropped in the burst of requests at page load).
   function pFetchJSON(u,n){return fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).catch(()=>{if(n>0)return new Promise(z=>setTimeout(z,700)).then(()=>pFetchJSON(u,n-1));return null;});}
   // live delivery + pricing
-  pFetchJSON(API+'/api/delivery',4).then(d=>{if(!d||!d.wilayas)return;DELIVERY=d.wilayas;pByCode={};DELIVERY.forEach(w=>pByCode[String(w.code)]=w);pPopulateWilayas();pPopulateCommunes();});
+  pFetchJSON(API+'/api/delivery',4).then(d=>{if(!d||!d.wilayas)return;DELIVERY=d.wilayas;pByCode={};DELIVERY.forEach(w=>pByCode[pWcode(w.code)]=w);pPopulateWilayas();pPopulateCommunes();});
   pFetchJSON(API+'/api/pricing',4).then(p=>{const b=p&&p[PACK_SLUG];if(!b)return;PACK_PRICE=b.price;if(b.compareAt)PACK_COMPARE=b.compareAt;
     const now=document.getElementById('p-now'),old=document.getElementById('p-old'),sv=document.getElementById('p-save');
     if(now)now.innerHTML=PACK_PRICE.toLocaleString('en')+' <small>دج</small>';

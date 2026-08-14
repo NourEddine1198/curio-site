@@ -737,11 +737,17 @@ fbq('track', 'PageView');
   function recalc(){const sub=Math.max(0,PRICE*cqv-(GIFT_CODE?GIFT_OFF:0)-COUPON_OFF);const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
+  /* delivery.json gives the code as a plain number (1..58) but the API stores
+     it 2-digit ("01".."58") — always send the padded form. */
+  function wcode(c){return String(c).padStart(2,'0');}
+  /* 33 إليزي and 56 جانت have no Ecotrack price at all — the API refuses them,
+     so don't offer them and make the customer fill the form for nothing. */
+  function wDeliverable(w){return !!(w.home||w.stopdesk);}
   function populateWilayas(){
     wsel.innerHTML='<option value="">اختر الولاية…</option>';
-    DELIVERY.forEach(w=>{
-      const o=document.createElement('option');o.value=String(w.code);
-      o.textContent=(w.code<10?'0'+w.code:w.code)+' - '+w.ar;
+    DELIVERY.filter(wDeliverable).forEach(w=>{
+      const o=document.createElement('option');o.value=wcode(w.code);
+      o.textContent=wcode(w.code)+' - '+w.ar;
       wsel.appendChild(o);
     });
   }
@@ -774,7 +780,7 @@ fbq('track', 'PageView');
   // at page load, and cache:'default' fails for it cross-origin.
   function cFetchJSON(u,n){return fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw 0;return r.json();}).catch(()=>{if(n>0)return new Promise(z=>setTimeout(z,700)).then(()=>cFetchJSON(u,n-1));return null;});}
   cFetchJSON(API+'/api/delivery',4)
-    .then(d=>{ if(!d||!d.wilayas)return; DELIVERY=d.wilayas; byCode={}; DELIVERY.forEach(w=>byCode[String(w.code)]=w); populateWilayas(); populateCommunes(); });
+    .then(d=>{ if(!d||!d.wilayas)return; DELIVERY=d.wilayas; byCode={}; DELIVERY.forEach(w=>byCode[wcode(w.code)]=w); populateWilayas(); populateCommunes(); });
 
   // Build + send the real order to the store API. kind: 'single' | 'bundle'.
   async function curioPlaceOrder(kind){
