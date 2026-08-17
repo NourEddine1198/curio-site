@@ -44,6 +44,15 @@
   to = "/dlala/?launch=DLALA-LAUNCH"
   status = 302
 
+# Netlify doesn't recognise the .webmanifest extension and serves it as
+# application/octet-stream. Because X-Content-Type-Options=nosniff is set
+# below, browsers then refuse to parse it and silently ignore the home-screen
+# icon and app name. This pins the correct type.
+[[headers]]
+  for = "/site.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
 # ─── Security headers (all pages) ────────────────────────────
 # CSP allows: our own assets + inline scripts/styles (the pages use inline
 # code), Google Fonts, images over https, and API calls to the store + Web3Forms.
