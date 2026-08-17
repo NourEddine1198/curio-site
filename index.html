@@ -19,8 +19,12 @@
     --red:#ec2c24;--yellow:#facc15;--blue:#2aa9e0;--green:#5cb335;
     --ease:cubic-bezier(.16,1,.3,1)
   }
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:76px}
   body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--bg);overflow-x:clip}
+  /* Kill the blue Android tap flash, and stop a thumb-swipe selecting text.
+     Deliberately NOT global: prices, phone numbers and the address field must stay selectable. */
+  a,button{-webkit-tap-highlight-color:transparent}
+  .burger,.nav a,.mobmenu a,.logo,h1,h2,h3{-webkit-user-select:none;user-select:none}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,36px)}
@@ -46,7 +50,6 @@
   .nav a{position:relative}
   .nav a::after{content:"";position:absolute;inset-inline:0;bottom:-4px;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:right;transition:transform .25s}
   .nav a:hover::after{transform:scaleX(1)}
-  .cart{background:var(--yellow);border:2px solid var(--ink);border-radius:11px;padding:6px 12px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;box-shadow:none;font-size:.88rem}
 
   /* mobile dropdown menu (burger) */
   #hdr{overflow:hidden}
@@ -286,7 +289,7 @@ fbq('track', 'PageView');
 </head>
 <body data-cms-page="home">
   <!-- hand-drawn roughen filter (gentle) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
 
   <div class="progress"><i id="prog"></i></div>
 
@@ -295,7 +298,6 @@ fbq('track', 'PageView');
     <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
     <a href="#top" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
     <nav class="nav"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></nav>
-    <a class="cart">السلة · 0</a>
   </div>
   <div class="mobmenu" id="mobmenu"><a href="#products">الألعاب</a><a href="#why">علاش كيوريو</a></div>
   </header>
@@ -569,7 +571,18 @@ fbq('track', 'PageView');
 <script>
   // scroll progress
   const prog=document.getElementById('prog');
-  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+  // Throttled to one update per frame. Unthrottled, this measured the whole page
+  // (scrollHeight) and then wrote a style on every single scroll event — many per
+  // frame — which forces the browser to recalculate the layout over and over.
+  let progTick=false;
+  addEventListener('scroll',()=>{
+    if(progTick)return; progTick=true;
+    requestAnimationFrame(()=>{
+      const h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+      prog.style.width=(max>0?h.scrollTop/max*100:0)+'%';
+      progTick=false;
+    });
+  },{passive:true});
 
   // hero entrance (robust: rAF for smooth play + timeout fallback so the hero is NEVER left hidden)
   (function(){var h=document.getElementById('hero');var go=function(){if(h)h.classList.add('in');};requestAnimationFrame(go);setTimeout(go,120);})();

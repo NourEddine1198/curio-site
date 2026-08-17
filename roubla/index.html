@@ -15,6 +15,10 @@
   }
   html{scroll-behavior:smooth}
   body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--bg);overflow-x:clip}
+  /* Kill the blue Android tap flash, and stop a thumb-swipe selecting text.
+     Deliberately NOT global: prices, phone numbers and the address field must stay selectable. */
+  a,button{-webkit-tap-highlight-color:transparent}
+  .burger,.nav a,.mobmenu a,.logo,h1,h2,h3{-webkit-user-select:none;user-select:none}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,36px)}
@@ -52,7 +56,6 @@
   .nav a{position:relative}
   .nav a::after{content:"";position:absolute;inset-inline:0;bottom:-4px;height:3px;background:var(--yellow);transform:scaleX(0);transform-origin:right;transition:transform .25s}
   .nav a:hover::after{transform:scaleX(1)}
-  .cart{background:var(--yellow);border:2px solid var(--ink);border-radius:11px;padding:6px 12px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;box-shadow:none;font-size:.88rem}
 
   .crumbs{padding:14px 0 0;font-weight:700;color:var(--ink-soft);font-size:.88rem}
 
@@ -363,7 +366,7 @@ fbq('track', 'PageView');
 </head>
 <body data-cms-page="roubla">
   <!-- hand-drawn roughen filter (gentle) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter><filter id="goo-btn" x="-20%" y="-60%" width="140%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur id="goo-blur" in="SourceGraphic" stdDeviation="9" result="blur"/><feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -8"/></filter></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter><filter id="goo-btn" x="-20%" y="-60%" width="140%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur id="goo-blur" in="SourceGraphic" stdDeviation="9" result="blur"/><feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -8"/></filter></svg>
 
   <div class="progress"><i id="prog"></i></div>
 
@@ -371,11 +374,23 @@ fbq('track', 'PageView');
   <header id="hdr"><div class="bar">
     <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
     <a href="/" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
-    <nav class="nav"><a href="/">الرئيسية</a><a href="/#products">الألعاب</a><a href="/origami/">أوريغامي</a><a href="/#why">علاش كيوريو</a></nav>
-    <a class="cart">السلة · 0</a>
+    <nav class="nav"><a href="/">الرئيسية</a><a href="/dlala/">دلالة</a><a href="/origami/">أوريغامي</a><a href="/#why">علاش كيوريو</a></nav>
   </div>
   <div class="mobmenu" id="mobmenu"><a href="/">الرئيسية</a><a href="/#products">الألعاب</a><a href="/dlala/">دلالة</a><a href="/origami/">أوريغامي</a><a href="/#why">علاش كيوريو</a></div>
   </header>
+  <script>
+  // Mobile menu. Deliberately its own script, loaded right after the header: if this
+  // lived in the big checkout script, any throw in there would silently take the
+  // phone navigation down with it — which is how it came to be dead in the first place.
+  (function(){var burger=document.getElementById('burger'),hdr=document.getElementById('hdr'),mob=document.getElementById('mobmenu');
+    if(!burger||!mob)return;
+    function close(){hdr.classList.remove('menuopen');burger.textContent='☰';burger.setAttribute('aria-expanded','false');}
+    burger.addEventListener('click',function(e){e.stopPropagation();var open=hdr.classList.toggle('menuopen');burger.setAttribute('aria-expanded',open);burger.textContent=open?'✕':'☰';});
+    mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+    document.addEventListener('click',function(e){if(hdr.classList.contains('menuopen')&&!hdr.contains(e.target))close();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  })();
+  </script>
 
   <!-- HERO (two-column on desktop) -->
   <div class="hero">
@@ -841,16 +856,21 @@ fbq('track', 'PageView');
   window.curioUpsell=curioUpsell;
   window.cq=cq;window.setDelivery=setDelivery;window.curFee=curFee;window.curioPlaceOrder=curioPlaceOrder;
 
-  // mobile menu (burger dropdown) — without this the burger is a dead button
-  (function(){var burger=document.getElementById('burger'),hdr=document.getElementById('hdr'),mob=document.getElementById('mobmenu');
-    if(!burger||!mob)return;
-    burger.addEventListener('click',function(){var open=hdr.classList.toggle('menuopen');burger.setAttribute('aria-expanded',open);burger.textContent=open?'✕':'☰';});
-    mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('menuopen');burger.textContent='☰';burger.setAttribute('aria-expanded','false');});});
-  })();
-
   // scroll progress + sticky bar appears after the hero
   const prog=document.getElementById('prog'),mbar=document.getElementById('mbar');
-  addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';mbar.classList.toggle('show',h.scrollTop>520);},{passive:true});
+  // Throttled to one update per frame. Unthrottled, this measured the whole page
+  // (scrollHeight) and then wrote a style on every single scroll event — many per
+  // frame — which forces the browser to recalculate the layout over and over.
+  let progTick=false;
+  addEventListener('scroll',()=>{
+    if(progTick)return; progTick=true;
+    requestAnimationFrame(()=>{
+      const h=document.documentElement,max=h.scrollHeight-h.clientHeight,y=h.scrollTop;
+      prog.style.width=(max>0?y/max*100:0)+'%';
+      mbar.classList.toggle('show',y>520);
+      progTick=false;
+    });
+  },{passive:true});
 
   // reveal
   const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
