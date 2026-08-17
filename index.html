@@ -74,7 +74,12 @@
 
   .hero-logo{height:clamp(56px,11vw,82px);width:auto;mix-blend-mode:multiply}
   .hero-eyebrow{margin-top:16px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.98rem;color:var(--ink-soft)}
-  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(2.9rem,12.5vw,6.2rem);line-height:.98;margin-top:12px}
+  /* The 2.9rem floor is a REM, so Android's "text scaling" setting inflates it
+     while the screen stays the same width — at ~175% "EVERYONE" grew past the
+     viewport and got silently chopped by body{overflow-x:clip}. The 15vw cap
+     never binds at 100% text size (any screen width), it only stops runaway
+     growth; break-word is the last resort so it can wrap instead of vanish. */
+  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:min(clamp(2.9rem,12.5vw,6.2rem),15vw);line-height:.98;margin-top:12px;overflow-wrap:break-word}
   .hero-h1 .c-red{color:var(--red)}
   .hero-h1 .mark{white-space:nowrap;background:linear-gradient(transparent 60%, var(--yellow) 60%);padding:0 .04em}
   .hero-lead{margin-top:18px;font-size:clamp(1.05rem,2.7vw,1.28rem);font-weight:700;line-height:1.62;max-width:40ch;color:var(--ink)}
@@ -355,7 +360,7 @@ fbq('track', 'PageView');
         </a>
 
         <a class="gcard rough reveal" href="/dlala">
-          <div class="gc-img"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><span class="gc-ribbon new">🔥 جديدة</span></div>
+          <div class="gc-img"><img src="/products/dlala/photos/4.jpg" alt="دلالة"><span class="gc-ribbon new">🔥 جديدة</span></div>
           <div class="gc-body">
             <h3>دلالة</h3>
             <p class="gc-hook">بدّل، عيّط، و لمّ السلعة قبل الكل. فوضى منظّمة تنخّي السوق و تخرّج البزناسي اللي فيك.</p>
@@ -371,7 +376,7 @@ fbq('track', 'PageView');
           <div class="b-rays" id="b-rays"></div>
           <div class="b-covers">
             <figure class="b-cov b-a"><img src="/images/photo_5866352893554789634_y.jpg" alt="روبلة"><figcaption>روبلة</figcaption></figure>
-            <figure class="b-cov b-b"><img src="/products/dlala/draft/2.jpg" alt="دلالة"><figcaption>دلالة</figcaption></figure>
+            <figure class="b-cov b-b"><img src="/products/dlala/photos/1.jpg" alt="دلالة"><figcaption>دلالة</figcaption></figure>
             <div class="b-plus">+</div>
             <div class="b-spark" id="b-spark"></div>
           </div>

@@ -198,8 +198,9 @@
   .hc-num{font-family:"Anton";opacity:.92}
   .hc-top h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1.15;margin:0 0 8px;display:flex;align-items:baseline;gap:8px}
   .hc-top p{font-weight:700;line-height:1.55;font-size:1.05rem;max-width:42ch}
-  .hc-img{position:relative;flex:1;min-height:clamp(220px,32vh,300px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--bg2);color:var(--ink-soft);font-weight:800}
-  .hc-img .cam{font-size:2.4rem}
+  /* 1517/873 matches the real how-to-play graphics exactly (no crop needed) */
+  .hc-img{position:relative;width:100%;aspect-ratio:1517/873;background:var(--bg2);overflow:hidden}
+  .hc-img img{width:100%;height:100%;object-fit:cover;display:block}
   .c-red .hc-top{background:var(--red);color:#fff}
   .c-yellow .hc-top{background:var(--yellow);color:var(--ink)}
   .c-blue .hc-top{background:var(--blue);color:#fff}
@@ -463,19 +464,19 @@ fbq('track', 'PageView');
       <div class="howstack">
         <div class="hcard c-red rough">
           <div class="hc-top"><h3><span class="hc-num">1.</span>ما قبل الروبلة..</h3><p>وزّع 6 حروف لكل لاعب، وحط باقي البطاقات في الوسط.</p></div>
-          <div class="hc-img"><span class="cam">📸</span><span>صورة قريباً</span></div>
+          <div class="hc-img"><img src="/products/roubla/how-to/1.jpg" alt="وزّع 6 بطاقات حروف لكل لاعب" loading="lazy"></div>
         </div>
         <div class="hcard c-yellow rough">
           <div class="hc-top"><h3><span class="hc-num">2.</span>بداية الروبلة ...</h3><p>اقلب الموضوع، وجاوب بكلمة ولاجملة تبدا بحرف من حروفك، عيّط ديركت! مكاش أدوار</p></div>
-          <div class="hc-img"><span class="cam">📸</span><span>صورة قريباً</span></div>
+          <div class="hc-img"><img src="/products/roubla/how-to/2.jpg" alt="عيّط ديركت بجواب يبدا بحرفك" loading="lazy"></div>
         </div>
         <div class="hcard c-blue rough">
           <div class="hc-top"><h3><span class="hc-num">3.</span>وسط الروبلة ...</h3><p>كل موضوع يقبل 3 إجابات برك. لي يحط الكارتة التالتة يقلب الـكارطة بش تروحو للموضوع الجديد ديراكت.</p></div>
-          <div class="hc-img"><span class="cam">📸</span><span>صورة قريباً</span></div>
+          <div class="hc-img"><img src="/products/roubla/how-to/3.jpg" alt="3 إجابات وتقلب الكارطة للموضوع الجديد" loading="lazy"></div>
         </div>
         <div class="hcard c-green rough">
-          <div class="hc-top"><h3><span class="hc-num">4.</span>نهاية الروبلة</h3><p>لي يكمل حروفو يربح الجولة. الباقي يحسبوا "الصواعق"  ⚡⚡ي بقاو في حروفهم. وعاودو العبو جولة جديدة بنفس الطريقة.<br>اللعبة تخلاص كي واحد يقفل 33 صاعقة، وأقل مجموع نقاط هو الـرابح.</p></div>
-          <div class="hc-img"><span class="cam">📸</span><span>صورة قريباً</span></div>
+          <div class="hc-top"><h3><span class="hc-num">4.</span>نهاية الروبلة</h3><p>لي يكمل حروفو يربح الجولة. الباقي يحسبوا "الصواعق"  ⚡⚡لي بقاو في حروفهم. وعاودو العبو جولة جديدة بنفس الطريقة.<br>اللعبة تخلاص كي واحد يقفل 33 صاعقة، وأقل مجموع نقاط هو الـرابح.</p></div>
+          <div class="hc-img"><img src="/products/roubla/how-to/4.jpg" alt="احسب الصواعق الباقية في يدك — أقل نقاط يربح" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -509,7 +510,7 @@ fbq('track', 'PageView');
       <form class="cform" id="cform" onsubmit="return false">
         <div class="upsell-pitch" id="pitch" style="display:none">
           <span class="up-badge">عندنا هدية خاصة كي شريت علينا روبلة</span>
-          <div class="up-visual"><img src="/products/dlala/draft/2.jpg" alt="دلالة — عمي الدلال"></div>
+          <div class="up-visual"><img src="/products/dlala/photos/1.jpg" alt="علبة دلالة"></div>
           <div class="up-big">تخفيض ماصراش على لعبة دلالة 🔥</div>
           <div class="up-sub">ادا عجباتك روبلة، دلالة راح تهبلك… <b>دلالة</b> لعبة تحب اللمات وكي تجيبوها اعرفو القعدة راح تتخلط بالضحك.</div>
           <div class="up-price"><span class="now">تقدر تزيدها فطلبيتك بـ <b>1400</b> غير <span class="was">عوض 2200 دج</span> 💰</span></div>
