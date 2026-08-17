@@ -368,8 +368,14 @@ fbq('track', 'PageView');
         <div class="gslide"><img src="/products/roubla/box.jpg" alt="علبة روبلة — الطبعة الثانية"></div>
         <div class="gslide"><img src="/products/roubla/hands.jpg" alt="بطاقات روبلة في اليد"></div>
         <div class="gslide"><img src="/products/roubla/cards.jpg" alt="بطاقات روبلة — الحروف و المواضيع"></div>
+        <!-- 4th slot: intentionally repeats hands.jpg until a real 4th photo
+             exists. Repeating the MIDDLE shot (not the first or last) keeps the
+             duplicate from landing beside its twin as the carousel loops.
+             Swap it from #cms → Gallery; that creates roubla.img-gslide-img.3
+             and the repeat disappears. -->
+        <div class="gslide"><img src="/products/roubla/hands.jpg" alt="بطاقات روبلة في اليد"></div>
       </div>
-      <div class="glines" id="glines"><i class="gline on"></i><i class="gline"></i><i class="gline"></i></div>
+      <div class="glines" id="glines"><i class="gline on"></i><i class="gline"></i><i class="gline"></i><i class="gline"></i></div>
     </div>
   </section>
 
