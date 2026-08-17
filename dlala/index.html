@@ -167,9 +167,6 @@
   .moment.c-black p{color:rgba(255,255,255,.82)}
 
   /* playable */
-  .try{text-align:center}
-  .gameframe{margin-top:14px;background:transparent}
-  .gameframe iframe{display:block;width:100%;height:780px;border:0;background:transparent}
 
   /* ===== HOW TO PLAY — stacking cards ===== */
   .howstack{margin-top:30px}
@@ -462,16 +459,6 @@ fbq('track', 'PageView');
       </div>
     </section>
   </div>
-
-  <!-- TRY (blue section — yellow demo card pops on blue) -->
-  <section class="block blue halftone wavetop try">
-    <div class="wrap">
-      <div class="reveal in">
-        <h2 class="h2" style="margin-top:30px">لوكان نلعبو دروك.. تنجم تسبق عمي الدلال؟ 🔔</h2>
-      </div>
-      <div class="gameframe reveal in"><iframe id="dlalaFrame" src="/dlala-game.html?embed=1" title="جرّب دلالة" loading="lazy" scrolling="no"></iframe></div>
-    </div>
-  </section>
 
   <!-- HOW TO PLAY (stacking cards) -->
   <section class="block ink halftone wavetop">
@@ -882,8 +869,6 @@ fbq('track', 'PageView');
   const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.14});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // auto-fit the embedded demo (no internal scroll)
-  addEventListener('message',e=>{if(e.data&&e.data.dlalaH){const f=document.getElementById('dlalaFrame');if(f)f.style.height=e.data.dlalaH+'px';}});
 </script>
 
 <!-- ===== EDITOR SCRIPT ===== -->
