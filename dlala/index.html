@@ -33,6 +33,13 @@
   .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px clamp(12px,3vw,18px)}
   .burger{font-size:1.3rem;border:2px solid var(--ink);background:var(--yellow);border-radius:9px;width:38px;height:38px;cursor:pointer;box-shadow:none}
   @media(min-width:760px){.burger{display:none}}
+  /* mobile dropdown menu (burger) — same component as the homepage */
+  #hdr{overflow:hidden}
+  .mobmenu{display:none;flex-direction:column;gap:2px;padding:4px 8px 8px}
+  .mobmenu a{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.95rem;padding:10px;border-radius:9px;color:var(--ink)}
+  .mobmenu a:hover,.mobmenu a:active{background:var(--yellow)}
+  header.menuopen .mobmenu{display:flex;border-top:2px solid var(--ink);margin-top:2px}
+  @media(min-width:760px){.mobmenu{display:none!important}}
   .logo{height:34px;mix-blend-mode:multiply}
   .nav{display:none;gap:18px;font-weight:800;font-size:.92rem;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
   @media(min-width:760px){.nav{display:flex}}
@@ -365,11 +372,13 @@ fbq('track', 'PageView');
 
   <!-- FLOATING HEADER -->
   <header id="hdr"><div class="bar">
-    <button class="burger" aria-label="القائمة">☰</button>
-    <img class="logo" src="/curio-logo.jpg" alt="Curio">
-    <nav class="nav"><a href="/">الرئيسية</a><a>الألعاب</a><a>أوريغامي</a><a>علاش كيوريو</a></nav>
+    <button class="burger" id="burger" aria-label="القائمة" aria-expanded="false">☰</button>
+    <a href="/" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
+    <nav class="nav"><a href="/">الرئيسية</a><a href="/#products">الألعاب</a><a href="/origami/">أوريغامي</a><a href="/#why">علاش كيوريو</a></nav>
     <a class="cart">السلة · 0</a>
-  </div></header>
+  </div>
+  <div class="mobmenu" id="mobmenu"><a href="/">الرئيسية</a><a href="/#products">الألعاب</a><a href="/roubla/">روبلة</a><a href="/origami/">أوريغامي</a><a href="/#why">علاش كيوريو</a></div>
+  </header>
 
   <!-- HERO (two-column on desktop) -->
   <div class="hero">
@@ -862,6 +871,13 @@ fbq('track', 'PageView');
   window.cq=cq;window.setDelivery=setDelivery;window.curFee=curFee;window.curioPlaceOrder=curioPlaceOrder;
 
   // scroll progress + sticky bar appears after the hero
+  // mobile menu (burger dropdown) — without this the burger is a dead button
+  (function(){var burger=document.getElementById('burger'),hdr=document.getElementById('hdr'),mob=document.getElementById('mobmenu');
+    if(!burger||!mob)return;
+    burger.addEventListener('click',function(){var open=hdr.classList.toggle('menuopen');burger.setAttribute('aria-expanded',open);burger.textContent=open?'✕':'☰';});
+    mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('menuopen');burger.textContent='☰';burger.setAttribute('aria-expanded','false');});});
+  })();
+
   const prog=document.getElementById('prog'),mbar=document.getElementById('mbar');
   addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';mbar.classList.toggle('show',h.scrollTop>520);},{passive:true});
 
@@ -966,7 +982,17 @@ fbq('track', 'PageView');
     stage.append(box,guide,...cards);
     function fanRest(){const n=cards.length,spread=window.innerWidth<560?46:60;cards.forEach((c,i)=>{const t=i/(n-1)-0.5;gsap.set(c,{xPercent:-50,yPercent:-50,rotation:t*spread,x:0,y:0,scale:1,opacity:1,zIndex:10+i});c.dataset.z=10+i;});}
     let topZ=30;
-    function enableDrag(){cards.forEach(c=>{if(c._d)return;c._d=1;Draggable.create(c,{type:'x,y',onPress(){topZ++;gsap.set(c,{zIndex:topZ});gsap.to(c,{scale:1.07,duration:.15});},onDragEnd(){gsap.to(c,{scale:1,duration:.2});}});c.addEventListener('dblclick',()=>gsap.to(c,{x:0,y:0,duration:.5,ease:'back.out(1.4)'}));});}
+    // Touch devices must keep their scroll. GSAP Draggable writes touch-action:none
+    // onto every card it controls, and this fan covers ~42% of a phone screen — so a
+    // thumb landing on it froze the page instead of scrolling. Drag is mouse-only now;
+    // on touch a tap simply lifts the card to the front. On mouse, PAD is a halo around
+    // the stage so a card can never be dragged out into another section.
+    const coarse=window.matchMedia&&matchMedia('(hover:none),(pointer:coarse)').matches;
+    const PAD=120;
+    function enableDrag(){cards.forEach(c=>{if(c._d)return;c._d=1;
+      if(coarse){c.addEventListener('click',()=>{topZ++;gsap.set(c,{zIndex:topZ});gsap.to(c,{y:-14,duration:.18,yoyo:true,repeat:1,ease:'power2.out'});});return;}
+      Draggable.create(c,{type:'x,y',bounds:{left:-PAD,top:-PAD,width:stage.offsetWidth+PAD*2,height:stage.offsetHeight+PAD*2},onPress(){topZ++;gsap.set(c,{zIndex:topZ});gsap.to(c,{scale:1.07,duration:.15});},onDragEnd(){gsap.to(c,{scale:1,duration:.2});}});
+      c.addEventListener('dblclick',()=>gsap.to(c,{x:0,y:0,duration:.5,ease:'back.out(1.4)'}));});}
     const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
     fanRest();
     if(reduce){enableDrag();return;}
