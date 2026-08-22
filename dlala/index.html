@@ -262,6 +262,15 @@
   footer{border-top:3px solid var(--ink);background:var(--bg2);padding:30px;text-align:center;color:var(--ink-soft);font-weight:700}
 
   /* sticky mobile buy bar */
+  /* price breakdown: product is the hero, delivery quiet under it, and the
+     amount the driver collects in its own box — with cash on delivery a
+     surprise at the door is what turns into a refused parcel. */
+  .tship{font-size:.72rem;color:var(--ink-soft);font-weight:700;line-height:1.5;display:block}
+  .tship b{font-weight:800;color:var(--ink)}
+  .tpay{display:flex;align-items:baseline;justify-content:space-between;gap:10px;background:var(--yellow);border:2.5px solid var(--ink);border-radius:10px;padding:7px 11px;margin-top:10px}
+  .tpay[hidden]{display:none}
+  .tpaylbl{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-size:.72rem;font-weight:800}
+  .tpay b{font-family:"Anton",sans-serif;font-size:1.45rem;line-height:1.05}
   .mbar{position:fixed;inset-inline:0;bottom:0;z-index:120;background:var(--bg2);border-top:3px solid var(--ink);box-shadow:0 -6px 0 -2px rgba(22,19,16,.12);display:none;align-items:center;justify-content:space-between;gap:12px;padding:9px clamp(14px,4vw,20px);transform:translateY(120%);transition:transform .35s var(--ease)}
   .mbar.show{transform:none}
   .mbar .mp{font-family:"Anton";font-size:1.4rem;line-height:1}
@@ -671,10 +680,12 @@ fbq('track', 'PageView');
             <div class="cqty"><button type="button" onclick="cq(-1)" aria-label="نقّص">−</button><span id="cq">1</span><button type="button" onclick="cq(1)" aria-label="زيد">+</button></div>
           </div>
           <div style="text-align:left">
-            <div style="font-size:.74rem;color:var(--ink-soft);font-weight:700">المجموع</div>
-            <b id="t-grand" style="font-family:Anton;font-size:1.75rem">2,200 دج</b>
+            <div style="font-size:.74rem;color:var(--ink-soft);font-weight:700">دلالة</div>
+            <b id="t-sub" style="font-family:Anton;font-size:1.75rem">— دج</b>
+            <span class="tship" id="t-ship">+ التوصيل حسب الولاية</span>
           </div>
         </div>
+        <div class="tpay" id="t-pay" hidden><span class="tpaylbl">تخلّص فالباب</span><b id="t-grand">— دج</b></div>
 
         <div class="splitwrap" id="splitwrap">
           <div class="blobs"><div class="blob blob-l" id="blobL"></div><div class="blob blob-r" id="blobR"></div></div>
@@ -831,7 +842,11 @@ fbq('track', 'PageView');
   // 3,500 — not 4,400 minus one 450. The server was corrected on 22 Aug and
   // this has to say the same number or the customer is quoted one total and
   // charged another. A typed coupon stays a flat amount off the basket.
-  function recalc(){const off=LAUNCH_ON?(LAUNCH_OFF*cqv):COUPON_OFF;const sub=Math.max(0,PRICE*cqv-off);const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
+  function recalc(){const off=LAUNCH_ON?(LAUNCH_OFF*cqv):COUPON_OFF;const sub=Math.max(0,PRICE*cqv-off);const fee=curFee();
+    document.getElementById('t-sub').textContent=fmt(sub);
+    const ship=document.getElementById('t-ship'),pay=document.getElementById('t-pay');
+    if(fee==null){ship.textContent='+ التوصيل حسب الولاية';pay.hidden=true;}
+    else{ship.innerHTML='+ التوصيل <b>'+fmt(fee)+'</b>';document.getElementById('t-grand').textContent=fmt(sub+fee);pay.hidden=false;}}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
   /* delivery.json gives the code as a plain number (1..58) but the API stores

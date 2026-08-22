@@ -255,7 +255,14 @@
   .mtot{text-align:left}
   .mtotlbl{font-size:.72rem;color:var(--ink-soft);font-weight:700}
   .mtot b{display:block;font-family:"Anton",sans-serif;font-size:1.7rem;line-height:1.05}
-  .mtothint{font-size:.68rem;color:var(--ink-soft);font-weight:700}
+  .mtothint{font-size:.72rem;color:var(--ink-soft);font-weight:700;line-height:1.5}
+  .mtothint b{font-weight:800;color:var(--ink)}
+  /* what the driver actually collects — kept loud on purpose: with cash on
+     delivery a surprise at the door is what turns into a refused parcel. */
+  .mpay{display:flex;align-items:baseline;justify-content:space-between;gap:10px;background:var(--yellow);border:2.5px solid var(--ink);border-radius:10px;padding:7px 11px;margin-top:10px}
+  .mpay[hidden]{display:none}
+  .mpaylbl{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-size:.72rem;font-weight:800}
+  .mpay b{font-family:"Anton",sans-serif;font-size:1.45rem;line-height:1.05}
   .msubmit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:3px solid var(--ink);border-radius:13px;background:var(--green);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.18rem;padding:13px;margin-top:13px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s}
   .msubmit:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
   .msubmit:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
@@ -557,8 +564,9 @@ fbq('track', 'PageView');
             <div><label class="mlabel">شحال من باك؟</label>
               <div class="mqty"><button type="button" onclick="pq(-1)" aria-label="نقّص">−</button><span id="pq">1</span><button type="button" onclick="pq(1)" aria-label="زيد">+</button></div>
             </div>
-            <div class="mtot"><span class="mtotlbl">المجموع</span><b id="p-grand">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
+            <div class="mtot"><span class="mtotlbl">الباك</span><b id="p-sub">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
           </div>
+          <div class="mpay" id="p-pay" hidden><span class="mpaylbl">تخلّص فالباب</span><b id="p-grand">— دج</b></div>
           <button class="msubmit" type="submit"><span>✓</span><span>أكّد طلب الباك</span></button>
           <div class="mtrust">💵 الدفع عند الاستلام · 📞 نعيّطولك نأكدو قبل ما نرسلو</div>
         </form>
@@ -654,8 +662,12 @@ fbq('track', 'PageView');
   function closePack(){pModal.classList.remove('open');document.body.classList.remove('mlock');pModal.setAttribute('aria-hidden','true');}
   function pCurFee(){const w=pByCode[pWsel.value];if(!w)return null;const f=pdel==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
   function pRecalc(){const sub=Math.max(0,PACK_PRICE*pqv-P_COUPON_OFF),fee=pCurFee();
-    document.getElementById('p-grand').textContent=fee==null?fmtP(sub):fmtP(sub+fee);
-    document.getElementById('p-hint').textContent=fee==null?'+ التوصيل حسب الولاية':'شامل التوصيل ('+fmtP(fee)+')';}
+    document.getElementById('p-sub').textContent=fmtP(sub);
+    const hint=document.getElementById('p-hint'),pay=document.getElementById('p-pay');
+    // Until a wilaya is picked the fee is unknown — say so and hide the door
+    // amount rather than showing a figure that is about to change.
+    if(fee==null){hint.textContent='+ التوصيل حسب الولاية';pay.hidden=true;}
+    else{hint.innerHTML='+ التوصيل <b>'+fmtP(fee)+'</b>';document.getElementById('p-grand').textContent=fmtP(sub+fee);pay.hidden=false;}}
   function pq(d){pqv=Math.max(1,pqv+d);document.getElementById('pq').textContent=pqv;pRecalc();}
   /* delivery.json gives the code as a plain number (1..58) but the API stores
      it 2-digit ("01".."58") — always send the padded form. */
