@@ -1810,6 +1810,9 @@
         _t: tsInput ? Number(tsInput.value) : 0
       };
 
+      // Where this visitor came from — captured on their first page.
+      if (window.curioSource) { Object.assign(payload, window.curioSource()); }
+
       submitButton.classList.add('is-loading');
       submitButton.textContent = repairText(STORE_COPY.common.buttons.submitLoading);
       clearMessage(message);

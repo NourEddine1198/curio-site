@@ -377,6 +377,7 @@ fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
+<script src="/assets/source-tracking.js" defer></script>
 </head>
 <body data-cms-page="dlala">
 
@@ -907,6 +908,8 @@ fbq('track', 'PageView');
     else { payload.officeCommune=csel.value; }
     if(LAUNCH_ON&&LAUNCH_CODE) payload.couponCode=LAUNCH_CODE;
     else if(COUPON_CODE) payload.couponCode=COUPON_CODE;
+    // Where this visitor came from — captured on their first page, not this one.
+    if(window.curioSource) Object.assign(payload, window.curioSource());
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const j=await res.json().catch(()=>({}));
     if(!(res.ok&&j.success)&&LAUNCH_ON&&LAUNCH_CODE){
