@@ -755,13 +755,19 @@ fbq('track', 'PageView');
   // the store's /api/orders and /api/orders/[n]/upsell — change all three or
   // the page promises a number the server will not honour.
   const ROUBLA_FULL=2400, PAIR_OFF_NORMAL=800, PAIR_OFF_LAUNCH=450;
+  // NOTE: these two numbers are code-controlled, not CMS-controlled. The rows
+  // dlala.up-price.0 and dlala.choice-sub.0 overwrite this line's HTML after we
+  // run, so editing the page source alone changes nothing live. They MUST equal
+  // what the server charges, so we rewrite the element ourselves — last word.
   function upsellPrice(onLaunch){
     const off = onLaunch ? PAIR_OFF_LAUNCH : PAIR_OFF_NORMAL;
-    const now = ROUBLA_FULL - off;
-    const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
-    set('up-now', now.toLocaleString('en'));
-    set('up-save', off.toLocaleString('en'));
-    set('up-btn-sub', '+' + now.toLocaleString('en') + ' دج · تربح ' + off.toLocaleString('en'));
+    const now = (ROUBLA_FULL - off).toLocaleString('en');
+    const sav = off.toLocaleString('en');
+    const line = document.querySelector('.up-price');
+    if(line) line.innerHTML = '<span class="was">روبلة عادةً 2400 دج</span> · '
+      + '<span class="now">دروك زيدها بـ <b>' + now + '</b> غير — تربح <b>' + sav + '</b> 💰</span>';
+    const btn = document.getElementById('up-btn-sub');
+    if(btn) btn.textContent = '+' + now + ' دج · تربح ' + sav;
   }
 
   function launchShow(rem){
@@ -1097,6 +1103,7 @@ fbq('track', 'PageView');
       el.cdone.scrollIntoView({behavior:'smooth',block:'center'});
     }
     function collapseForm(){
+      upsellPrice(LAUNCH_ON);
       el.pitch.style.display='block';
       const groups=[...el.cform.children].filter(c=>c.matches('.g2,.fr')||c===el.trust);
       gsap.set(groups,{overflow:'hidden'});
