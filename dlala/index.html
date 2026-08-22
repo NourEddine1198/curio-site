@@ -570,7 +570,7 @@ fbq('track', 'PageView');
           <div class="up-visual"><img src="/products/roubla/photos/3.jpg" alt="روبلة"></div>
           <div class="up-big">زيد روبلة، القعدة ما تخلصش! 🔥</div>
           <div class="up-sub">دلالة وحدها زوينة… بصح مع <b>روبلة</b> الدار كاملة تلعب و القعدة تدوم بلا ما توقف.</div>
-          <div class="up-price"><span class="was">روبلة عادةً 2400 دج</span> · <span class="now">دروك زيدها بـ <b>1600</b> غير — تربح <b>800</b> 💰</span></div>
+          <div class="up-price"><span class="was">روبلة عادةً 2400 دج</span> · <span class="now">دروك زيدها بـ <b id="up-now">1600</b> غير — تربح <b id="up-save">800</b> 💰</span></div>
         </div>
         <div class="g2">
           <div><label class="fl">الاسم</label><input class="in" id="f-name" required="" placeholder="الاسم الكامل"></div>
@@ -681,7 +681,7 @@ fbq('track', 'PageView');
           <svg class="icon-stage" viewBox="0 0 200 30" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><g id="mainG"><path id="mainP" fill="#161310"></path></g><g id="dotG"><path id="dotP" fill="#fff"></path></g></svg>
           <div class="labels">
             <button type="button" class="btn-confirm rough" id="btnConfirm"><span class="ctext" id="confirmText">أكّد الطلب</span></button>
-            <button type="button" class="choice up rough" id="btnUp"><span class="big">🔥 زيد روبلة</span><span class="sub">+1600 دج · تربح 800</span></button>
+            <button type="button" class="choice up rough" id="btnUp"><span class="big">🔥 زيد روبلة</span><span class="sub" id="up-btn-sub">+1600 دج · تربح 800</span></button>
             <button type="button" class="choice keep rough" id="btnKeep"><span class="big">لا، غير دلالة</span></button>
           </div>
         </div>
@@ -748,15 +748,33 @@ fbq('track', 'PageView');
     return sessionStorage.getItem('curio-launch')||'';
   }catch(e){return '';}})();
   function launchCheck(){return fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:LAUNCH_CODE,slugs:[PRODUCT_SLUG]})}).then(r=>r.json());}
+  // What the cross-sell charges for the second game. Normally the pair deal
+  // takes 800 off Roubla (2400 -> 1600). During the campaign the pair discount
+  // is REPLACED by the same 450 the customer gets on Dlala (2400 -> 1950), so
+  // nobody double-dips: 1,750 + 1,950 = 3,700. Mirrors CAMPAIGN_PAIR_OFF in
+  // the store's /api/orders and /api/orders/[n]/upsell — change all three or
+  // the page promises a number the server will not honour.
+  const ROUBLA_FULL=2400, PAIR_OFF_NORMAL=800, PAIR_OFF_LAUNCH=450;
+  function upsellPrice(onLaunch){
+    const off = onLaunch ? PAIR_OFF_LAUNCH : PAIR_OFF_NORMAL;
+    const now = ROUBLA_FULL - off;
+    const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+    set('up-now', now.toLocaleString('en'));
+    set('up-save', off.toLocaleString('en'));
+    set('up-btn-sub', '+' + now.toLocaleString('en') + ' دج · تربح ' + off.toLocaleString('en'));
+  }
+
   function launchShow(rem){
     LAUNCH_ON=true;document.body.classList.remove('launch-over');document.body.classList.add('launch-on');
     document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML='<s>'+LAUNCH_WAS.toLocaleString('en')+'</s>'+LAUNCH_NOW.toLocaleString('en')+' <small>دج</small>';});
     if(rem>0&&rem<=30){const w=document.getElementById('launch-left');if(w){w.style.display='block';document.getElementById('launch-n').textContent=rem;}}
+    upsellPrice(true);
     recalc();
   }
   function launchOver(){
     LAUNCH_ON=false;document.body.classList.remove('launch-on');document.body.classList.add('launch-over');
     document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML=PRICE.toLocaleString('en')+' <small>دج</small>';});
+    upsellPrice(false);
     recalc();
   }
   if(LAUNCH_CODE){
@@ -803,7 +821,11 @@ fbq('track', 'PageView');
   window.curioApplyCoupon=curioApplyCoupon;
 
   function curFee(){const w=byCode[wsel.value];if(!w)return null;const f=delType==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function recalc(){const sub=Math.max(0,PRICE*cqv-(LAUNCH_ON?LAUNCH_OFF:COUPON_OFF));const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
+  // The launch price is a PER-GAME price (1,750 each), so two copies is
+  // 3,500 — not 4,400 minus one 450. The server was corrected on 22 Aug and
+  // this has to say the same number or the customer is quoted one total and
+  // charged another. A typed coupon stays a flat amount off the basket.
+  function recalc(){const off=LAUNCH_ON?(LAUNCH_OFF*cqv):COUPON_OFF;const sub=Math.max(0,PRICE*cqv-off);const fee=curFee();document.getElementById('t-grand').textContent=fee==null?fmt(sub):fmt(sub+fee);}
   function cq(d){cqv=Math.max(1,cqv+d);document.getElementById('cq').textContent=cqv;recalc();}
 
   /* delivery.json gives the code as a plain number (1..58) but the API stores
