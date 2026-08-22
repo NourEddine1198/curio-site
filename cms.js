@@ -55,7 +55,6 @@
         { sel: ".inbox h3", group: "What's inside" },
         { sel: ".inlist li", group: "What's inside" },
         { sel: ".csub", group: "Checkout" },
-        { sel: ".fl", group: "Checkout labels" },
         { sel: ".seg button", group: "Checkout" },
         { sel: ".ctrust", group: "Checkout" },
         { sel: ".up-badge", group: "Upsell" },
@@ -70,8 +69,13 @@
         { sel: ".bundle-note", group: "Success" },
         { sel: "footer", group: "Footer" },
         { sel: ".mbar .order span:last-of-type", group: "Mobile bar" },
-        { sel: ".nav a", group: "Nav" },
-        { sel: ".cart", group: "Nav" },
+        // Navigation and checkout labels are deliberately NOT editable here.
+        // Keys are positional (page.selector.N), so adding or removing one
+        // link or form field silently shifts every saved value onto the wrong
+        // element. That is exactly what happened: adding the البلدية field
+        // pushed "العنوان" onto it and "الكمية" onto the address box, and
+        // dropping a nav link put "أوريغامي" back on the page pointing at
+        // the wrong section. These belong in the HTML, where they cannot drift.
         { sel: ".marq .mq", group: "Trust marquee" }
       ],
       img: [
@@ -108,7 +112,6 @@
         { sel: ".wi-hint", group: "What's inside" },
         { sel: ".wi-band", group: "What's inside" },
         { sel: ".csub", group: "Checkout" },
-        { sel: ".fl", group: "Checkout labels" },
         { sel: ".seg button", group: "Checkout" },
         { sel: ".ctrust", group: "Checkout" },
         { sel: ".up-badge", group: "Upsell" },
@@ -123,8 +126,13 @@
         { sel: ".bundle-note", group: "Success" },
         { sel: "footer", group: "Footer" },
         { sel: ".mbar .order span:last-of-type", group: "Mobile bar" },
-        { sel: ".nav a", group: "Nav" },
-        { sel: ".cart", group: "Nav" },
+        // Navigation and checkout labels are deliberately NOT editable here.
+        // Keys are positional (page.selector.N), so adding or removing one
+        // link or form field silently shifts every saved value onto the wrong
+        // element. That is exactly what happened: adding the البلدية field
+        // pushed "العنوان" onto it and "الكمية" onto the address box, and
+        // dropping a nav link put "أوريغامي" back on the page pointing at
+        // the wrong section. These belong in the HTML, where they cannot drift.
         { sel: "#sc-hl", group: "Stock counter" },
         { sel: "#sc-block .sub", group: "Stock counter" },
         { sel: "#sc-comment", group: "Stock counter" },
@@ -142,8 +150,13 @@
 
     home: {
       text: [
-        { sel: ".nav a", group: "Nav" },
-        { sel: ".cart", group: "Nav" },
+        // Navigation and checkout labels are deliberately NOT editable here.
+        // Keys are positional (page.selector.N), so adding or removing one
+        // link or form field silently shifts every saved value onto the wrong
+        // element. That is exactly what happened: adding the البلدية field
+        // pushed "العنوان" onto it and "الكمية" onto the address box, and
+        // dropping a nav link put "أوريغامي" back on the page pointing at
+        // the wrong section. These belong in the HTML, where they cannot drift.
         { sel: ".hero-eyebrow", group: "Hero" },
         { sel: ".hero-h1", group: "Hero" },
         { sel: ".hero-lead", group: "Hero" },
