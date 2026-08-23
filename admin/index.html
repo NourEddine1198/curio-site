@@ -705,6 +705,180 @@
     .btn-stock-save:hover { filter: brightness(1.15); }
     .btn-stock-save:disabled { opacity: 0.4; cursor: default; filter: none; }
 
+    /* ─── Confirmation agents (الأعوان) ─── */
+    .agents-bar { padding: 0 24px 8px; }
+    .agents-panel { display: none; padding: 14px 0 0; }
+    .agents-panel.open { display: block; }
+    .agents-grid {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      flex: 1;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .agent-card.is-default { border-color: var(--green); }
+    .agent-card.is-off { opacity: 0.55; }
+    .agent-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .agent-name { font-weight: 800; font-size: 15px; font-family: 'Changa', sans-serif; }
+    .agent-name small {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      font-family: 'Tajawal', sans-serif;
+      direction: ltr;
+      text-align: right;
+    }
+    .agent-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .agent-tag.default { background: rgba(30,159,98,0.18); color: #4ede9d; }
+    .agent-tag.off { background: rgba(229,66,77,0.18); color: #ff8b93; }
+    .agent-nums { font-size: 12px; color: var(--ink-soft); }
+    .agent-nums b { color: var(--ink); font-family: 'Changa', sans-serif; }
+    .agent-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-mini {
+      padding: 6px 12px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-mini:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .btn-mini.danger:hover { background: var(--red); border-color: var(--red); }
+    .btn-mini.good:hover { background: var(--green); border-color: var(--green); }
+    .btn-mini:disabled { opacity: 0.35; cursor: default; }
+    .agent-new {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+    }
+    .agent-new h4 {
+      font-family: 'Changa', sans-serif;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .agent-new-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .agent-new-row input {
+      flex: 1;
+      min-width: 150px;
+      padding: 9px 12px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      outline: none;
+    }
+    .agent-new-row input:focus { border-color: var(--blue); }
+    .agent-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; line-height: 1.7; }
+
+    /* ─── Bulk reassignment bar ─── */
+    .bulk-bar {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 24px 12px;
+      padding: 12px 18px;
+      background: rgba(69,123,157,0.16);
+      border: 1px solid var(--blue);
+      border-radius: var(--radius-sm);
+    }
+    .bulk-bar.open { display: flex; }
+    .bulk-count { font-weight: 800; font-family: 'Changa', sans-serif; font-size: 15px; }
+    .bulk-bar select {
+      padding: 9px 12px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+    }
+    .bulk-bar select:focus { border-color: var(--blue); }
+    .btn-bulk {
+      padding: 9px 20px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-bulk:hover { filter: brightness(1.15); }
+    .btn-bulk:disabled { opacity: 0.4; cursor: default; filter: none; }
+    .btn-bulk-clear {
+      background: none;
+      border: none;
+      color: var(--ink-soft);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* ─── Table: pick column + agent column ─── */
+    .orders-table th.pick, .orders-table td.pick { width: 34px; text-align: center; }
+    .orders-table td.pick input, .orders-table th.pick input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--blue);
+    }
+    .order-agent {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .order-agent.none { color: var(--orange); }
+
+    /* ─── Agent picker inside the order modal ─── */
+    .modal-field select {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ink);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 15px;
+      outline: none;
+      cursor: pointer;
+    }
+    .modal-field select:focus { border-color: var(--blue); }
+
     /* Responsive */
     @media (max-width: 768px) {
       .stats-bar { padding: 16px; }
@@ -803,6 +977,31 @@
     </div>
   </div>
 
+  <!-- Confirmation agents -->
+  <div class="agents-bar">
+    <div class="stock-toggle" id="agentsToggle" onclick="toggleAgentsPanel()">
+      <h3>الأعوان <span style="font-weight:500;font-size:13px;color:var(--ink-soft)" id="agentsToggleHint"></span></h3>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="agents-panel" id="agentsPanel">
+      <div class="agents-grid" id="agentsGrid">
+        <div style="color:var(--ink-soft);font-size:14px;">Loading...</div>
+      </div>
+      <div class="agent-new">
+        <h4>زيد عون جديد</h4>
+        <div class="agent-new-row">
+          <input type="text" id="newAgentName" placeholder="الاسم (مثلا: Noureddine)">
+          <input type="text" id="newAgentUser" placeholder="username (حروف صغيرة)" style="direction:ltr;text-align:right" autocomplete="off">
+          <input type="password" id="newAgentPass" placeholder="كلمة السر (6 حروف على الأقل)" autocomplete="new-password">
+          <button class="btn-mini good" onclick="createAgent()">زيد</button>
+        </div>
+        <div class="agent-hint">
+          الطلبات الجديدة تروح أوتوماتيك للعون المعلّم <b>يستقبل الطلبات</b>. باش تحوّل طلب معيّن لعون آخر: حلّ الطلب واختار العون، ولا علّم على عدة طلبات في الجدول وحوّلهم مرة وحدة.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Search & refresh -->
   <div class="toolbar">
     <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="debounceSearch()">
@@ -813,11 +1012,21 @@
     </div>
   </div>
 
+  <!-- Bulk reassignment -->
+  <div class="bulk-bar" id="bulkBar">
+    <span class="bulk-count" id="bulkCount">0 طلب</span>
+    <span style="color:var(--ink-soft);font-size:14px;">حوّلهم لـ</span>
+    <select id="bulkAgent"></select>
+    <button class="btn-bulk" id="bulkBtn" onclick="bulkAssign()">حوّل</button>
+    <button class="btn-bulk-clear" onclick="clearPicks()">إلغاء الاختيار</button>
+  </div>
+
   <!-- Orders table -->
   <div class="orders-wrap">
     <table class="orders-table">
       <thead>
         <tr>
+          <th class="pick"><input type="checkbox" id="pickAll" onclick="togglePickAll(this)" title="علّم الكل"></th>
           <th>#</th>
           <th>الزبون</th>
           <th>الهاتف</th>
@@ -825,11 +1034,12 @@
           <th>المنتج</th>
           <th>المجموع</th>
           <th>الحالة</th>
+          <th>العون</th>
           <th>التاريخ</th>
         </tr>
       </thead>
       <tbody id="ordersBody">
-        <tr><td colspan="8" class="loading">جاري التحميل...</td></tr>
+        <tr><td colspan="10" class="loading">جاري التحميل...</td></tr>
       </tbody>
     </table>
   </div>
@@ -858,6 +1068,14 @@ var currentSearch = '';
 var currentPage = 1;
 var searchTimer = null;
 var allOrders = []; // cached for stats
+
+// ─── Confirmation agents ────────────────────────────────
+// New orders route themselves to the "default" agent at checkout. Everything
+// here is the owner's override: who that default is, and which individual
+// orders belong to somebody else.
+var agents = [];            // [{ id, name, username, role, active, orderCount, openCount, isDefault }]
+var defaultAgentId = null;  // who is receiving new orders right now
+var picked = [];            // orderNumbers ticked in the table, for bulk moves
 
 // Status labels in Darija (incl. the agent-console v2 statuses)
 var STATUS_LABELS = {
@@ -901,6 +1119,7 @@ function tryLogin() {
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('dashboard').classList.add('active');
       loadOrders();
+      loadAgents();
       // Initialize auto-refresh after login
       setTimeout(function() { initAutoRefreshAfterLogin(); }, 3000);
     })
@@ -927,6 +1146,7 @@ function logout() {
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('dashboard').classList.add('active');
     loadOrders();
+    loadAgents();
   }
   // Enter key on login
   document.getElementById('loginKey').addEventListener('keydown', function(e) {
@@ -944,7 +1164,7 @@ function loadOrders() {
   if (currentSearch) params.set('search', currentSearch);
 
   document.getElementById('ordersBody').innerHTML =
-    '<tr><td colspan="8" class="loading">جاري التحميل...</td></tr>';
+    '<tr><td colspan="10" class="loading">جاري التحميل...</td></tr>';
 
   fetch(API + '/api/orders?' + params.toString(), {
     headers: { 'X-Admin-Key': adminKey }
@@ -962,7 +1182,7 @@ function loadOrders() {
     .catch(function(err) {
       if (err.message !== 'unauthorized') {
         document.getElementById('ordersBody').innerHTML =
-          '<tr><td colspan="8" class="empty">صار مشكل في تحميل الطلبات</td></tr>';
+          '<tr><td colspan="10" class="empty">صار مشكل في تحميل الطلبات</td></tr>';
       }
     });
 }
@@ -1005,7 +1225,8 @@ function renderOrders(orders) {
   var body = document.getElementById('ordersBody');
 
   if (!orders || orders.length === 0) {
-    body.innerHTML = '<tr><td colspan="8" class="empty">ماكاش طلبات</td></tr>';
+    body.innerHTML = '<tr><td colspan="10" class="empty">ماكاش طلبات</td></tr>';
+    clearPicks();
     return;
   }
 
@@ -1019,7 +1240,19 @@ function renderOrders(orders) {
     var dateStr = date.toLocaleDateString('ar-DZ', { day: 'numeric', month: 'short' })
       + ' ' + date.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
 
+    // Who is meant to call this customer. "بلا عون" is orange on purpose —
+    // an order nobody owns shows on nobody's console board.
+    var agentName = o.assignedAgent ? o.assignedAgent.name : '';
+    var agentCell = agentName
+      ? '<span class="order-agent">' + escapeHtml(agentName) + '</span>'
+      : '<span class="order-agent none">بلا عون</span>';
+
+    var isPicked = picked.indexOf(o.orderNumber) !== -1;
+
     html += '<tr onclick="openOrder(' + o.orderNumber + ')">' +
+      '<td class="pick" onclick="event.stopPropagation()">' +
+        '<input type="checkbox" data-num="' + o.orderNumber + '" ' + (isPicked ? 'checked' : '') +
+        ' onclick="togglePick(' + o.orderNumber + ', this.checked)"></td>' +
       '<td class="order-num">' + o.orderNumber + '</td>' +
       '<td>' + escapeHtml(o.customerName) + '</td>' +
       '<td class="order-phone">' + o.customerPhone + '</td>' +
@@ -1027,11 +1260,320 @@ function renderOrders(orders) {
       '<td class="order-product">' + escapeHtml(products) + '</td>' +
       '<td class="order-total">' + formatDA(o.total) + '</td>' +
       '<td><span class="badge badge-' + o.status + '">' + (STATUS_LABELS[o.status] || o.status) + '</span></td>' +
+      '<td>' + agentCell + '</td>' +
       '<td class="order-date">' + dateStr + '</td>' +
       '</tr>';
   });
 
   body.innerHTML = html;
+  // Keep the ticked set honest: a page change or a search drops the rows that
+  // are no longer on screen, so they must drop out of the batch too. The
+  // 30-second auto-refresh re-renders through here as well, so the ticks the
+  // owner already made have to survive it.
+  var visible = orders.map(function(o) { return o.orderNumber; });
+  picked = picked.filter(function(n) { return visible.indexOf(n) !== -1; });
+  var all = document.getElementById('pickAll');
+  if (all) all.checked = picked.length > 0 && picked.length === orders.length;
+  updateBulkBar();
+}
+
+// ─── Confirmation agents: who owns which order ──────────
+//
+// Two separate jobs live here:
+//   1. the "الأعوان" panel — create / rename / pause an agent, and choose
+//      which one receives every NEW order automatically
+//   2. moving orders that already exist between agents, one at a time from
+//      the order pop-up or in a batch from the table
+//
+// The console scopes every board to the logged-in agent, so the assignment
+// below is what decides who can see and call each customer.
+
+function agentById(id) {
+  for (var i = 0; i < agents.length; i++) if (agents[i].id === id) return agents[i];
+  return null;
+}
+
+function agentLabel(id) {
+  var a = agentById(id);
+  return a ? a.name : 'بلا عون';
+}
+
+function loadAgents() {
+  return fetch(API + '/api/agents', { headers: { 'X-Admin-Key': adminKey } })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      agents = data.agents || [];
+      defaultAgentId = data.defaultAgentId || null;
+      renderAgents(data.unassignedCount || 0);
+      fillBulkAgentSelect();
+    })
+    .catch(function() {
+      document.getElementById('agentsGrid').innerHTML =
+        '<div style="color:var(--red);font-size:14px;">ما نجمناش نجيبو الأعوان</div>';
+    });
+}
+
+function toggleAgentsPanel() {
+  document.getElementById('agentsToggle').classList.toggle('open');
+  document.getElementById('agentsPanel').classList.toggle('open');
+}
+
+function renderAgents(unassignedCount) {
+  var grid = document.getElementById('agentsGrid');
+  var hint = document.getElementById('agentsToggleHint');
+
+  hint.textContent = '— الطلبات الجديدة تروح لـ ' + agentLabel(defaultAgentId)
+    + (unassignedCount ? ' · ' + unassignedCount + ' طلب مفتوح بلا عون' : '');
+
+  if (!agents.length) {
+    grid.innerHTML = '<div style="color:var(--ink-soft);font-size:14px;">ماكاش أعوان. زيد واحد تحت.</div>';
+    return;
+  }
+
+  var html = '';
+  agents.forEach(function(a) {
+    var tags = '';
+    if (a.isDefault) tags += '<span class="agent-tag default">يستقبل الطلبات</span>';
+    if (!a.active) tags += '<span class="agent-tag off">موقّف</span>';
+
+    var actions = '';
+    if (a.active && !a.isDefault) {
+      actions += '<button class="btn-mini good" onclick="setDefaultAgent(&quot;' + a.id + '&quot;)">خليه يستقبل الطلبات</button>';
+    }
+    actions += '<button class="btn-mini" onclick="renameAgent(&quot;' + a.id + '&quot;)">بدّل الاسم</button>';
+    actions += '<button class="btn-mini" onclick="resetAgentPassword(&quot;' + a.id + '&quot;)">كلمة سر جديدة</button>';
+    actions += '<button class="btn-mini ' + (a.active ? 'danger' : 'good') + '" onclick="toggleAgentActive(&quot;' + a.id + '&quot;)">' +
+      (a.active ? 'وقّفو' : 'رجّعو') + '</button>';
+
+    html += '<div class="agent-card' + (a.isDefault ? ' is-default' : '') + (a.active ? '' : ' is-off') + '">' +
+      '<div class="agent-card-top">' +
+        '<div class="agent-name">' + escapeHtml(a.name) + '<small>@' + escapeHtml(a.username) + '</small></div>' +
+        '<div>' + tags + '</div>' +
+      '</div>' +
+      '<div class="agent-nums"><b>' + a.openCount + '</b> طلب مفتوح · <b>' + a.orderCount + '</b> في المجموع</div>' +
+      '<div class="agent-actions">' + actions + '</div>' +
+    '</div>';
+  });
+
+  grid.innerHTML = html;
+}
+
+function createAgent() {
+  var name = document.getElementById('newAgentName').value.trim();
+  var username = document.getElementById('newAgentUser').value.trim().toLowerCase();
+  var password = document.getElementById('newAgentPass').value;
+
+  if (name.length < 2) { showToast('دخّل الاسم', true); return; }
+  if (!/^[a-z0-9._-]{3,32}$/.test(username)) { showToast('username: 3-32 حرف صغير/رقم', true); return; }
+  if (password.length < 6) { showToast('كلمة السر 6 حروف على الأقل', true); return; }
+
+  fetch(API + '/api/agents', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify({ name: name, username: username, password: password })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (!res.success) { showToast(res.error || 'صار مشكل', true); return; }
+      document.getElementById('newAgentName').value = '';
+      document.getElementById('newAgentUser').value = '';
+      document.getElementById('newAgentPass').value = '';
+      showToast('تزاد العون ' + name);
+      loadAgents();
+    })
+    .catch(function() { showToast('صار مشكل في الاتصال', true); });
+}
+
+function patchAgent(id, data, msg) {
+  var payload = { id: id };
+  for (var k in data) if (Object.prototype.hasOwnProperty.call(data, k)) payload[k] = data[k];
+
+  return fetch(API + '/api/agents', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify(payload)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (!res.success) { showToast(res.error || 'صار مشكل', true); return; }
+      showToast(msg);
+      loadAgents();
+      loadOrders();
+    })
+    .catch(function() { showToast('صار مشكل في الاتصال', true); });
+}
+
+function renameAgent(id) {
+  var a = agentById(id);
+  if (!a) return;
+  var name = prompt('الاسم الجديد للعون:', a.name);
+  if (name === null) return;
+  name = name.trim();
+  if (name.length < 2) { showToast('الاسم قصير برك', true); return; }
+  patchAgent(id, { name: name }, 'تبدّل الاسم');
+}
+
+function resetAgentPassword(id) {
+  var a = agentById(id);
+  if (!a) return;
+  var pass = prompt('كلمة سر جديدة لـ ' + a.name + ' (6 حروف على الأقل):', '');
+  if (pass === null) return;
+  if (pass.length < 6) { showToast('كلمة السر 6 حروف على الأقل', true); return; }
+  patchAgent(id, { password: pass }, 'تبدّلت كلمة السر تاع ' + a.name);
+}
+
+function toggleAgentActive(id) {
+  var a = agentById(id);
+  if (!a) return;
+
+  if (a.active) {
+    // Pausing hides that agent's whole queue: they can no longer log in, and
+    // their orders stay stamped with their name on nobody's board. Say it out
+    // loud with the real number instead of letting orders go quiet.
+    var warn = 'توقيف ' + a.name + '؟\n\nما يقدرش يدخل للكونسول.';
+    if (a.openCount) {
+      warn += '\nعندو ' + a.openCount + ' طلب مفتوح — حوّلهم لعون آخر قبل، وإلا يقعدو بلا حتى واحد يعيّط.';
+    }
+    if (a.isDefault) {
+      warn += '\n\nهو اللي يستقبل الطلبات الجديدة — بعد ما توقّفو يروحو لأقدم عون خدّام.';
+    }
+    if (!confirm(warn)) return;
+  }
+  patchAgent(id, { active: !a.active }, a.active ? 'توقّف ' + a.name : 'رجع ' + a.name);
+}
+
+function setDefaultAgent(id) {
+  var a = agentById(id);
+  if (!a) return;
+  if (!confirm('من دروك، كل طلب جديد يروح لـ ' + a.name + '. واش راك متأكد؟')) return;
+
+  // PATCH, not PUT: the API's CORS allow-list has no PUT, so a PUT from
+  // curiodz.com never gets past the browser's preflight.
+  fetch(API + '/api/agents', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify({ id: id, makeDefault: true })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (!res.success) { showToast(res.error || 'صار مشكل', true); return; }
+      showToast('الطلبات الجديدة توّا تروح لـ ' + a.name);
+      loadAgents();
+    })
+    .catch(function() { showToast('صار مشكل في الاتصال', true); });
+}
+
+// ─── Moving orders between agents ───────────────────────
+
+// Options for a picker. Paused agents are hidden unless they still hold THIS
+// order — otherwise the dropdown would silently forget who owns it.
+function agentOptionsHtml(selectedId) {
+  var html = '<option value=""' + (selectedId ? '' : ' selected') + '>— بلا عون —</option>';
+  agents.forEach(function(a) {
+    if (!a.active && a.id !== selectedId) return;
+    html += '<option value="' + a.id + '"' + (a.id === selectedId ? ' selected' : '') + '>' +
+      escapeHtml(a.name) + (a.isDefault ? ' (يستقبل الطلبات)' : '') + (a.active ? '' : ' — موقّف') +
+      '</option>';
+  });
+  return html;
+}
+
+function fillBulkAgentSelect() {
+  // No preselection on purpose: the batch mover must be a deliberate choice,
+  // not one stray click away from emptying somebody's queue.
+  var html = '<option value="__pick__" selected disabled>اختار العون</option>' + agentOptionsHtml(null);
+  document.getElementById('bulkAgent').innerHTML = html;
+}
+
+function togglePick(orderNumber, on) {
+  var i = picked.indexOf(orderNumber);
+  if (on && i === -1) picked.push(orderNumber);
+  if (!on && i !== -1) picked.splice(i, 1);
+  updateBulkBar();
+}
+
+function togglePickAll(el) {
+  var boxes = document.querySelectorAll('#ordersBody input[type=checkbox]');
+  picked = [];
+  for (var i = 0; i < boxes.length; i++) {
+    boxes[i].checked = el.checked;
+    if (el.checked) picked.push(parseInt(boxes[i].getAttribute('data-num'), 10));
+  }
+  updateBulkBar();
+}
+
+function clearPicks() {
+  picked = [];
+  var all = document.getElementById('pickAll');
+  if (all) all.checked = false;
+  var boxes = document.querySelectorAll('#ordersBody input[type=checkbox]');
+  for (var i = 0; i < boxes.length; i++) boxes[i].checked = false;
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  var bar = document.getElementById('bulkBar');
+  if (!bar) return;
+  document.getElementById('bulkCount').textContent = picked.length + ' طلب';
+  if (picked.length) bar.classList.add('open');
+  else bar.classList.remove('open');
+}
+
+function bulkAssign() {
+  var sel = document.getElementById('bulkAgent');
+  var value = sel.value;
+  if (value === '__pick__') { showToast('اختار العون الأول', true); return; }
+  if (!picked.length) return;
+
+  var name = value ? agentLabel(value) : 'بلا عون';
+  if (!confirm('تحويل ' + picked.length + ' طلب لـ ' + name + '؟')) return;
+
+  var btn = document.getElementById('bulkBtn');
+  btn.disabled = true;
+
+  fetch(API + '/api/orders/assign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify({ orderNumbers: picked, agentId: value || null })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      btn.disabled = false;
+      if (!res.success) { showToast(res.error || 'صار مشكل', true); return; }
+      var msg = 'تحوّلو ' + res.moved + ' طلب لـ ' + name;
+      if (res.unchanged) msg += ' · ' + res.unchanged + ' كانو عندو من قبل';
+      if (res.missing && res.missing.length) msg += ' · ' + res.missing.length + ' ما لقيناهمش';
+      showToast(msg);
+      clearPicks();
+      loadOrders();
+      loadAgents();
+    })
+    .catch(function() {
+      btn.disabled = false;
+      showToast('صار مشكل في الاتصال', true);
+    });
+}
+
+// One order, from inside the pop-up.
+function saveOrderAgent(orderNumber) {
+  var sel = document.getElementById('orderAgentSelect');
+  if (!sel) return;
+  var value = sel.value;
+  var name = value ? agentLabel(value) : 'بلا عون';
+
+  fetch(API + '/api/orders/' + orderNumber, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify({ assignedAgentId: value || null })
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (!res.success) { showToast(res.error || 'صار مشكل', true); return; }
+      showToast('طلب #' + orderNumber + ' ولّى عند ' + name);
+      loadOrders();
+      loadAgents();
+    })
+    .catch(function() { showToast('صار مشكل في الاتصال', true); });
 }
 
 // ─── Pagination ─────────────────────────────────────────
@@ -1146,6 +1688,15 @@ function renderOrderDetail(order) {
       '<button class="btn-action btn-deliver" onclick="updateStatus(' + order.orderNumber + ',\'DELIVERED\')" ' + (order.status !== 'SHIPPED' ? 'disabled' : '') + '>تم التوصيل</button>' +
       '<button class="btn-action btn-cancel" onclick="updateStatus(' + order.orderNumber + ',\'CANCELLED\')" ' + (['DELIVERED','CANCELLED','RETURNED'].includes(order.status) ? 'disabled' : '') + '>إلغاء</button>' +
       '<button class="btn-action btn-return" onclick="updateStatus(' + order.orderNumber + ',\'RETURNED\')" ' + (order.status !== 'DELIVERED' ? 'disabled' : '') + '>مرتجع</button>' +
+    '</div>' +
+
+    // Which confirmation agent owns this order. Changing it moves the order
+    // out of one person's console and into another's — the console shows each
+    // agent only what is assigned to them.
+    '<div class="modal-field">' +
+      '<label>عون التأكيد</label>' +
+      '<select id="orderAgentSelect">' + agentOptionsHtml(order.assignedAgentId || null) + '</select>' +
+      '<button class="btn-save-field" onclick="saveOrderAgent(' + order.orderNumber + ')">حوّل الطلب</button>' +
     '</div>' +
 
     // Tracking code field
