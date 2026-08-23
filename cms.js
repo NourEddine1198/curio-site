@@ -191,7 +191,10 @@
         { sel: ".mtag", group: "Pack popup" },
         { sel: ".mhead h3", group: "Pack popup" },
         { sel: ".msave", group: "Pack popup" },
-        { sel: ".mlabel", group: "Pack popup" },
+        // NOTE: .mlabel is deliberately NOT editable — same positional-key
+        // drift described above. Adding the البلدية field shifted every saved
+        // label one row down, so "العنوان" landed on the commune dropdown and
+        // "شحال من باك؟" on the address box. Form labels live in the HTML.
         { sel: ".mseg button", group: "Pack popup" },
         { sel: ".mtotlbl", group: "Pack popup" },
         { sel: ".mtothint", group: "Pack popup" },

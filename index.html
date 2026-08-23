@@ -88,7 +88,7 @@
      viewport and got silently chopped by body{overflow-x:clip}. The 15vw cap
      never binds at 100% text size (any screen width), it only stops runaway
      growth; break-word is the last resort so it can wrap instead of vanish. */
-  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:min(clamp(2.9rem,12.5vw,6.2rem),15vw);line-height:.98;margin-top:12px;overflow-wrap:break-word}
+  .hero-h1{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:min(clamp(2.9rem,12.5vw,6.2rem),15vw);line-height:1.26;margin-top:12px;overflow-wrap:break-word}
   .hero-h1 .c-red{color:var(--red)}
   .hero-h1 .mark{white-space:nowrap;background:linear-gradient(transparent 60%, var(--yellow) 60%);padding:0 .04em}
   .hero-lead{margin-top:18px;font-size:clamp(1.05rem,2.7vw,1.28rem);font-weight:700;line-height:1.62;max-width:40ch;color:var(--ink)}
@@ -323,7 +323,7 @@ fbq('track', 'PageView');
     <div class="wrap">
       <img class="hero-logo hero-el" src="/curio-logo.jpg" alt="Curio كيوريو">
       <div class="hero-eyebrow hero-el">ألعاب و نشاطات جزائرية.</div>
-      <h1 class="hero-h1 hero-el">FUN FOR <span class="c-red">EVERYONE</span><br>Far From <span class="mark">Screen</span></h1>
+      <h1 class="hero-h1 hero-el">خلي القعدة <span class="c-red">تتعاش</span><br>والضحكات ماتتنساش</h1>
       <p class="hero-lead hero-el">هنا نصنع متعة تجمع الجميع… بعيدًا عن الشاشات</p>
       <div class="hero-cta hero-el"><button class="order" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth',block:'start'})"><span>شوف المنتجات لي عندنا</span><span>👇</span></button></div>
       <div class="proof hero-el">🏆 +1000 علبة تباعت في أول طبعة</div>
@@ -360,7 +360,7 @@ fbq('track', 'PageView');
     <div class="wrap">
       <div class="head reveal">
         <div class="eyebrow">🎉 ألعاب القعدة</div>
-        <h2 class="h2">زوج ألعاب، و القعدة تخلط</h2>
+        <h2 class="h2">زوج ألعاب، و القعدة تتخلط</h2>
         <p class="sub">سرعة، عياط، و ضحك — تلعبها العائلة كاملة، من الصغير للكبير.</p>
       </div>
 
@@ -565,7 +565,7 @@ fbq('track', 'PageView');
             <div><label class="mlabel">شحال من باك؟</label>
               <div class="mqty"><button type="button" onclick="pq(-1)" aria-label="نقّص">−</button><span id="pq">1</span><button type="button" onclick="pq(1)" aria-label="زيد">+</button></div>
             </div>
-            <div class="mtot"><span class="mtotlbl">الباك</span><b id="p-sub">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
+            <div class="mtot"><span class="mtotlbl">المجموع</span><b id="p-sub">— دج</b><span class="mtothint" id="p-hint">+ التوصيل حسب الولاية</span></div>
           </div>
           <div class="mpay" id="p-pay" hidden><span class="mpaylbl">تخلّص فالباب</span><b id="p-grand">— دج</b></div>
           <button class="msubmit" type="submit"><span>✓</span><span>أكّد طلب الباك</span></button>
