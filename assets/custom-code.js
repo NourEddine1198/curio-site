@@ -717,8 +717,26 @@
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' DA';
   }
 
+  // Customers write their own number the way they say it out loud: with the
+  // country code, with spaces, sometimes both. "+213 557 22 70 01" is the same
+  // phone as "0557227001" — but stripping to digits and cutting at 10 turned it
+  // into "2135572270" and checkout refused a real buyer. Drop the country code
+  // first, restore the leading zero, and only then trim to length.
   function sanitizePhone(phone) {
-    return (phone || '').replace(/[^0-9]/g, '').slice(0, 10);
+    var digits = (phone || '').replace(/[^0-9]/g, '');
+
+    if (digits.indexOf('00213') === 0) {
+      digits = digits.slice(5);
+    } else if (digits.indexOf('213') === 0 && digits.length > 9) {
+      digits = digits.slice(3);
+    }
+
+    // A bare national number ("557227001") is missing only its leading zero.
+    if (digits.length === 9 && /^[567]/.test(digits)) {
+      digits = '0' + digits;
+    }
+
+    return digits.slice(0, 10);
   }
 
   function isValidPhone(phone) {
@@ -921,7 +939,8 @@
     }
 
     input.dataset.curioPhoneBound = 'true';
-    input.setAttribute('maxlength', '10');
+    // Room to paste a country-code number; sanitizePhone trims it back to 10.
+    input.setAttribute('maxlength', '18');
     input.setAttribute('inputmode', 'numeric');
     input.setAttribute('pattern', '0[567][0-9]{8}');
     input.setAttribute('aria-label', repairText(STORE_COPY.common.labels.phone));
