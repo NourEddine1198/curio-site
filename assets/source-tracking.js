@@ -60,8 +60,33 @@
 
   capture();
 
+  /* The two cookies Meta's own pixel drops on curiodz.com:
+   *   _fbc — which ad this person clicked (only exists if they came from one)
+   *   _fbp — an id for this browser (exists for everyone the pixel has seen)
+   * The store API is on a different domain, so these are never sent with the
+   * order automatically. We read them at checkout and post them, which is what
+   * lets the server-side Purchase event be matched back to a real person.
+   *
+   * Read LIVE rather than cached: _fbc is written by the pixel a moment after
+   * the page loads, so a value captured too early would be missed. */
+  function cookie(name) {
+    try {
+      var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return m ? decodeURIComponent(m[2]).slice(0, 255) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   /* Returns the stored source as plain payload keys, ready to merge into an
    * order body. Empty object when we know nothing, which is a real answer:
    * it means organic, direct, or the WhatsApp blast. */
-  window.curioSource = read;
+  window.curioSource = function () {
+    var out = read();
+    var fbc = cookie('_fbc');
+    var fbp = cookie('_fbp');
+    if (fbc) out.fbc = fbc;
+    if (fbp) out.fbp = fbp;
+    return out;
+  };
 })();
