@@ -692,6 +692,10 @@ fbq('track', 'PageView');
     const payload={customerName:document.getElementById('p-name').value.trim(),customerPhone:document.getElementById('p-phone').value.trim(),wilayaCode:pWsel.value,deliveryType:pdel==='home'?'HOME':'OFFICE',items:[{slug:PACK_SLUG,quantity:pqv}],_t:loadedAtP};
     if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{payload.officeCommune=pCsel.value;}
     if(P_COUPON_CODE)payload.couponCode=P_COUPON_CODE;
+    // Where this visitor came from + Meta's own cookies. Every other checkout
+    // does this; this one did not, so the highest-value path in the shop was
+    // arriving with no attribution and no identifiers at all.
+    if(window.curioSource) Object.assign(payload, window.curioSource());
     try{
       const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const j=await res.json().catch(()=>({}));
