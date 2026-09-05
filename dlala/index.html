@@ -778,15 +778,35 @@ fbq('track', 'PageView');
   // dlala.up-price.0 and dlala.choice-sub.0 overwrite this line's HTML after we
   // run, so editing the page source alone changes nothing live. They MUST equal
   // what the server charges, so we rewrite the element ourselves — last word.
+  // Write a value into an element and KEEP it there.
+  //
+  // The CMS row renders after us and puts the stored copy back. The old code
+  // wrote once and relied on our fetch returning later than the CMS fetch —
+  // and on 5 Sep 2026 we lost that race in production: the page offered Roubla
+  // at 1,600 while the server was going to charge 1,750. A race we win most of
+  // the time is still a page that lies to some customers, so we stop racing:
+  // write, then watch, and re-write if anything overwrites us.
+  //
+  // Terminates cleanly — the re-write only happens when the content differs,
+  // so the observer settles after one correction instead of looping.
+  function curioLock(el, html){
+    if(!el) return;
+    function apply(){ if(el.innerHTML !== html) el.innerHTML = html; }
+    apply();
+    if(el.__curioLock) el.__curioLock.disconnect();
+    el.__curioLock = new MutationObserver(apply);
+    el.__curioLock.observe(el, {childList:true, subtree:true, characterData:true});
+  }
+
   function upsellPrice(onLaunch){
     const off = onLaunch ? PAIR_OFF_LAUNCH : PAIR_OFF_NORMAL;
     const now = (ROUBLA_FULL - off).toLocaleString('en');
     const sav = off.toLocaleString('en');
-    const line = document.querySelector('.up-price');
-    if(line) line.innerHTML = '<span class="was">روبلة عادةً 2400 دج</span> · '
-      + '<span class="now">دروك زيدها بـ <b>' + now + '</b> غير — تربح <b>' + sav + '</b> 💰</span>';
-    const btn = document.getElementById('up-btn-sub');
-    if(btn) btn.textContent = '+' + now + ' دج · تربح ' + sav;
+    curioLock(document.querySelector('.up-price'),
+      '<span class="was">روبلة عادةً 2400 دج</span> · '
+      + '<span class="now">دروك زيدها بـ <b>' + now + '</b> غير — تربح <b>' + sav + '</b> 💰</span>');
+    curioLock(document.getElementById('up-btn-sub'),
+      '+' + now + ' دج · تربح ' + sav);
   }
 
   function launchShow(rem){

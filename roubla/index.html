@@ -774,9 +774,20 @@ fbq('track', 'PageView');
       body:JSON.stringify({code:GIFT_CODE,slugs:[PRODUCT_SLUG]})})
     .then(r=>r.json()).then(j=>{
       if(j&&j.valid){
+        // Write it and KEEP it. The CMS row roubla.up-price.0 renders after us
+        // and puts 1,400 back. The first version of this raced the CMS and lost
+        // in production on 5 Sep 2026 — the page offered Dlala at 1,400 while
+        // the server was going to charge 1,500. So we watch the element and
+        // re-assert. Settles after one correction; no loop.
         const line=document.querySelector('.up-price');
-        if(line) line.innerHTML='<span class="now">تقدر تزيدها فطلبيتك بـ <b>1,500</b> غير '
-          +'<span class="was">عوض 2200 دج</span> 💰</span>';
+        if(line){
+          const html='<span class="now">تقدر تزيدها فطلبيتك بـ <b>1,500</b> غير '
+            +'<span class="was">عوض 2200 دج</span> 💰</span>';
+          const apply=function(){ if(line.innerHTML!==html) line.innerHTML=html; };
+          apply();
+          new MutationObserver(apply).observe(line,
+            {childList:true, subtree:true, characterData:true});
+        }
       }else{
         // Offer is over. Full price, forget the code, and let them still buy.
         GIFT_DEAD=true;
