@@ -744,10 +744,49 @@ fbq('track', 'PageView');
     if(q){sessionStorage.setItem('curio-gift',q);return q;}
     return sessionStorage.getItem('curio-gift')||'';
   }catch(e){return '';}})();
+  let GIFT_DEAD=false;   // set true only if an EVENT code turns out to be expired
   if(GIFT_CODE){
     document.body.classList.add('gift-on');
     const old=PRICE.toLocaleString('en'), neo=(PRICE-GIFT_OFF).toLocaleString('en');
     document.querySelectorAll('.price, .mbar .mp').forEach(el=>{el.innerHTML='<s>'+old+'</s> '+neo+' <small>دج</small>';});
+  }
+
+  // ===== EVENT / STAND CODE (SALON…) =====
+  // The event QR opens /salon, which forwards here with ?gift=SALON400. It
+  // rides the gift-card UI (both take 400 off) but differs in two ways:
+  //
+  //  1. It EXPIRES. A poster outlives its offer. We ask the store whether the
+  //     code is still alive and, if it is not, quietly put the page back to
+  //     full price — far better than letting someone fill the whole form and
+  //     get refused on the last click.
+  //  2. The stand sells the PAIR at 3,500. Coming in on Roubla at 2,000, the
+  //     cross-sell must therefore offer Dlala at 1,500 (2200 − 700), not the
+  //     usual 1,400. That number sits in the HTML *and* in the CMS row
+  //     roubla.up-price.0, which rewrites the HTML after we run — so we set it
+  //     ourselves once our own request returns, which lands later than the CMS
+  //     render. Same trick the Dlala launch page uses.
+  //
+  // 1500 MUST agree with CAMPAIGN_PAIR_OFF["SALON400"] in the store's
+  // /api/orders and /api/orders/[n]/upsell, or we promise a price the server
+  // will not honour.
+  if(/^SALON/.test((GIFT_CODE||'').toUpperCase())){
+    fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:GIFT_CODE,slugs:[PRODUCT_SLUG]})})
+    .then(r=>r.json()).then(j=>{
+      if(j&&j.valid){
+        const line=document.querySelector('.up-price');
+        if(line) line.innerHTML='<span class="now">تقدر تزيدها فطلبيتك بـ <b>1,500</b> غير '
+          +'<span class="was">عوض 2200 دج</span> 💰</span>';
+      }else{
+        // Offer is over. Full price, forget the code, and let them still buy.
+        GIFT_DEAD=true;
+        try{sessionStorage.removeItem('curio-gift');}catch(e){}
+        document.body.classList.remove('gift-on');
+        document.querySelectorAll('.price, .mbar .mp').forEach(el=>{
+          el.innerHTML=PRICE.toLocaleString('en')+' <small>دج</small>';});
+        recalc();
+      }
+    }).catch(()=>{});
   }
 
   // ===== COUPON CODE (كود تخفيض / أكواد المؤثرين) =====
@@ -790,7 +829,7 @@ fbq('track', 'PageView');
   window.curioApplyCoupon=curioApplyCoupon;
 
   function curFee(){const w=byCode[wsel.value];if(!w)return null;const f=delType==='home'?w.home:w.stopdesk;return (f==null||f==='')?null:+f;}
-  function recalc(){const sub=Math.max(0,PRICE*cqv-(GIFT_CODE?GIFT_OFF:0)-COUPON_OFF);const fee=curFee();
+  function recalc(){const sub=Math.max(0,PRICE*cqv-(GIFT_CODE&&!GIFT_DEAD?GIFT_OFF:0)-COUPON_OFF);const fee=curFee();
     document.getElementById('t-sub').textContent=fmt(sub);
     const ship=document.getElementById('t-ship'),pay=document.getElementById('t-pay');
     // Until a wilaya is picked the fee is unknown — say so and hide the door
@@ -857,7 +896,7 @@ fbq('track', 'PageView');
     };
     if(delType==='home'){ payload.commune=csel.value; payload.address=(document.getElementById('f-addr').value||'').trim(); }
     else { payload.officeCommune=csel.value; }
-    if(COUPON_CODE) payload.couponCode=COUPON_CODE; else if(GIFT_CODE) payload.couponCode=GIFT_CODE;
+    if(COUPON_CODE) payload.couponCode=COUPON_CODE; else if(GIFT_CODE&&!GIFT_DEAD) payload.couponCode=GIFT_CODE;
     // Where this visitor came from — captured on their first page, not this one.
     if(window.curioSource) Object.assign(payload, window.curioSource());
     const res=await fetch(API+'/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});

@@ -766,7 +766,14 @@ fbq('track', 'PageView');
   // nobody double-dips: 1,750 + 1,950 = 3,700. Mirrors CAMPAIGN_PAIR_OFF in
   // the store's /api/orders and /api/orders/[n]/upsell — change all three or
   // the page promises a number the server will not honour.
-  const ROUBLA_FULL=2400, PAIR_OFF_NORMAL=800, PAIR_OFF_LAUNCH=450;
+  // The pair rate depends on WHICH campaign let them in, because each campaign
+  // lands the pair on a different total. The WhatsApp launch gives 450 off each
+  // game (pair = 3,700). The event/stand QR sells the pair at 3,500, so coming
+  // in on Dlala at 1,750 the second game must be 1,750 too → 2400 − 650.
+  // MUST equal CAMPAIGN_PAIR_OFF in the store's /api/orders AND
+  // /api/orders/[n]/upsell, or this page promises a number the server refuses.
+  const ROUBLA_FULL=2400, PAIR_OFF_NORMAL=800;
+  const PAIR_OFF_LAUNCH = (LAUNCH_CODE||'').toUpperCase()==='SALON450' ? 650 : 450;
   // NOTE: these two numbers are code-controlled, not CMS-controlled. The rows
   // dlala.up-price.0 and dlala.choice-sub.0 overwrite this line's HTML after we
   // run, so editing the page source alone changes nothing live. They MUST equal

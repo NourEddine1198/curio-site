@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>كيوريو — الهدية نتاعك</title>
+<meta name="robots" content="noindex">
+<!-- Reached by scanning the QR on the stand screen. Deliberately noindex: this
+     is a private door for people who were physically with us, not a public
+     discount page Google can hand to anyone. -->
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Anton&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--ink:#141210;--amber:#F7B318;--orange:#F58220;--green:#1F7A4C;
+        --f:"Baloo Bhaijaan 2","Noto Sans Arabic","Segoe UI",Tahoma,sans-serif}
+  body{font-family:var(--f);background:var(--ink);color:#fff;min-height:100vh;
+       padding:22px 16px 40px;display:flex;flex-direction:column;align-items:center}
+  .logo{height:42px;margin-bottom:16px}
+  h1{font-size:28px;line-height:1.25;text-align:center;font-weight:800}
+  .gift{margin-top:10px;background:var(--amber);color:var(--ink);border-radius:14px;
+        padding:11px 20px;font-weight:800;font-size:17px;text-align:center;
+        box-shadow:0 8px 22px rgba(0,0,0,.4)}
+  .hint{margin-top:14px;font-size:15px;color:#CFC6B8;text-align:center;max-width:34ch}
+
+  .cards{width:100%;max-width:430px;margin-top:20px;display:flex;flex-direction:column;gap:14px}
+  a.card{display:flex;align-items:center;gap:14px;background:#fff;color:var(--ink);
+         border-radius:16px;padding:12px;text-decoration:none;
+         box-shadow:0 10px 26px rgba(0,0,0,.38);border:3px solid transparent}
+  a.card:active{transform:scale(.985)}
+  a.card.r{border-color:var(--amber)}
+  a.card.d{border-color:var(--orange)}
+  .card img{width:88px;height:88px;object-fit:cover;border-radius:11px;flex:none}
+  .card .body{flex:1;min-width:0}
+  .card .nm{font-size:21px;font-weight:800;line-height:1.2}
+  .card .pr{margin-top:3px;font-size:15px;font-weight:600;white-space:nowrap}
+  .card .pr s{color:#9A9188;margin-left:6px}
+  .card .pr b{font-family:Anton,var(--f);font-size:25px;color:var(--green);letter-spacing:.02em}
+  .card .go{background:var(--ink);color:#fff;border-radius:10px;padding:9px 13px;
+            font-weight:800;font-size:14px;flex:none}
+
+  .both{margin-top:16px;max-width:430px;width:100%;background:rgba(255,255,255,.09);
+        border:1.5px dashed rgba(255,255,255,.32);border-radius:14px;padding:13px 16px;
+        font-size:14.5px;line-height:1.7;color:#EDE4D4;text-align:center}
+  .both b{color:var(--amber)}
+
+  .trust{margin-top:20px;font-size:14px;color:#B9B0A2;text-align:center;line-height:1.9}
+  .trust span{opacity:.45;margin:0 7px}
+  .exp{margin-top:9px;font-size:13.5px;color:#8E867A;text-align:center}
+</style></head>
+<body>
+
+<img class="logo" src="/curio-logo.jpg" alt="Curio">
+<h1>القعدة ما تكملش هنا</h1>
+
+<div class="gift">هاك الهدية لي وعدناك بيها</div>
+<div class="hint">خير علاش لعبتوا معانا اليوم — الثمن هذا خاص بيك، ما راهش فالموقع.</div>
+
+<div class="cards">
+  <a class="card r" id="lnk-roubla" href="/roubla/?gift=SALON400">
+    <img src="/products/roubla/photos/1.jpg" alt="روبلة">
+    <div class="body">
+      <div class="nm">روبلة</div>
+      <div class="pr"><s>2,400</s> <b>2,000</b> دج</div>
+    </div>
+    <div class="go">نديها</div>
+  </a>
+
+  <a class="card d" id="lnk-dlala" href="/dlala/?launch=SALON450">
+    <img src="/products/dlala/photos/2.jpg" alt="دلالة">
+    <div class="body">
+      <div class="nm">دلالة</div>
+      <div class="pr"><s>2,200</s> <b>1,750</b> دج</div>
+    </div>
+    <div class="go">نديها</div>
+  </a>
+</div>
+
+<div class="both">
+  حاب الزوج؟ اختار وحدة دروك — وكي تكمّل الطلب نعرضولك التانية،
+  والزوج كامل يجيك بـ <b>3,500 دج</b> بلاصة 4,600.
+</div>
+
+<div class="trust">
+  توصيل لكل الولايات <span>&bull;</span> تخلّص كي توصلك
+</div>
+<div class="exp">العرض يخدم أسبوع غير من نهار ما لعبتوا معانا</div>
+
+<script src="/assets/source-tracking.js" defer></script>
+<script>
+/* Tag the two outbound links so an order made tonight (or in three days, from
+ * the phone's history) still credits the event rather than "direct".
+ *
+ * The tags are added HERE rather than baked into the QR on purpose: the printed
+ * code stays short — a short link makes a sparse QR that a camera locks onto
+ * from across a table — while the tracking still lands on the URL the customer
+ * actually arrives at, where source-tracking.js can capture it.
+ *
+ * source-tracking.js is first-touch, so the game page keeps this even if they
+ * wander around the site before ordering. */
+(function () {
+  var TAGS = 'utm_source=salon&utm_medium=qr&utm_campaign=event-sep26';
+  ['lnk-roubla', 'lnk-dlala'].forEach(function (id) {
+    var a = document.getElementById(id);
+    if (a) a.href += '&' + TAGS;
+  });
+})();
+</script>
+</body></html>

@@ -19,6 +19,16 @@
   to = "/merci.html"
   status = 200
 
+# The event/stand QR. A 200 REWRITE (like /admin above), not a 302: the address
+# stays curiodz.com/salon, so there is no chance of a redirect loop between
+# /salon and /salon/. The printed code is deliberately short — a short link
+# makes a sparse QR that a camera locks onto from across a table — so the utm
+# tags are added by the page to its outbound links, not carried in the code.
+[[redirects]]
+  from = "/salon"
+  to = "/salon/index.html"
+  status = 200
+
 # /home was the staged homepage before launch (Aug 13 2026) — now promoted
 # to root index.html. Redirect any old links/bookmarks straight to /.
 [[redirects]]
