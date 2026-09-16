@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>كيوريو</title>
+<!--
+  THE INFLUENCER DOOR — curiodz.com/i/<name>
+
+  Every influencer gets one short link. This page is what sits behind it: it
+  asks the store where that link should go, then sends the visitor on with the
+  influencer's code already in the address, so the discount shows up by itself
+  and the order is credited to her without the customer typing anything.
+
+  Why a door instead of handing her the long link directly: the destination
+  lives in the database, so we can move her link from Roubla to Dlala, swap an
+  offer, or retire a code without asking her to edit a bio she may never edit.
+  The same reasoning as /gift and /vip in netlify.toml, one step smarter.
+
+  It also recognises a private-page token (the long random one from the
+  portal) and forwards it to her own sales page, so curiodz.com is the only
+  address anyone ever needs.
+
+  Rules it must obey:
+   • never a dead end — unknown name, paused code, finished offer all still
+     land on the shop; a full-price visitor beats a bounce every time
+   • never wait on the network — 2.5s and it moves on by itself
+   • no fonts, no libraries, nothing to download; this page is a corridor
+-->
+<style>
+  html,body{margin:0;height:100%}
+  body{background:#fbf6ec;color:#161310;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+       display:flex;align-items:center;justify-content:center;text-align:center}
+  .wrap{padding:24px}
+  .dot{width:54px;height:54px;margin:0 auto 18px;border-radius:50%;
+       border:5px solid #161310;border-top-color:#facc15;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  p{margin:0;font-size:1.05rem;font-weight:700}
+  small{display:block;margin-top:8px;color:#675b4c;font-weight:400}
+  a{color:#161310}
+  @media (prefers-reduced-motion:reduce){.dot{animation-duration:2.4s}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="dot"></div>
+    <p>ثواني، نوجّهوك…</p>
+    <small><a href="/">إذا ما تحرّكش، أضغط هنا</a></small>
+  </div>
+
+<script>
+(function(){
+  var API = (window.CURIO_API || (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+    ? 'http://localhost:5522'
+    : 'https://stirring-marigold-3dd8e9.netlify.app'));
+
+  // /i/sara  →  "sara". Trailing slash, upper case and stray spaces all happen
+  // when a link is retyped from a story, so normalise before anything else.
+  var parts = location.pathname.split('/').filter(Boolean);
+  var slug = (parts[1] || '').trim().toLowerCase();
+
+  function go(url){ location.replace(url); }
+
+  if (!slug) { go('/'); return; }
+
+  // A private-page token is a long random string; a selling name is a short
+  // word. Send the long one to her own sales page on the API domain, so she
+  // only ever has to remember curiodz.com.
+  if (/^[a-z0-9]{20,}$/.test(slug)) { go(API + '/i/' + slug); return; }
+
+  // If the store is slow or unreachable we still send them to the shop with
+  // the name as a code — coupon-memory.js picks it up from the address, so
+  // even this fallback keeps her attribution alive.
+  var done = false;
+  function fallback(){ if (!done) { done = true; go('/?code=' + encodeURIComponent(slug.toUpperCase())); } }
+  var timer = setTimeout(fallback, 2500);
+
+  fetch(API + '/api/links/' + encodeURIComponent(slug), { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if (done) return;
+      done = true; clearTimeout(timer);
+      go(j && j.url ? j.url : '/');
+    })
+    .catch(fallback);
+})();
+</script>
+</body>
+</html>

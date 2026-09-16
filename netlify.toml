@@ -29,6 +29,15 @@
   to = "/salon/index.html"
   status = 200
 
+# The influencer door. One short link per influencer — curiodz.com/i/sara —
+# rewritten (200, address stays put) onto one static page that asks the store
+# where that name should go. A splat rule means adding an influencer is a row
+# in the portal, never a redeploy of this file.
+[[redirects]]
+  from = "/i/*"
+  to = "/i/index.html"
+  status = 200
+
 # /home was the staged homepage before launch (Aug 13 2026) — now promoted
 # to root index.html. Redirect any old links/bookmarks straight to /.
 [[redirects]]
