@@ -1463,7 +1463,7 @@ function renderCarrier() {
   // it is switched on again - but it must never read as "these are live now".
   document.getElementById('carrierCaption').textContent = d.enabled
     ? 'الولايات لي معلّمين راهم على ZR Express. كليكي باش تبدّل، من بعد «حفظ الولايات».'
-    : 'ZR محبوس دروك. الولايات لي معلّمين محفوظين غير — ما يخدموش حتى تحفظ.';
+    : 'ZR محبوس دروك. الولايات لي معلّمين محفوظين برك — ما يخدموش. «حفظ الولايات» يحلّ ZR من جديد.';
   document.getElementById('carrierWilayas').classList.toggle('paused', !d.enabled);
 
   var picked = {};
@@ -1503,8 +1503,12 @@ function postCarrier(payload, okMsg) {
     .then(function (d) {
       carrierBusy = false;
       if (!d || d.error) { showToast((d && d.error) || 'ما تسجّلش', true); loadCarrier(); return; }
-      carrierState = d;
-      renderCarrier();
+      // Re-READ the whole state; do not redraw from this answer. The POST
+      // replies with the routing only - it carries no allWilayas - so
+      // renderCarrier() here wiped the wilaya grid off the screen, making a
+      // save that WORKED look like one that failed. A second click then found
+      // nothing selected and offered to send everything back to Ecotrack.
+      loadCarrier();
       // d.confirmed is the shop saying it read its own change back out of the
       // database. A 200 on its own is not enough to tell him it is done.
       showToast(
@@ -1538,7 +1542,16 @@ function saveCarrierWilayas() {
     postCarrier({ enabled: false, wilayas: [] }, 'رجّعنا كلش لـ Ecotrack');
     return;
   }
-  if (!confirm(codes.length + ' ولاية توليو على ZR Express.\nالباقي يبقى على Ecotrack.\n\nنكملو؟')) return;
+  // Saving the list is also how ZR gets switched ON - there is no separate
+  // button. That is fine, but it must never happen quietly: if the brake is
+  // currently pulled, say so FIRST, in its own line, before the wilaya count.
+  // Somebody reading a dialog about wilayas must not restart a broken courier
+  // without being told that is what they are agreeing to.
+  var msg = codes.length + ' ولاية توليو على ZR Express.\nالباقي يبقى على Ecotrack.';
+  if (!carrierState.enabled) {
+    msg = 'تنبيه: ZR راه محبوس دروك — هذا يحلّه من جديد.\n\n' + msg;
+  }
+  if (!confirm(msg + '\n\nنكملو؟')) return;
   postCarrier({ enabled: true, wilayas: codes }, codes.length + ' ولاية ولّات على ZR');
 }
 
