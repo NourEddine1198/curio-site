@@ -1470,7 +1470,13 @@ fbq('track', 'PageView');
        summary AND in the sticky bar, while the card right above still showed
        3,900. Two prices for the same offer, on the page whose whole job is
        testing price. Unknown shows a dash, the way the delivery fee does. */
-    var priced = unit > 0 && !(state.plan==='two' && state.two.length < 2);
+    /* ACTIVE[slug] !== false also covers the case where the shop has no row
+       for this product at all: the cards are hidden and the button is
+       disabled, so the summary must not sit there quoting a price for
+       something nobody can buy. Before /api/pricing answers, ACTIVE is empty
+       and undefined !== false, so the normal price still shows at once. */
+    var priced = unit > 0 && ACTIVE[slug] !== false
+      && !(state.plan==='two' && state.two.length < 2);
     $('s-label').textContent = labelOf(state.plan) + (state.qty>1 ? ' × '+state.qty : '');
     $('s-sub').textContent = priced ? fmt(sub)+' دج' : '—';
     $('s-ship').textContent = f==null ? 'حسب الولاية' : fmt(f)+' دج';
