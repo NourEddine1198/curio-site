@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ركّبني — قطعة بقطعة… يبني عالمه بيديه | Curio</title>
+<meta name="description" content="ركّبني: 30 لوحة في 3 عوالم يركّبهم وليدك بيديه، كل قطعة برقمها. 10 مستويات في كل عالم. مصنوع 100% في الجزائر. الدفع عند الاستلام.">
+<!-- Kept out of Google during the launch test (both offers live on this one address). Drop this line once the test is decided. -->
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#00a6e6">
+<meta property="og:type" content="product">
+<meta property="og:title" content="ركّبني — قطعة بقطعة… يبني عالمه بيديه">
+<meta property="og:description" content="30 لوحة في 3 عوالم يركّبهم وليدك بيديه. مصنوع 100% في الجزائر · الدفع عند الاستلام.">
+<meta property="og:image" content="https://curiodz.com/products/rakibni/share.jpg">
+<meta property="og:url" content="https://curiodz.com/rakibni/">
+<link rel="preload" as="image" href="/products/rakibni/hero-900.webp" imagesrcset="/products/rakibni/hero-900.webp 900w, /products/rakibni/hero.webp 1200w" imagesizes="(min-width: 900px) 560px, 100vw">
+
+<script>
+/* ===== THE SPLIT (runs before anything is drawn) =====
+   One link, two offer pages. Each new visitor gets page A or page B at random
+   (a fair coin) and KEEPS it: the choice is saved in this browser, so the same
+   person always sees the same offer. That stickiness is what makes the test
+   honest - and what stops a customer seeing two prices for the same box.
+     A = 1 world 2,200 · full collection 4,400 (pay 2, the 3rd is a gift)
+     B = the ladder: 1 world 2,200 · 2 worlds 3,900 · full set 4,900
+   ?door=family  - the WhatsApp link for past buyers: always A, counted APART
+                   (test "rakibni-warm"), and remembered from then on.
+   ?preview=A|B  - for us, to look at one page: not saved, not counted, and the
+                   order is not tagged. Never put it in an ad.
+   The server keeps the truth: it charges each product's own price and only
+   accepts these test names. */
+(function(){
+  var KEY='curio-rk', TEST='rakibni-launch';
+  function read(){
+    try{var s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}
+    try{var m=document.cookie.match(/(?:^|;\s*)curio-rk=([^;]+)/);if(m)return JSON.parse(decodeURIComponent(m[1]));}catch(e){}
+    return null;
+  }
+  function save(st){
+    var v=JSON.stringify(st);
+    try{localStorage.setItem(KEY,v);}catch(e){}
+    try{document.cookie=KEY+'='+encodeURIComponent(v)+'; max-age=15552000; path=/; samesite=lax';}catch(e){}
+  }
+  function rand(n){
+    var a=new Uint8Array(n);
+    try{(window.crypto||window.msCrypto).getRandomValues(a);}catch(e){for(var i=0;i<n;i++)a[i]=Math.floor(Math.random()*256);}
+    return a;
+  }
+  function newId(){var a=rand(12),s='';for(var i=0;i<a.length;i++)s+=('0'+a[i].toString(16)).slice(-2);return s;}
+  var q={};try{q=Object.fromEntries(new URLSearchParams(location.search));}catch(e){}
+  var st=null, preview=String(q.preview||'').toUpperCase();
+  if(preview==='A'||preview==='B'){
+    st={t:'preview',v:preview,id:''};
+  }else{
+    st=read();
+    var known=st&&st.id&&(st.t===TEST&&(st.v==='A'||st.v==='B')||st.t==='rakibni-warm');
+    if(q.door==='family'){st={t:'rakibni-warm',v:'A',id:(known&&st.id)||newId()};save(st);}
+    else if(!known){st={t:TEST,v:(rand(1)[0]&1)?'B':'A',id:newId()};save(st);}
+  }
+  window.CURIO_RK=st;
+  var root=document.documentElement;
+  root.setAttribute('data-offer',st.v);
+  if(st.t==='rakibni-warm')root.setAttribute('data-door','family');
+  if(st.t==='preview')root.setAttribute('data-preview',st.v);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Baloo+Bhaijaan+2:wght@600;700;800&amp;family=Noto+Sans+Arabic:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#fbf6ec;--bg2:#fffdf7;--ink:#161310;--ink-soft:#675b4c;--line:#e7dcc6;
+    --red:#ec2c24;--yellow:#facc15;--green:#5cb335;
+    /* the three pouches */
+    --dz:#00a6e6;--an:#34b34e;--ve:#fbdb05;
+    --ease:cubic-bezier(.16,1,.3,1)
+  }
+  /* Only one offer is ever on screen: the page the visitor was given. */
+  :root[data-offer="B"] .only-a{display:none!important}
+  :root:not([data-offer="B"]) .only-b{display:none!important}
+  :root:not([data-door="family"]) .only-family{display:none!important}
+  :root[data-door="family"] .not-family{display:none!important}
+
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--bg);overflow-x:clip;line-height:1.6}
+  a,button{-webkit-tap-highlight-color:transparent}
+  h1,h2,h3,.burger,.nav a{-webkit-user-select:none;user-select:none}
+  a{color:inherit;text-decoration:none}
+  img,video{max-width:100%;height:auto;display:block}
+  button{font:inherit;color:inherit}
+  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,36px)}
+  .narrow{max-width:760px}
+  .baloo{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
+  .num{font-family:"Anton","Baloo Bhaijaan 2",sans-serif;letter-spacing:.3px}
+  :focus-visible{outline:3px solid var(--dz);outline-offset:2px}
+
+  /* ===== header ===== */
+  header{position:sticky;top:8px;z-index:100;margin:8px clamp(12px,3vw,28px) 0;border:2px solid var(--ink);border-radius:14px;background:var(--bg2);box-shadow:0 6px 16px rgba(22,19,16,.15)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px clamp(12px,3vw,18px)}
+  .logo{height:34px;mix-blend-mode:multiply}
+  .nav{display:none;gap:18px;font-weight:800;font-size:.92rem;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
+  @media(min-width:760px){.nav{display:flex}}
+  .hdr-cta{border:2px solid var(--ink);background:var(--red);color:#fff;border-radius:10px;padding:6px 14px;font-weight:800;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--ink);font-size:.95rem}
+  .hdr-cta:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .preview-chip{display:none;position:fixed;left:50%;transform:translateX(-50%);top:62px;z-index:110;background:var(--ink);color:#fff;font-weight:700;font-size:.7rem;padding:3px 10px;border-radius:999px;opacity:.85;pointer-events:none}
+  :root[data-preview] .preview-chip{display:block}
+
+  /* ===== hero ===== */
+  .hero{padding:14px 0 34px}
+  .hero-grid{display:grid;gap:18px;align-items:center}
+  /* The picture is now a gallery, and on a phone it IS the top of the page:
+     full width, no frame, with the sticky header floating on top of it. The
+     negative inline margin is what lets it escape .wrap's padding; body already
+     has overflow-x:clip, so 100vw cannot make the page scroll sideways. */
+  .hero-pic{position:relative;overflow:hidden;background:#fbf6ec;aspect-ratio:1/1;
+    width:100vw;margin-inline:calc(50% - 50vw)}
+  .hero-pic img{width:100%;height:100%;object-fit:cover}
+  .gtrack{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .gtrack::-webkit-scrollbar{display:none}
+  .gslide{flex:0 0 100%;height:100%;scroll-snap-align:center}
+  .glines{position:absolute;left:0;right:0;bottom:12px;z-index:3;
+    display:flex;gap:6px;justify-content:center;pointer-events:none}
+  .gline{display:block;width:26px;height:4px;border-radius:999px;
+    background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.35);
+    transition:width .25s var(--ease),background .25s var(--ease)}
+  .gline.on{background:#fff;width:40px}
+  /* 76px on a phone so it clears the header now floating over the picture;
+     back to 14 on desktop, where the header is not on top of it. */
+  .ribbon{position:absolute;z-index:2;top:76px;inset-inline-start:12px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:.86rem;padding:6px 14px;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transform:rotate(-3deg)}
+  .hero-info{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .logo-h1{margin:10px 0 2px;line-height:0}
+  .logo-h1 img{width:min(150px,40vw);height:auto;margin:0 auto}
+  .promise{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.55rem,5.8vw,2.3rem);line-height:1.25;margin-top:4px}
+  .promise .hl{background:linear-gradient(transparent 62%,var(--ve) 62%);padding:0 4px;white-space:nowrap}
+  .lead{color:var(--ink-soft);font-weight:500;font-size:1.02rem;max-width:520px;margin-top:8px}
+  /* The box is gone - the offer and the price now sit on the page itself,
+     the way Roubla's do. Keeping the class so the A/B scoping still works. */
+  .teaser{margin-top:16px;width:100%;max-width:460px;text-align:center}
+  .teaser .tag{display:inline-block;background:var(--red);color:#fff;font-weight:800;font-size:.75rem;border-radius:999px;padding:2px 10px}
+  .teaser .t{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.15rem;line-height:1.35;margin-top:6px}
+  .teaser .p{margin-top:2px;font-weight:700;color:var(--ink-soft)}
+  .teaser .p b{font-family:"Anton";font-size:1.7rem;color:var(--ink);font-weight:400}
+  .teaser .p s{font-family:"Anton";font-size:1.05rem;opacity:.65;margin-inline-start:6px}
+  /* PAGE B's price ladder on the first screen. Three rungs, read in one
+     glance, deliberately SHORTER than the headline + big price it replaces
+     so B's order button never sits lower than A's. Anton for the figures,
+     like every other price on the page. */
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+    width:100%;max-width:400px;margin:8px auto 0}
+  .ladder span{display:block;text-align:center;padding:5px 2px;
+    border-inline-start:2px dashed var(--line)}
+  .ladder span:first-child{border-inline-start:0}
+  .ladder i{display:block;font-style:normal;font-weight:700;font-size:.74rem;
+    line-height:1.2;color:var(--ink-soft)}
+  .ladder b{display:block;font-family:"Anton";font-weight:400;
+    font-size:1.34rem;line-height:1.15;margin-top:1px}
+  /* The rung the offer wants: the full set, in the page's own blue. */
+  .ladder span:last-child b{color:var(--dz)}
+  .family-note{margin-top:12px;width:100%;max-width:460px;border:2.5px dashed var(--ink);border-radius:14px;background:#fff6d6;padding:10px 14px;font-weight:700;font-size:.92rem}
+  .order-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:460px;border:3px solid var(--ink);border-radius:14px;background:var(--red);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.3rem;padding:13px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .15s var(--ease),box-shadow .15s var(--ease);margin-top:16px}
+  .order-btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+  .order-btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .specrow{display:flex;margin-top:16px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:var(--bg2);box-shadow:5px 5px 0 var(--ink);max-width:460px;width:100%}
+  .specrow .s{flex:1;text-align:center;padding:9px 4px;border-inline-start:3px solid var(--ink)}
+  .specrow .s:first-child{border:0}
+  .specrow .n{font-family:"Anton","Baloo Bhaijaan 2",sans-serif;font-size:1.45rem;line-height:1.1}
+  .specrow .l{font-weight:800;font-size:.74rem;color:var(--ink-soft)}
+  /* Phone: the hero slides up under the sticky header - 8px of its margin plus
+     its 60px box - so the gallery starts at the very top of the screen. */
+  @media(max-width:899px){
+    .hero{padding-top:0;margin-top:-68px}
+  }
+  @media(min-width:900px){
+    .hero{padding:26px 0 50px}
+    .hero-grid{grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:44px}
+    .hero-info .order-btn,.hero-info .teaser,.hero-info .specrow{max-width:460px}
+    /* Measured on the live Roubla page at 914px: its gallery is a 411px square
+       in a two-column hero, not full-bleed. So desktop keeps its column and
+       only loses the frame. */
+    .hero-pic{width:auto;margin-inline:0;border-radius:22px}
+    .ribbon{top:14px}
+    .logo-h1 img{width:250px}
+  }
+
+  /* ===== blocks ===== */
+  .block{position:relative;padding:clamp(40px,6vw,70px) 0}
+  .block.cream{background:var(--bg2)}
+  .block.ink{background:var(--ink);color:var(--bg)}
+  /* ⛔ NOT white text. White on this blue measures 2.76:1, under the 4.5
+     readable floor; black on the same blue is 6.69:1. The rule used to say
+     #fff and was never used by any section - switching a section to blue
+     with that rule in place would have shipped unreadable text. */
+  .block.blue{background:var(--dz);color:var(--ink)}
+  .block.green{background:var(--an);color:var(--ink)}
+  /* The muted body colour is for pale paper. On the blue it measures 2.39:1
+     and on the green 2.42:1 - both unreadable - so each gets a dark tone of
+     its own hue instead: 5.08:1 and 5.05:1. Same fix the gold block already
+     carries a few lines below. */
+  .block.blue .sub{color:#0f2f3d}
+  .block.green .sub{color:#16331c}
+  /* The sheets block. NOT red on purpose: red on this page means "press
+     this" - the order button and the launch ribbon - and a red block right
+     above a red button swallows the button. Amber is the loudest colour
+     left and it reads as prize. #F7B318 is the brand's real printed
+     yellow, not the lemon used for the vehicles world. */
+  .block.gold{background:#F7B318;color:var(--ink)}
+  /* The muted body colour is for pale backgrounds; on amber it measured 3.59:1,
+     under the 4.5 readable floor - and this is the line that says what to write
+     with, so it is the one that must not be squinted at. A dark warm brown keeps
+     the hierarchy under the headline and reads at 6.7:1. */
+  .block.gold .sub{color:#3d3326}
+  /* ===== THE ROUBLA FINISH =================================================
+     Copied from website/frontend/roubla/index.html, where both of these have
+     been live for months. ركّبني had neither, which is the real reason it
+     did not look like a sister page.
+     .halftone  - a faint dot screen, the comic-print texture.
+     .wavetop   - a thin strip of the block's OWN colour, pushed up over the
+                  section above and roughened by the SVG filter, so the join
+                  is torn rather than ruled. background:inherit is what makes
+                  one rule work for ink, blue, gold and green alike. */
+  .halftone::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(0,0,0,.08) 1.2px,transparent 1.4px);
+    background-size:15px 15px;opacity:.5}
+  .wavetop::before{content:"";position:absolute;left:0;right:0;top:-9px;height:12px;
+    background:inherit;z-index:2;filter:url(#rough)}
+  .eyebrow{display:inline-block;font-weight:800;font-size:.82rem;letter-spacing:.2px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px}
+  .block.ink .eyebrow{background:var(--ve);color:var(--ink)}
+  .h2{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:clamp(1.8rem,5.5vw,2.8rem);line-height:1.15;margin-top:8px}
+  .block.ink .h2{color:var(--ve)}
+  .sub{color:var(--ink-soft);font-size:1rem;margin-top:8px;max-width:640px}
+  .block.ink .sub{color:#d9cfbf}
+  .center{text-align:center}
+  .center .sub{margin-inline:auto}
+
+  /* how it works */
+  .hero .bridge{font-size:.95rem;line-height:1.45}
+  .bridge{display:inline-block;margin-top:12px;background:var(--ve);border:2.5px solid var(--ink);border-radius:12px;padding:6px 14px;font-weight:800;color:var(--ink)}
+  .steps{display:grid;gap:16px;margin-top:24px}
+  @media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+  .step{background:var(--bg2);color:var(--ink);border:3px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #000}
+  .step .pic{aspect-ratio:4/3;background:#fff;border-bottom:3px solid var(--ink)}
+  .step .pic img{width:100%;height:100%;object-fit:cover}
+  .step .txt{padding:12px 16px 16px}
+  .step .k{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-family:"Anton";font-size:1rem;border:2px solid var(--ink);margin-inline-end:6px}
+  .step h3{display:inline;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.2rem}
+  .step p{color:var(--ink-soft);margin-top:6px;font-size:.95rem}
+  .demo{margin:26px auto 0;max-width:460px;border:3px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #000;background:#f3ede2;aspect-ratio:1/1}
+  .demo video{width:100%;height:100%;object-fit:cover}
+  .demo-cap{text-align:center;font-size:.82rem;color:#d9cfbf;margin-top:8px}
+  .nos{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}
+  .nos span{border:2px solid var(--bg);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.88rem}
+  .fix{margin:18px auto 0;max-width:560px;text-align:center;font-weight:700;color:var(--bg)}
+
+  /* worlds */
+
+  /* ===== the worlds section (approved 16 Nov) =====
+     Tap a world, its first board builds piece by piece; the other nine sit
+     under it as stills and the strip swipes itself. Namespaced rkw-* on
+     purpose: .world/.worlds/.strip belong to the page and rk-* to the
+     scrolling build above. Code: /products/rakibni/worlds.js */
+  .rkw{margin-top:22px}
+  .rkw-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+  .rkw-b-btn{display:grid;justify-items:center;gap:3px;background:var(--bg2);cursor:pointer;
+    border:3px solid var(--ink);border-radius:16px;padding:9px 5px;
+    font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;
+    font-weight:800;font-size:.9rem;color:var(--ink);box-shadow:3px 3px 0 var(--ink);
+    transition:transform .18s var(--ease),box-shadow .18s,background .18s}
+  .rkw-b-btn img{width:62px;height:auto;filter:drop-shadow(2px 3px 0 rgba(22,19,16,.22))}
+  .rkw-pick .rkw-b-btn:nth-child(1).on{background:rgba(0,166,230,.3)}
+  .rkw-pick .rkw-b-btn:nth-child(2).on{background:rgba(52,179,78,.3)}
+  .rkw-pick .rkw-b-btn:nth-child(3).on{background:rgba(251,219,5,.45)}
+  .rkw-b-btn.on{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .rkw-stageHost{position:relative}
+  .rkw-stage{position:relative}
+  .rkw-wrap{position:relative;width:100%;overflow:hidden;border-radius:16px;
+    border:3px solid var(--ink);background:#e9e4d8;box-shadow:5px 5px 0 var(--ink)}
+  .rkw-b,.rkw-f{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .rkw-f{opacity:0}
+  .rkw-p{position:absolute;display:block;object-fit:contain;opacity:0;
+    will-change:transform,opacity}
+  .rkw-p.rkw-air{filter:drop-shadow(0 8px 8px rgba(22,19,16,.4))}
+  .rkw-cap{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;
+    margin-top:12px;font-size:.92rem;font-weight:700;color:var(--ink-soft)}
+  .rkw-cap b{color:var(--ink);font-size:1.05rem}
+  .rkw-cap em{font-style:normal;background:var(--ve);border:2px solid var(--ink);
+    border-radius:7px;padding:0 7px;font-size:.8rem;color:var(--ink)}
+  .rkw-more{margin-top:20px}
+  .rkw-moreT{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;
+    font-weight:800;font-size:1rem;margin-bottom:8px}
+  .rkw-strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;
+    padding-bottom:6px;scrollbar-width:none}
+  .rkw-strip::-webkit-scrollbar{display:none}
+  .rkw-strip figure{flex:0 0 auto;width:min(29vw,118px);scroll-snap-align:start}
+  .rkw-strip img{width:100%;aspect-ratio:560/455;object-fit:cover;display:block;
+    border:2px solid var(--ink);border-radius:10px;background:#e9e4d8}
+  .rkw-strip figcaption{font-size:.72rem;font-weight:700;margin-top:4px;color:var(--ink-soft);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rkw-strip figcaption b{color:var(--ink);font-family:"Anton";font-weight:400;margin-left:4px}
+  @media(min-width:760px){
+    .rkw{max-width:560px;margin-inline:auto}
+    .rkw-strip figure{width:118px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .rkw-p{transition:none!important;opacity:1!important;transform:none!important}
+    .rkw-f{opacity:1!important}
+  }
+
+  .world{border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--bg2);box-shadow:6px 6px 0 var(--ink)}
+  .world-top{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center;padding:14px 16px}
+  .world[data-w="algeria"] .world-top{background:linear-gradient(135deg,rgba(0,166,230,.22),rgba(0,166,230,.06))}
+  .world[data-w="animals"] .world-top{background:linear-gradient(135deg,rgba(52,179,78,.22),rgba(52,179,78,.06))}
+  .world[data-w="vehicles"] .world-top{background:linear-gradient(135deg,rgba(251,219,5,.4),rgba(251,219,5,.1))}
+  .world-top img{width:110px;height:auto;filter:drop-shadow(3px 4px 0 rgba(22,19,16,.25))}
+  .world h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.45rem;line-height:1.2}
+  .world .wl{color:var(--ink-soft);font-size:.95rem;margin-top:4px}
+  .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 16px 14px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .strip figure{flex:0 0 auto;width:min(46vw,210px);scroll-snap-align:start}
+  .strip img{width:100%;aspect-ratio:560/455;object-fit:cover;border:2px solid var(--ink);border-radius:10px;background:#eee}
+  .strip figcaption{font-size:.78rem;font-weight:700;margin-top:4px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .strip figcaption b{color:var(--ink);font-family:"Anton";font-weight:400;margin-inline-end:4px}
+  .swipe-hint{font-size:.78rem;color:var(--ink-soft);padding:0 16px 12px;font-weight:700}
+  @media(min-width:900px){.strip figure{width:180px}}
+
+  /* why (pillars) */
+  /* Four scenes, two up. The old three-column rule is gone on purpose:
+     with four cards it left an orphan on the bottom row, and a photo needs
+     the width anyway. */
+  .why{display:grid;gap:12px;margin-top:24px}
+  /* Desktop: the lead card takes the first column and spans the three mini rows, so the
+     three minis stack beside it and stretch to its height. Four cards in a plain
+     2x2 would have made the hero the same size as its own supporting cast. */
+  @media(min-width:700px){
+    .why{grid-template-columns:1fr 1fr}
+    .card.why-big{grid-row:span 3}
+  }
+  /* A mini is the same card turned on its side: photo on the start edge, headline
+     beside it, no body line. align-self:stretch is what lets the photo fill the
+     card on desktop, where the grid makes the row taller than the picture. */
+  .card.mini{flex-direction:row;align-items:center}
+  .card.mini img{flex:0 0 132px;width:132px;align-self:stretch;height:auto;
+    aspect-ratio:3/2;border-bottom:0;border-inline-end:3px solid var(--ink)}
+  .card.mini .card-t{padding:10px 13px}
+  .card.mini h3{font-size:.98rem;line-height:1.28}
+  .card{border:3px solid var(--ink);border-radius:18px;background:var(--bg2);box-shadow:5px 5px 0 var(--ink);
+    overflow:hidden;display:flex;flex-direction:column}
+  /* aspect-ratio holds the box before the photo arrives, so nothing below
+     this section jumps while four lazy images load. */
+  .card img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;
+    border-bottom:3px solid var(--ink);background:var(--bg)}
+  /* THE WALL CARD (his call, 24 Nov). This used to be a 100vw band that broke
+     out of the wrap and finished on a lemon caption. It is now the section's
+     fifth card, with the same chrome as the other four, so «علاش» is one blue
+     field with cards on it and reads big / 3 small / big: the moment he
+     finishes one, the three reasons, and the wall of all of them. The two
+     photographs are the section's two feelings and the three reasons sit
+     between them.
+     ⭐ This RETIRED a problem instead of patching it. As a band, its lemon
+     caption sat straight on the gift block's amber - two yellows six degrees
+     apart at identical lightness, 53% both, which the eye reads as one slab -
+     and every fix for that cost something. Inside a card there is blue
+     between them and the question is gone. It also settles two things a real
+     photograph would have broken: a card crops instead of letterboxing (the
+     band's own cream showed as bars either side above 1640px once the cream
+     drawing was replaced), and the card sets its own box, so the img's
+     width/height attributes stop driving the layout. */
+  .wallband{margin-top:12px;
+    border:3px solid var(--ink);border-radius:18px;background:var(--bg2);
+    box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+  /* ⛔ NOT the other cards' 3/2. This picture is wide - today's stand-in is
+     2.133:1 and the real shot is 16:9 - and object-fit:cover inside a 3/2 box
+     would crop the boards off both ends, which is the entire subject. */
+  .wallband img{display:block;width:100%;height:auto;
+    aspect-ratio:16/9;object-fit:cover;background:var(--bg)}
+  /* Matches .card-t exactly, so the two big cards read as a pair.
+     ⛔ CREAM IS HIS DECISION, 24 Nov - asked and answered, not a default.
+     He was shown the lemon version and chose cream. The lemon is safe now
+     that nothing yellow touches the gift block (background:var(--yellow)
+     here plus color:var(--ink) on the span, one line), so it will look like
+     a harmless improvement to someone reading this later. It is not an
+     improvement, it is a decision he already made. Do not restore it
+     without asking him again. */
+  .wallband .wl{background:var(--bg2);border-top:3px solid var(--ink);
+    padding:14px 16px 16px}
+  .wallband .wl b{display:block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;
+    font-weight:800;font-size:1.18rem;line-height:1.3}
+  .wallband .wl span{display:block;font-size:.95rem;margin-top:4px;color:var(--ink-soft)}
+
+  .card-t{padding:14px 16px 16px}
+  .card-t h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.18rem;line-height:1.3}
+  .card-t p{color:var(--ink-soft);font-size:.95rem;margin-top:4px}
+  .card.star{background:#fff6d6}
+
+  /* in the box */
+  .box-grid{display:grid;gap:18px;margin-top:22px;align-items:center}
+  @media(min-width:860px){.box-grid{grid-template-columns:1fr 1fr}}
+  .box-list{list-style:none;display:grid;gap:10px}
+  .box-list li{display:flex;gap:10px;align-items:flex-start;background:var(--bg2);border:2.5px solid var(--ink);border-radius:14px;padding:10px 14px;font-weight:600}
+  .box-list li b{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--dz);color:#fff;font-family:"Anton";font-weight:400;border:2px solid var(--ink)}
+  .box-pics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .box-pics img{border:2.5px solid var(--ink);border-radius:12px;background:#fff}
+
+  /* gift */
+  /* the sheets section: the two lines that do the wanting (17 Nov) */
+  /* was yellow on blue; on amber it would disappear, so it flips to ink.
+     That also makes it the strongest contrast in the section, which is
+     what the condition deserves. */
+  .gift-only{display:inline-block;margin-top:14px;background:var(--ink);color:#fff;
+    border:2.5px solid var(--ink);border-radius:999px;padding:5px 15px;
+    font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;
+    font-weight:800;font-size:.95rem;box-shadow:3px 3px 0 rgba(22,19,16,.25)}
+  .gifts{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 12px;margin-top:20px}
+  .gifts img{flex:0 0 auto;width:min(62vw,250px);border:2.5px solid var(--ink);border-radius:12px;scroll-snap-align:start;background:#fff}
+  .gift-note{margin-top:6px;font-weight:700}
+  @media(min-width:900px){.gifts{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible}.gifts img{width:100%}}
+
+
+  /* the gift block (audit #1) */
+  .block.warm{background:#fff6d6}
+  @media(min-width:860px){.gi{grid-template-columns:1fr .8fr}}
+
+  /* ===== order ===== */
+  /* THE LAUNCH DEADLINE - a sticker slapped on the offer pill. His pick of
+     three mock-ups, 22 Nov (option 3), with the pill bigger and the sticker
+     smaller than the mock-up he chose from.
+     ⛔ Every size below is SCOPED to .offer-pill on purpose. There are TEN
+     .eyebrow pills on this page; growing the shared class would resize the
+     eyebrow of every section. Only ever change the scoped one here. */
+  .offer-pill{position:relative;display:inline-block;padding-top:11px}
+  .offer-pill .eyebrow{margin-top:13px;font-size:1.06rem;padding:5px 18px}
+  /* Once the sticker is gone the room made for it has to go too, or the
+     page is left with 24px of hole above the pill from 11 Dec onwards. */
+  .offer-pill.gone{padding-top:0}
+  .offer-pill.gone .eyebrow{margin-top:0}
+  /* The sticker is OUT OF FLOW, so it never widens or shifts the pill beneath
+     it however long the month name is. inset-inline-start + translateX(50%)
+     centres it in RTL, where `start` is the right-hand edge. The tilt and the
+     hard ink shadow are the page's own comic language - it has to read as
+     something stuck ON the offer, not printed with it. */
+  .until{position:absolute;top:0;inset-inline-start:50%;
+    transform:translateX(50%) rotate(-5deg);transform-origin:center;
+    display:inline-flex;align-items:center;gap:4px;white-space:nowrap;
+    background:var(--red);color:#fff;border:2px solid var(--ink);
+    border-radius:999px;padding:2px 10px;box-shadow:2.5px 2.5px 0 var(--ink);
+    font-weight:800;font-size:.68rem;letter-spacing:.2px;z-index:2}
+  .until svg{width:11px;height:11px;flex:none}
+  /* Anton carries no Arabic glyphs, so without the rest of the stack the month
+     name drops to the browser default instead of the page font. Same stack the
+     page’s own .num class uses. */
+  .until b{font-family:"Anton","Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;
+    font-weight:400;font-size:inherit;letter-spacing:.3px}
+  .order-sec{background:var(--bg2);border-top:3px solid var(--ink)}
+  .plans{display:grid;gap:12px;margin-top:22px}
+  .plan{position:relative;border:3px solid var(--ink);border-radius:18px;background:#fff;padding:14px 16px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:transform .15s var(--ease),box-shadow .15s var(--ease),background .15s}
+  .plan:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--ink)}
+  .plan[aria-checked="true"]{background:#eaf7fd;box-shadow:6px 6px 0 var(--dz);border-color:var(--ink)}
+  .plan-row{display:flex;align-items:center;gap:12px}
+  .radio{flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:3px solid var(--ink);background:#fff;display:grid;place-items:center}
+  .plan[aria-checked="true"] .radio::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--dz)}
+  .plan-name{flex:1;min-width:0}
+  .plan-name b{display:block;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.18rem;line-height:1.25}
+  .plan-name small{display:block;color:var(--ink-soft);font-weight:600;font-size:.86rem}
+  .plan-price{text-align:left;flex:0 0 auto}
+  .plan-price b{font-family:"Anton";font-weight:400;font-size:1.6rem;line-height:1}
+  .plan-price b small{font-family:"Noto Sans Arabic";font-size:.8rem;font-weight:700}
+  .plan-price s{display:block;font-family:"Anton";font-size:.95rem;opacity:.55}
+  @media(max-width:370px){
+    .plan-row{flex-wrap:wrap}
+    .plan-name{flex:1 1 calc(100% - 40px)}
+    .plan-price{flex:1 1 100%;display:flex;align-items:baseline;gap:8px;padding-inline-start:36px}
+    .plan-price s{display:inline}
+  }
+  .plan .badge{position:absolute;top:-12px;inset-inline-start:14px;background:var(--red);color:#fff;font-weight:800;font-size:.75rem;border:2px solid var(--ink);border-radius:999px;padding:1px 10px}
+  .perks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .perks span{font-size:.8rem;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:2px 10px;background:#fff6d6}
+  /* The three pouches that do the sum. BOTH pages use this now: A strikes
+     the third and stamps it a gift, B prints all three at 2,200 so the
+     6,600 struck on its card is true in front of you. The strip reads as ONE
+     thing, not three, which is why it can be added to a card we are trying
+     to make simpler. */
+  .deal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;
+    padding-top:12px;border-top:2px dashed rgba(22,19,16,.22)}
+  .deal-w{position:relative;text-align:center}
+  .deal-w img{width:100%;height:auto;display:block;
+    filter:drop-shadow(2px 3px 0 rgba(22,19,16,.2))}
+  .deal-w b{display:block;font-family:"Anton";font-weight:400;font-size:1.05rem;
+    line-height:1.1;margin-top:3px}
+  .deal-w s{display:block;font-family:"Anton";font-weight:400;font-size:.9rem;
+    line-height:1.1;margin-top:3px;opacity:.45}
+  .deal-gift{display:inline-block;background:var(--red);color:#fff;font-weight:800;
+    font-size:.72rem;border:2px solid var(--ink);border-radius:999px;padding:0 8px;
+    margin-top:2px}
+  .picker{display:none;margin-top:12px}
+  .plan[aria-checked="true"] .picker{display:block}
+  .picker .q{font-size:.84rem;font-weight:800;margin-bottom:6px}
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .chip{border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800;font-size:.78rem;line-height:1.2;text-align:center}
+  .chip img{width:54px;height:auto}
+  .chip[aria-pressed="true"]{background:var(--ve);box-shadow:3px 3px 0 var(--ink)}
+  .chip[data-w="algeria"][aria-pressed="true"]{background:#bfe9f9}
+  .chip[data-w="animals"][aria-pressed="true"]{background:#c9edd0}
+  .pick-msg{font-size:.8rem;color:var(--red);font-weight:700;margin-top:6px;min-height:1.2em}
+
+  .cform{margin-top:20px;border:3px solid var(--ink);border-radius:20px;background:#fff;padding:16px;box-shadow:6px 6px 0 var(--ink)}
+  .cform h3{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.2rem;margin-bottom:6px}
+  /* Two per row on a phone too - this is what the pack page does, and the
+     min-width:560px gate was the whole reason this form stacked. */
+  .g2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+  .fr{margin-top:10px}
+  .fl{display:block;font-weight:800;font-size:.86rem;margin-bottom:4px}
+  .in{width:100%;height:48px;border:2.5px solid var(--ink);border-radius:11px;padding:0 12px;font:inherit;font-size:.95rem;font-weight:600;background:#fff;color:var(--ink)}
+  .in:focus{outline:3px solid var(--yellow)}
+  .in:disabled{opacity:.55}
+  .in.bad{border-color:var(--red);background:#fff1f0}
+  select.in{appearance:auto}
+  .seg{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden}
+  .seg{height:48px}
+  .seg button{border:0;background:#fff;padding:0 6px;font-weight:800;cursor:pointer;
+    font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-size:.9rem}
+  .seg button+button{border-inline-start:2.5px solid var(--ink)}
+  /* yellow, not ink - the pack page marks the chosen one this way */
+  .seg button.on{background:var(--yellow);color:var(--ink)}
+  /* The progressive reveal: a block appears only once it can be answered. */
+  .rv{display:none}
+  .rv.on{display:block;animation:rvin .3s var(--ease)}
+  @keyframes rvin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.rv.on{animation:none}}
+  .qty{display:inline-flex;align-items:center;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden}
+  .qty button{width:42px;height:42px;border:0;background:#fffdf7;font-size:1.3rem;font-weight:800;cursor:pointer}
+  .qty span{min-width:40px;text-align:center;font-family:"Anton";font-size:1.2rem}
+  .sum{margin-top:14px;border-top:2px dashed var(--line);padding-top:12px;display:grid;gap:4px}
+  .sum .r{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+  .sum .r b{font-family:"Anton";font-weight:400;font-size:1.1rem}
+  .sum .tot{margin-top:6px;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;align-items:center}
+  .sum .tot b{font-size:1.6rem;color:var(--ve)}
+  .confirm{width:100%;margin-top:14px;border:3px solid var(--ink);border-radius:14px;background:var(--an);color:#fff;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.3rem;padding:13px;cursor:pointer;box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;justify-content:center;gap:10px}
+  .confirm:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .confirm[disabled]{opacity:.75;cursor:wait}
+  .spin{width:20px;height:20px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;display:none}
+  .confirm[disabled] .spin{display:inline-block}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .cerr{display:none;margin-top:10px;background:#fdeeee;border:2px solid var(--red);border-radius:12px;padding:10px 12px;font-weight:700;color:#9d1b15}
+  .cerr.on{display:block}
+  .ctrust{margin-top:10px;text-align:center;font-size:.84rem;color:var(--ink-soft);font-weight:700}
+
+  .done{display:none;margin-top:20px;border:3px solid var(--ink);border-radius:20px;background:#eaf7e6;padding:20px 16px;text-align:center;box-shadow:6px 6px 0 var(--ink)}
+  .done.on{display:block}
+  .done .big{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.6rem}
+  .done .onum{font-family:"Anton";font-size:2.2rem;margin:4px 0}
+  .done p{color:var(--ink-soft);font-weight:600}
+  .up{display:none;margin-top:16px;border:3px solid var(--ink);border-radius:18px;background:#fff;padding:16px;text-align:center}
+  .up.on{display:block}
+  .up .uh{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;font-size:1.25rem;line-height:1.35}
+  .up .us{color:var(--ink-soft);font-weight:600;margin-top:4px;font-size:.92rem}
+  .up-btns{display:grid;gap:8px;margin-top:12px}
+  .up-yes{border:3px solid var(--ink);border-radius:14px;background:var(--red);color:#fff;font-weight:800;font-size:1.1rem;padding:12px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif}
+  .up-no{border:2px solid var(--ink);border-radius:12px;background:#fff;font-weight:700;padding:9px;cursor:pointer}
+  .up-res{margin-top:10px;font-weight:800}
+
+  /* faq */
+  .faq{margin-top:22px;display:grid;gap:10px}
+  .faq details{border:2.5px solid var(--ink);border-radius:14px;background:var(--bg2);padding:4px 14px}
+  .faq summary{cursor:pointer;font-weight:800;padding:10px 0;list-style:none;display:flex;justify-content:space-between;gap:10px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-family:"Anton";font-size:1.3rem;line-height:1}
+  .faq details[open] summary::after{content:"−"}
+  .faq details p{padding:0 0 12px;color:var(--ink-soft)}
+
+  .maker{display:grid;gap:14px;align-items:center}
+  @media(min-width:760px){.maker{grid-template-columns:auto 1fr}}
+  .maker img{width:120px;mix-blend-mode:multiply}
+
+  footer{text-align:center;padding:28px 16px 110px;color:var(--ink-soft);font-weight:700;font-size:.88rem;border-top:3px solid var(--ink);background:var(--bg)}
+  footer a{text-decoration:underline}
+
+  /* sticky phone bar */
+  .mbar{position:fixed;inset-inline:10px;bottom:10px;z-index:120;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg2);border:3px solid var(--ink);border-radius:16px;padding:8px 10px 8px 8px;box-shadow:0 8px 24px rgba(0,0,0,.18);transform:translateY(140%);transition:transform .3s var(--ease)}
+  .mbar.show{transform:none}
+  .mbar .mp{font-weight:800;font-size:.84rem;line-height:1.2}
+  .mbar .mp b{display:block;font-family:"Anton";font-weight:400;font-size:1.35rem}
+  .mbar button{border:3px solid var(--ink);border-radius:12px;background:var(--red);color:#fff;font-weight:800;padding:9px 18px;font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-size:1.05rem;cursor:pointer}
+  @media(min-width:900px){.mbar{display:none}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+  /* ===== the scrolling build in the how-it-works section - merged 16 Nov 2026 =========
+     Prefixed rk-* because the page already owns .world .tag .bar .cap. Reuses the page's
+     own .eyebrow .h2 .nos .fix .wrap .center, so the section cannot drift from the rest
+     of the page. Source of truth: products/sticker puzzle/scroll-demo/. ================= */
+  .rk-how .wrap{text-align:center}
+  .rk-still .rk-pic{max-width:520px;margin:18px auto 0;aspect-ratio:1500/1313;border-radius:14px;
+    background:url('/products/rakibni/build/A02-Elephant/finished.webp') center/cover no-repeat;
+    box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  .rk-steps{list-style:none;max-width:560px;margin:20px auto 0;display:grid;gap:10px;text-align:right}
+  .rk-steps li{display:flex;gap:10px;align-items:baseline}
+  .rk-steps li b{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;background:var(--bg);
+    color:var(--ink);border-radius:999px;width:1.7em;height:1.7em;display:grid;place-items:center;
+    flex:none;font-size:.9rem}
+  .rk-steps li span{font-weight:700}
+  .rk-steps li small{display:block;font-weight:400;opacity:.72}
+  .rk-rail{position:relative}
+  .rk-stage{display:none;flex-direction:column;gap:10px}
+  .rk-head{text-align:center;padding:0 16px;flex:none}
+  .rk-field{position:relative;flex:1 1 auto;min-height:0;margin:0 auto;width:100%;max-width:1120px;padding:0 10px}
+  .rk-world{position:relative;margin:0 auto;transform-origin:0 0}
+  .rk-slab{position:absolute}
+  .rk-slab img{width:100%;height:100%;display:block}
+  .rk-board{border-radius:1.2%;overflow:hidden;box-shadow:0 10px 34px rgba(0,0,0,.45)}
+  .rk-paper{border-radius:1.2%;overflow:hidden;box-shadow:0 8px 22px rgba(0,0,0,.38)}
+  .rk-piece{position:absolute;transform-origin:50% 50%;will-change:transform}
+  .rk-piece img{width:100%;height:100%}
+  .rk-tag{position:absolute;font-weight:800;font-size:12px;background:var(--bg);color:var(--ink);
+    border-radius:999px;padding:2px 10px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .rk-caps{flex:none;text-align:center;padding:0 18px;min-height:4.4em;position:relative}
+  .rk-cap{font-family:"Baloo Bhaijaan 2","Noto Sans Arabic",sans-serif;font-weight:800;
+    font-size:clamp(1rem,3.4vw,1.35rem);line-height:1.35;max-width:620px;margin:0 auto;color:var(--bg)}
+  .rk-cap small{display:block;font-family:"Noto Sans Arabic",sans-serif;font-weight:500;
+    font-size:.78em;opacity:.72;margin-top:4px}
+  .rk-cap .nos{margin-top:10px}
+  .rk-cap .nos span{padding:1px 11px;font-size:.76rem}
+  .rk-bar{position:absolute;top:0;right:0;height:3px;width:100%;background:var(--amber,#F7B318);
+    z-index:4;transform:scaleX(0);transform-origin:100% 50%;will-change:transform}
+  .rk-tick{position:absolute;top:0;width:2px;height:7px;background:var(--bg);opacity:.5;z-index:5;
+    border-radius:0 0 2px 2px}
+  .rk-skip{position:absolute;z-index:4;left:12px;bottom:10px;width:40px;height:40px;border-radius:50%;
+    border:2px solid rgba(251,246,236,.38);background:rgba(22,19,16,.45);color:var(--bg);
+    display:none;place-items:center;cursor:pointer;backdrop-filter:blur(4px)}
+  .rk-skip svg{width:18px;height:18px}
+
+  /* The still version IS the section until the script says otherwise, so a phone with no
+     JavaScript still gets the whole idea. .rk-on is added by build.js once it takes over.
+     Order matters: this pair must come AFTER .rk-stage{display:none} above. */
+  .rk-on .rk-still{display:none}
+  .rk-on .rk-how{padding:0}
+  /* The pinned stage must sit BETWEEN the sticky header and the floating order bar.
+     Pin it at 0 and the heading hides behind the header; let it run to 100svh and the
+     captions hide behind the order bar. Both heights change with the viewport, so they
+     are measured live into --rk-top / --rk-bot by the small script at the end of body.
+     The fallbacks here are what a phone gets for the one frame before that runs. */
+  .rk-on .rk-stage{display:flex;position:sticky;top:var(--rk-top,68px);
+    height:calc(100svh - var(--rk-top,68px));justify-content:center;
+    padding:6px 0 var(--rk-bot,90px)}
+  .rk-on .rk-caps{min-height:5.4em}
+  .rk-on .rk-cap{position:absolute;inset:0 auto auto 0;width:100%;opacity:0;will-change:transform,opacity}
+  .rk-on .rk-world{position:absolute;left:0;top:0;margin:0}
+  .rk-on .rk-field{overflow:hidden;padding:0}
+  .rk-on .rk-skip{display:grid}
+
+  /* Asked the phone for less motion? Back to the still version, even if the setting
+     changes after the script has already started. */
+  @media (prefers-reduced-motion: reduce){
+    .rk-on .rk-stage{display:none}
+    .rk-on .rk-still{display:block}
+    .rk-on .rk-how{padding:clamp(40px,6vw,70px) 0}
+  }
+</style>
+
+<!-- Meta Pixel (base + PageView; Purchase fires once on order success).
+     Never on a local copy: a test order must not reach Meta as a real sale. -->
+<script>
+if(!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '587121070888027');
+fbq('track', 'PageView');
+}
+</script>
+<!-- End Meta Pixel Code -->
+<script src="/assets/source-tracking.js" defer></script>
+</head>
+<body>
+<!-- The roughening filter .wavetop uses. Same values as Roubla's, so the
+     torn edge on this page matches the one on that one exactly. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="6" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></svg>
+
+<div class="preview-chip">معاينة — ماشي محسوبة</div>
+
+<header id="hdr"><div class="bar">
+  <a href="/" aria-label="Curio"><img class="logo" src="/curio-logo.jpg" alt="Curio"></a>
+  <nav class="nav"><a href="/">الرئيسية</a><a href="/roubla/">روبلة</a><a href="/dlala/">دلالة</a></nav>
+  <button class="hdr-cta" type="button" data-go="order">اطلب</button>
+</div></header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-pic">
+      <!-- ⚠ SLIDES 2-4 ARE PLACEHOLDERS: the AI scenes, so they carry the
+           same model-drawn Arabic. They go when the families shoot happens.
+           Slide 1 keeps its srcset and fetchpriority - it is the LCP image. -->
+      <div class="gtrack" id="rk-gtrack">
+        <div class="gslide"><img src="/products/rakibni/hero-900.webp" srcset="/products/rakibni/hero-900.webp 900w, /products/rakibni/hero.webp 1200w" sizes="(min-width: 900px) 560px, 100vw" width="900" height="900" alt="ركّبني: الأكياس الثلاثة (عالم الجزائر، عالم الحيوانات، عالم المركبات) وثلاث لوحات مركّبين" fetchpriority="high"></div>
+        <div class="gslide"><img src="/products/rakibni/hero/g2.webp" width="880" height="587" loading="eager" fetchpriority="low" decoding="async" alt="وليدك يكمّل اللوحة"></div>
+        <div class="gslide"><img src="/products/rakibni/hero/g3.webp" width="880" height="587" loading="eager" fetchpriority="low" decoding="async" alt="يركّب وحدو"></div>
+        <div class="gslide"><img src="/products/rakibni/hero/g4.webp" width="880" height="587" loading="eager" fetchpriority="low" decoding="async" alt="كادو فالدار"></div>
+      </div>
+      <div class="glines" id="rk-glines" aria-hidden="true"><i class="gline on"></i><i class="gline"></i><i class="gline"></i><i class="gline"></i></div>
+      <!-- The ads say "a launch offer is waiting on the site": name it on the first screen. -->
+      <div class="ribbon only-a not-family">عرض الإطلاق: الثالث هدية</div>
+      <!-- HIS CALL, 23 Nov: page B's flag stays BARE. I had written the ladder
+           rule after a colon; he cut it - "keep it empty, they will see it",
+           they being the three prices, which now sit right under the logo
+           where this flag points. A's flag needs words because "the third is
+           a gift" cannot be read off 4,400; B's offer IS the three prices, so
+           a line here only repeats what the eye already has.
+           ⛔ Do not put selling words back on this flag without asking him. -->
+      <div class="ribbon only-b">عرض الإطلاق</div>
+      <div class="ribbon only-family">عرض عائلة كيوريو</div>
+    </div>
+    <div class="hero-info">
+      <h1 class="logo-h1"><img src="/products/rakibni/logo.webp" width="560" height="376" alt="ركّبني"></h1>
+      <p class="promise">قطعة بقطعة… <span class="hl">يبني عالمه بيديه</span></p>
+      <!-- ⛔ THE LEAD PARAGRAPH CAME OUT HERE (17 Nov, option 2). Kept so it is
+           one edit away from coming back (its wording is verbatim except
+           لوحة -> لوحة, his word swap of 23 Nov):
+           «30 لوحة في 3 عوالم، يركّبهم وليدك بيديه. كل قطعة عندها رقمها: يلقى بلاصتها، يركّبها… وشوية بشوية تبان اللوحة.»
+           Nothing in it is lost: «30 لوحة / 3 عوالم» is the specs row below,
+           and «كل قطعة عندها رقمها» is said 7 other places and is the whole
+           «كيفاش يخدم؟» section. Put it back and the button lands ~787px,
+           25px clear of the fold - too thin to rely on. -->
+
+      <div class="teaser">
+        <div class="t only-a">خلّص زوج عوالم… والثالث هدية 🎁</div>
+        <!-- PAGE B's whole offer, in numbers, on the first screen. It used to
+             say "the full collection: 3 worlds, 30 pictures" - a description,
+             and one already printed in the row of numbers under the button.
+             ⚠ Not one new word here: the three labels are the plan cards' own
+             and the spec row's, and the prices are read from the shop, so they
+             can never drift from what the server charges. -->
+        <div class="ladder only-b">
+          <span><i>عالم واحد</i><b data-price="one">2,200</b></span>
+          <span><i>زوج عوالم</i><b data-price="two">3,900</b></span>
+          <span><i>3 عوالم</i><b data-price="set">4,900</b></span>
+        </div>
+        <!-- The entry price, not the set price. Both pages and the family
+             door show the same number, so the first screen never differs by
+             a price - only by what each offer promises. -->
+        <div class="p only-a">عالم واحد بـ <b data-price="one">2,200</b> دج</div>
+      </div>
+      <div class="family-note only-family">نتا من عائلة كيوريو، ولهذا ليك أحسن عرض عندنا: تخلّص زوج عوالم، والثالث علينا.</div>
+
+      <button class="order-btn" type="button" data-go="order">اختار العرض تاعك</button>
+      <div class="specrow">
+        <div class="s"><div class="n">3</div><div class="l">عوالم</div></div>
+        <div class="s"><div class="n">30</div><div class="l">لوحة</div></div>
+        <div class="s"><div class="n">10</div><div class="l">مستويات في كل عالم</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS - the scrolling build =====
+     The reader scrolls, the section holds still, and the 17 real printed pieces of the
+     Elephant leave the sticker sheet and land on their numbers. Built from the actual
+     print files: every size on screen is derived from build/A02-Elephant/pieces.js, so a
+     piece is exactly the size of its hole while it is still on the paper. That is the
+     whole promise of the product, and it is why this replaced three photographs and a video.
+
+     Before the script runs - and for anyone whose phone asks for less motion - what shows
+     is the still version below: the finished picture and all three steps in words. Nothing
+     is hidden from them.
+
+     Everything is namespaced rk-* ON PURPOSE. The page already uses .world (the 3 worlds),
+     .tag (the offer chips), .bar and .cap, and an unprefixed merge would have broken them.
+     The ids are rk-* too; build.js adds the prefix in one place when it looks them up.
+
+     To swap the Elephant for another board: products/sticker puzzle/scroll-demo/HANDOVER.md
+     section 1b. One command, two minutes, two lines here. Keep it under ~25 pieces - past
+     that the eye stops following a piece and starts watching weather. -->
+<section class="block ink halftone wavetop rk-how" id="how">
+  <div class="rk-still">
+    <div class="wrap center">
+      <span class="eyebrow">كيفاش تتلعب؟</span>
+      <h2 class="h2">ساهلة: يتبع الأرقام ويستمتع!</h2>
+      <div class="rk-pic" role="img" aria-label="لوحة الفيل كاملة بعد ما تركّبت"></div>
+      <ol class="rk-steps">
+        <li><b>1</b><span>يقلّع القطعة<small>كل قطعة مكتوبة قدامها رقمها.</small></span></li>
+        <li><b>2</b><span>يلقى رقمها في اللوحة<small>ويركّبها في بلاصتها، وحدو.</small></span></li>
+        <li><b>3</b><span>قطعة بقطعة… تبدا تبان اللوحة<small>وكي يكمّل، يعلقها فالحيط.</small></span></li>
+      </ol>
+      <div class="nos"><span>بلا لصقة</span><span>بلا مقص</span><span>بلا بطارية</span><span>بلا شاشة</span></div>
+    </div>
+  </div>
+  <div class="rk-rail" id="rk-rail">
+    <div class="rk-stage" id="rk-stage">
+      <div class="rk-bar" id="rk-bar"></div>
+      <button class="rk-skip" id="rk-skip" type="button" aria-label="تخطّى الحركة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <div class="rk-head">
+        <span class="eyebrow">كيفاش تتلعب؟</span>
+        <h2 class="h2">ساهلة: يتبع الأرقام ويستمتع!</h2>
+      </div>
+
+      <div class="rk-field" id="rk-field">
+        <div class="rk-world" id="rk-world">
+          <div class="rk-slab rk-paper" id="rk-paper"><img id="rk-paperImg" alt="ورقة القطع: كل قطعة مكتوبة قدامها رقمها" decoding="async"></div>
+          <div class="rk-slab rk-board" id="rk-board"><img id="rk-boardImg" alt="اللوحة بالأرقام: كل بلاصة فيها رقم" decoding="async"></div>
+          <div id="rk-pieces"></div>
+          <div class="rk-tag" id="rk-tagPaper">ورقة القطع</div>
+          <div class="rk-tag" id="rk-tagBoard">اللوحة</div>
+        </div>
+      </div>
+
+      <div class="rk-caps" id="rk-caps">
+        <div class="rk-cap" data-cap="0">كل قطعة مكتوبة قدامها رقمها<small>وكل بلاصة في اللوحة فيها رقم</small></div>
+        <div class="rk-cap" data-cap="1">يلقى رقمها في اللوحة<small>ويركّبها في بلاصتها، وحدو.</small></div>
+        <div class="rk-cap" data-cap="2">قطعة بقطعة… تبدا تبان اللوحة</div>
+        <div class="rk-cap" data-cap="3">وكي يكمّل، يعلقها فالحيط
+          <span class="nos"><span>بلا لصقة</span><span>بلا مقص</span><span>بلا بطارية</span><span>بلا شاشة</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THE 3 WORLDS ===== -->
+<section class="block" id="worlds">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">3 عوالم · 30 لوحة</span>
+      <h2 class="h2">اختار عالم وشوفو يتركّب</h2>
+      <!-- The old line said every picture is harder than the one before it.
+           Read from the print files that is not true in the vehicles world
+           (level 5 is 32 pieces, level 4 is 40), so this says the same
+           thing without making a claim per step. -->
+      <p class="sub">كل عالم فيه 10 لوحات، 10 مستويات من الساهلة للصعيبة.</p>
+    </div>
+    <div class="rkw" id="rkw"></div>
+  </div>
+</section>
+
+<!-- ===== WHY (the pillars) ===== -->
+<section class="block blue halftone wavetop" id="why">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">علاش ركّبني؟</span>
+      <h2 class="h2">يلعب بيديه… ويموت بالفرحة كل ما يكمل وحدة!</h2>
+    </div>
+    <!-- ⚠ THE FOUR PHOTOGRAPHS ARE AI PLACEHOLDERS (17 Nov).
+         Made in ChatGPT from our own product references. The scenes are
+         right and the product is close, but the Arabic printed on the
+         cards and on the pouch is model-drawn and does NOT say what our
+         print says. It is unreadable at card size, wrong under a zoom.
+         Replace all four with real photographs from the families shoot.
+         Every WORD below was already on the page before this change. -->
+    <!-- DECIDED 17 Nov, his call: the UNESCO fact stays OFF the page.
+         «فيهم 3 مسجّلين في التراث العالمي (اليونسكو)» used to end card 3 and
+         went with that card’s body line. It is now said nowhere a visitor
+         can read it, and that is deliberate - not an oversight, do not put
+         it back without asking him. (It does not belong in the box list
+         either: that describes every box, and the landmarks are the Algeria
+         world only.) -->
+    <div class="why">
+      <div class="card star why-big">
+        <img src="/products/rakibni/why-1-done.webp" width="880" height="587"
+             loading="lazy" decoding="async" alt="ماما شوفي">
+        <div class="card-t">
+          <h3>يكمّلها… ويجي يجري: «ماما شوفي!»</h3>
+          <p>لوحة حقيقية وشابة، يركّبها هو بيديه، اللوحة تخرج مليحة كل خطرة.</p>
+        </div>
+      </div>
+      <div class="card mini">
+        <img src="/products/rakibni/why-2-alone.webp" width="880" height="587"
+             loading="lazy" decoding="async" alt="تعاونو فالتركيز وحدو">
+        <div class="card-t">
+          <h3>تعاونو فالتركيز وحدو… وانتي تتنفسي شوية 😂</h3>
+        </div>
+      </div>
+      <div class="card mini">
+        <img src="/products/rakibni/why-3-algeria.webp" width="880" height="587"
+             loading="lazy" decoding="async" alt="يتعلم ويعرف بلادو، 10 معالم من كل الجزائر">
+        <div class="card-t">
+          <h3>يتعلم ويعرف بلادو، 10 معالم من كل الجزائر</h3>
+        </div>
+      </div>
+      <div class="card mini">
+        <img src="/products/rakibni/why-4-gift.webp" width="880" height="587"
+             loading="lazy" decoding="async" alt="كادو يفرّح الطفل">
+        <div class="card-t">
+          <h3>كادو يفرّح الطفل… ويشرّف اللي جابو</h3>
+        </div>
+      </div>
+    </div>
+    <!-- ⛔ THE ROOM WALL (22 Nov, his pick: option E of five).
+         TWO THINGS HERE ARE NOT HIS YET.
+
+         1. THE PICTURE is a stand-in, built in code from our own thirty
+            finished illustrations - nine of them, hung the way a child hangs
+            things. It is NOT an AI photograph: every picture on it is our real
+            printed artwork, so nothing on it is invented and no Arabic on it is
+            model-drawn. It goes when the real one is shot.
+            ⚠ The real one is H08's first wide frame, which the shoot plan
+            already has. But H08 budgets THREE finished boards and this shows
+            NINE - 295 pieces of assembly before the camera rolls, against 87
+            for three. That gap is a decision for him, not a detail.
+
+         2. THE WORDS are mine and he has not approved them. Tap «صلّح النص»
+            on the page and send the replacements. -->
+    <div class="wallband">
+      <img src="/products/rakibni/why-5-wall.webp" width="1600" height="750"
+           loading="lazy" decoding="async"
+           alt="حيط معمّر باللوحات لي ركّبهم بيديه">
+      <p class="wl"><b>كل وحدة يكمّلها… متترماش ❌</b>
+        <span>تولي كادر ويزين بيها الدار كامل</span></p>
+    </div>
+  </div>
+</section>
+
+<script>
+/* The hero gallery. Same behaviour as the Roubla page, with its numbers read
+   off the live site: scroll-snap, line indicators, auto-advance every 3800 ms,
+   and the timer dies the moment a finger touches it so it never fights the
+   customer. RTL tracks report scrollLeft negative in Chrome, hence the abs()
+   and the direction carried from wherever the track already is. */
+(function(){
+  var track = document.getElementById('rk-gtrack');
+  var box = document.getElementById('rk-glines');
+  if (!track || !box) return;
+  var lines = [].slice.call(box.children);
+  function upd(){
+    var i = Math.round(Math.abs(track.scrollLeft) / track.clientWidth);
+    i = Math.min(Math.max(i, 0), lines.length - 1);
+    for (var n = 0; n < lines.length; n++) lines[n].classList.toggle('on', n === i);
+  }
+  /* upd() runs straight off the scroll event. It is four classList toggles -
+     cheaper than the rAF bookkeeping - and it keeps the indicators working
+     even where rAF is throttled (a background tab, a hidden window). */
+  track.addEventListener('scroll', upd, {passive:true});
+  var auto = setInterval(function(){
+    if (document.hidden) return;
+    var i = Math.round(Math.abs(track.scrollLeft) / track.clientWidth);
+    var n = (i + 1) % lines.length;
+    var dir = track.scrollLeft <= 0 ? -1 : 1;
+    track.scrollTo({left: dir * n * track.clientWidth, behavior: 'smooth'});
+  }, 3800);
+  track.addEventListener('pointerdown', function(){ clearInterval(auto); });
+})();
+</script>
+
+
+
+<!-- ===== GIFT (full set only) ===== -->
+<section class="block gold halftone wavetop" id="gift">
+  <div class="wrap center">
+    <span class="eyebrow">هدية مع المجموعة الكاملة</span>
+    <h2 class="h2">6 ألعاب مصغرة 🎁</h2>
+    <!-- ⛔ Every Arabic word below is MINE and NOT approved by Nounouti. The two
+         game names especially: the print files name those sheets only in French
+         ("Cherche et trouve"), so I had to coin them. Replace before launch.
+         The FACTS are from bonus-sheets/SEND TO PRINTER/LISEZ-MOI - README.txt:
+         300 g coated card + gloss lamination, 240x210 mm, front only. -->
+    <!-- ⛔ «ماركير تاع التابلو» is here on purpose. No pen goes in the box
+         (his call, 17 Nov), and we now promise write-and-wipe. Without this
+         line a parent uses a biro, it does not come off the lamination, and
+         the product looks broken. Do not remove it without putting a pen in
+         the box. ⛔ The wording is mine and not yet approved. -->
+    <p class="sub">اكتب، امسح، وعاود العب</p>
+    <p class="sub" style="font-size:.95rem;margin-top:6px">زوج متاهات، زوج «حوس ولقى»، وزوج «اكتشف الفروق السبعة»</p>
+    <p class="gift-only">يجيو غير مع المجموعة الكاملة.</p>
+    <div class="gifts" id="gift-strip"></div>
+  </div>
+</section>
+
+<!-- ===== ORDER ===== -->
+<section class="block order-sec" id="order">
+  <div class="wrap narrow">
+    <div class="center">
+      <!-- THE LAUNCH DEADLINE — his own words, verbatim, decided 15 Nov.
+           22 Nov: he asked for it as a TAG beside the offer pill, not a row.
+           So the eyebrow holds the first half of his sentence and .until the
+           second; read side by side they are still exactly the line he
+           approved, and neither half may be reworded on its own.
+             1. ⛔ It stands ALONE. On 15 Nov he rejected outright a second line
+                tying the date to the box arriving before the school holiday.
+                Do not write one. (The sentence is not repeated here on purpose:
+                a line quoted in a comment is a line someone pastes back in.)
+             2. ⛔ It never names the price after the launch. Both arms read
+                «عرض الإطلاق», so naming 4,900 would contradict page B's own
+                price; what the set costs from 11 Dec is deliberately unsaid.
+             3. The date is written ONCE, in data-until, and the script below
+                deletes the tag the day after it passes, so the page can never
+                be left promising an offer that is over. The eyebrow stays.
+           Icon is an inline SVG, not an emoji - those render badly on his Chrome.
+           ⚠ 22 Nov: the 10 Dec date was set on the condition that the page went
+           live by ~20 Nov, which has passed. He was told and KEPT 10 DECEMBER.
+           So deploying is now the critical path, and the date does not move
+           again without him saying so. If it ever does, change data-until and
+           nothing else - the date is written once, here. -->
+      <!-- One wrapper, no whitespace between the pills: a newline between
+           two of them is a real space inside an inline-block, which widens
+           this box past the single visible pill and pulls the sticker off
+           centre. Keep them welded. -->
+      <span class="offer-pill"><span class="until" data-until="2026-12-10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>يخلاص <b>10 ديسمبر</b></span><span class="eyebrow only-a not-family">عرض الإطلاق</span><span class="eyebrow only-family">عرض عائلة كيوريو</span><span class="eyebrow only-b">عرض الإطلاق</span></span>
+      <h2 class="h2">اختار العرض تاعك</h2>
+      <p class="sub">تخلّص كي يوصلك. وقبل ما نبعثو، نعيّطولك نأكدو معاك.</p>
+      <!-- The deadline tag sits beside the eyebrow above. Its comment lives
+           with the markup; this script only takes it away once it is past. -->
+      <script>
+      (function(){
+        /* Client clock, deliberately: a visitor whose clock is wrong simply
+           sees no deadline, which is the harmless way for this to fail. */
+        var el = document.querySelector(".until");
+        if (!el) return;
+        var end = new Date(el.getAttribute("data-until") + "T23:59:59");
+        if (!isNaN(end.getTime()) && Date.now() > end.getTime()) {
+          var wrap = el.closest(".offer-pill");
+          el.remove();
+          if (wrap) wrap.classList.add("gone");
+        }
+      })();
+      </script>
+    </div>
+
+    <div class="plans" role="radiogroup" aria-label="العروض">
+      <!-- one world (both pages) -->
+      <div class="plan" data-plan="one" role="radio" aria-checked="false" tabindex="0">
+        <div class="plan-row">
+          <span class="radio" aria-hidden="true"></span>
+          <span class="plan-name"><b>عالم واحد</b><small>10 لوحات</small></span>
+          <span class="plan-price"><b><span data-price="one">2,200</span> <small>دج</small></b></span>
+        </div>
+        <div class="picker">
+          <div class="q">اختار العالم:</div>
+          <div class="chips" data-pick="one"></div>
+        </div>
+      </div>
+
+      <!-- two worlds (page B only) -->
+      <div class="plan only-b" data-plan="two" role="radio" aria-checked="false" tabindex="0">
+        <div class="plan-row">
+          <span class="radio" aria-hidden="true"></span>
+          <span class="plan-name"><b>زوج عوالم</b><small>20 لوحة · توفّر <span data-save="two">500</span> دج</small></span>
+          <span class="plan-price"><b><span data-price="two">3,900</span> <small>دج</small></b><s data-compare="two">4,400</s></span>
+        </div>
+        <div class="picker">
+          <div class="q">اختار زوج عوالم:</div>
+          <div class="chips" data-pick="two"></div>
+          <div class="pick-msg" id="two-msg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- the full collection -->
+      <div class="plan" data-plan="set" role="radio" aria-checked="true" tabindex="0">
+        <span class="badge only-a not-family">عرض الإطلاق</span>
+        <span class="badge only-family">عرض عائلة كيوريو</span>
+        <span class="badge only-b">عرض الإطلاق</span>
+        <div class="plan-row">
+          <span class="radio" aria-hidden="true"></span>
+          <span class="plan-name">
+            <b>المجموعة الكاملة</b>
+            <small class="only-a">3 عوالم، 30 لوحة</small>
+            <small class="only-b">3 عوالم، 30 لوحة · توفّر <span data-save="set">1,700</span> دج</small>
+          </span>
+          <span class="plan-price"><b><span data-price="set">4,400</span> <small>دج</small></b><s class="only-b" data-compare="set">6,600</s></span>
+        </div>
+        <!-- "Do the sum for them" (his pick, 17 Nov). The deal is
+             2,200 x 2 = 4,400 and the page never showed it. Three pouches,
+             three prices, the third struck and stamped - next to the 4,400
+             the card already prints, so the arithmetic is on screen.
+             ⛔ only-a: page B is 4,900 with a two-world option, so this
+             strip would be untrue there. only-a also covers the family
+             door, which is correct - same pay-two-get-three offer.
+             Prices carry data-price so they can never drift from the store. -->
+        <div class="deal only-a">
+          <div class="deal-w"><img src="/products/rakibni/pouch-algeria.webp" width="622" height="640" loading="lazy" alt="الجزائر"><b data-price="one">2,200</b></div>
+          <div class="deal-w"><img src="/products/rakibni/pouch-animals.webp" width="622" height="640" loading="lazy" alt="الحيوانات"><b data-price="one">2,200</b></div>
+          <div class="deal-w free"><img src="/products/rakibni/pouch-vehicles.webp" width="622" height="640" loading="lazy" alt="المركبات"><s data-price="one">2,200</s><span class="deal-gift">هدية</span></div>
+        </div>
+        <!-- PAGE B's sum, 23 Nov. Same device, B's own arithmetic:
+             three pouches at 2,200 = the 6,600 struck on the card above.
+             No gift stamp - on B nothing is free, the saving is the
+             1,700 the card already names. -->
+        <div class="deal only-b">
+          <div class="deal-w"><img src="/products/rakibni/pouch-algeria.webp" width="622" height="640" loading="lazy" alt="الجزائر"><b data-price="one">2,200</b></div>
+          <div class="deal-w"><img src="/products/rakibni/pouch-animals.webp" width="622" height="640" loading="lazy" alt="الحيوانات"><b data-price="one">2,200</b></div>
+          <div class="deal-w"><img src="/products/rakibni/pouch-vehicles.webp" width="622" height="640" loading="lazy" alt="المركبات"><b data-price="one">2,200</b></div>
+        </div>
+        <div class="perks"><span>+ هدية: 6 لوحات تكتب وتمسح</span></div>
+      </div>
+    </div>
+
+
+    <form class="cform" id="cform" novalidate onsubmit="return false">
+      <h3>معلوماتك</h3>
+      <div class="g2">
+        <div><label class="fl" for="f-name">الاسم</label><input class="in" id="f-name" autocomplete="name" placeholder="الاسم واللقب"></div>
+        <div><label class="fl" for="f-phone">الهاتف</label><input class="in" id="f-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="05 / 06 / 07"></div>
+      </div>
+      <div class="fr"><label class="fl" for="f-wilaya">الولاية</label>
+        <select class="in" id="f-wilaya"><option value="">نحمّلو الولايات…</option></select>
+      </div>
+      <!-- Revealed once a wilaya is chosen. The delivery choice comes first
+           because it decides WHICH baladiya list is useful: for a stop-desk
+           only the communes that actually have a desk. -->
+      <div class="rv" id="rv-where" aria-live="polite">
+        <div class="g2 fr">
+          <div><span class="fl">التوصيل</span>
+            <div class="seg" role="group" aria-label="نوع التوصيل">
+              <button type="button" id="d-home" class="on">للدار</button>
+              <button type="button" id="d-office">للمكتب</button>
+            </div>
+          </div>
+          <div><label class="fl" for="f-commune" id="commune-label">البلدية</label>
+            <select class="in" id="f-commune" disabled><option value="">اختار الولاية أولاً…</option></select>
+          </div>
+        </div>
+      </div>
+      <!-- Only for a door delivery. The order API refuses a HOME order whose
+           address is under 5 characters, and ignores the field entirely for a
+           stop-desk - so this is not decoration, it is the API's own rule. -->
+      <div class="rv" id="rv-addr">
+        <div class="fr"><label class="fl" for="f-addr">العنوان بالتفصيل</label><input class="in" id="f-addr" autocomplete="street-address" placeholder="الحي، رقم الدار ولا العمارة، معلم قريب…"></div>
+      </div>
+      <div class="fr" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <span class="fl" style="margin:0">الكمية</span>
+        <div class="qty"><button type="button" id="q-minus" aria-label="نقّص">−</button><span id="q-val">1</span><button type="button" id="q-plus" aria-label="زيد">+</button></div>
+      </div>
+
+      <div class="sum">
+        <div class="r"><span id="s-label">المجموعة الكاملة</span><b id="s-sub">4,400 دج</b></div>
+        <div class="r"><span>التوصيل</span><b id="s-ship">حسب الولاية</b></div>
+        <div class="r tot"><span>تخلّص فالباب</span><b id="s-total">—</b></div>
+      </div>
+
+      <button type="button" class="confirm" id="confirm"><span class="spin" aria-hidden="true"></span><span>أكّد الطلب</span></button>
+      <div class="cerr" id="cerr" role="alert"></div>
+    </form>
+
+    <div class="done" id="done" aria-live="polite">
+      <div class="big">✓ وصلنا طلبك!</div>
+      <div class="onum" id="d-num">#000</div>
+      <p>راح نعيّطولك قريب باش نأكدو الطلب. شكرا على ثقتك في كيوريو.</p>
+      <div class="up" id="up">
+        <div class="uh" id="up-head"></div>
+        <div class="us">نفس الكولي، نفس ثمن التوصيل. و6 لوحات تكتب وتمسح هدية معاها.</div>
+        <div class="up-btns">
+          <button type="button" class="up-yes" id="up-yes">نعم، نحب المجموعة الكاملة</button>
+          <button type="button" class="up-no" id="up-no">لا شكرا، نبقى على طلبي</button>
+        </div>
+        <div class="up-res" id="up-res" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="block green halftone wavetop" id="faq">
+  <div class="wrap narrow">
+    <!-- ⛔ NO EYEBROW PILL HERE, his call 24 Nov. The pill and the
+         heading both said «أسئلة», so you read
+         the same word twice in a row. This is the only section on the
+         page without a pill and that is deliberate -
+         «أسئلة شائعة» needs no label above it.
+         Do not "restore" it for consistency. -->
+    <div class="center"><h2 class="h2">أسئلة شائعة</h2></div>
+    <div class="faq">
+      <!-- Audit #3: the objection that kills the sale, answered first.
+           His own A3 lines: v5 is the question, v1 + v5 + v4 the answer. -->
+      <details><summary>شحال تشد وقت بش تكمل لوحة واحدة؟</summary><p>من 20 دقيقة حتى ل40 دقيقة. أصغر لوحة فيها: 17 قطعة. أكبر وحدة: 64.<br>30 لوحة. اختار منين تبدا.</p></details>
+      <details><summary>لأيّ عمر مصممة اللعبة؟</summary><p>على الكيس مكتوب 3+. كل عالم فيه 10 مستويات: يبدا بالساهل ويطلع شوية بشوية، باش كل طفل يلقى منين يبدا.</p></details>
+      <!-- ⛔ REWRITTEN 24 Nov, MY DARIJA, NOT YET HIS. The old answer was
+           «بداية من 3 سنوات» - the same age the question
+           above had just given, and it never actually said yes, he can
+           play alone. This one answers the question first, then explains
+           why with the page's own words from the how-it-works steps
+           («كل قطعة مكتوبة قدامها رقمها» /
+           «يركّبها في بلاصتها، وحدو»), and keeps the honest
+           caveat the old answer carried: a child who does not know his
+           numbers yet needs help starting. Show him this wording. -->
+      <details><summary>يقدر يلعب وحدو بلا الأم ولا الأب؟</summary><p>واه، وحدو. كل قطعة مكتوبة قدامها رقمها، وكل بلاصة في اللوحة فيها رقم — يلقاها ويركّبها بيديه.<br>والصغير لي مازال مايعرفش الأرقام، عاونو في البداية ومن بعد يكمل وحدو.</p></details>
+      <details><summary>وإذا غلط في قطعة؟</summary><p>ماكان حتى مشكل: القطعة تتنحا وتعاود تتركّب في بلاصتها الصحيحة. ماتروحلهاش اللسقة وماتتقطعش.</p></details>
+      <details><summary>كيفاش نخلّص؟</summary><p>كي يوصلك الكولي، تخلّص الليفرور.</p></details>
+      <!-- ⛔ THE ONE LINE IN THIS PAGE I COULD NOT DECIDE FOR HIM (22 Nov).
+           «نقدر نشوفو قبل ما نخلّص؟» in Algeria means ONE thing at the door:
+           may I OPEN the parcel before I hand over the money. HE DECIDED YES,
+           23 Nov - the answer below now promises exactly that, in his words.
+           ⛔ Both reasons it was withheld are STILL LIVE and still unanswered:
+             1. The courier has to allow it. We are mid-migration to ZR Express
+                and nobody has confirmed ZR offers ouverture de colis. A driver
+                refusing at the door is worse than never having promised it.
+                CONFIRM WITH ZR BEFORE THIS PAGE GOES LIVE.
+             2. This product is STICKERS. A refused card game comes home and
+                re-sells; a box whose sheet has been peeled is dead at ~370 DA.
+                Roubla's ~15% return maths does NOT carry over here.
+           Do not soften or remove his sentence without asking him. -->
+      <details><summary>نقدر نشوفو قبل ما نخلّص؟</summary><p>تقدر تفتح الكولي وتتأكد مالمنتج قبل ماتخلص</p></details>
+      <!-- ⛔ MONEY BACK, his words, 23 Nov. This replaced a SWAP guarantee
+           ("we change it for another world"). A refund is a far bigger promise
+           and NO conditions are written anywhere: how long he has, whether the
+           box comes back, in what state, who pays the return leg. Read together
+           with the answer above, a customer may open the box, peel a sheet and
+           still ask for the money. His rules are needed before launch. -->
+      <details><summary>ضمان وليدك راح تعجبو</summary><p>إذا وليدك ماحبش يلعب بيها، عيّطلنا نرجعولك دراهمك.</p></details>
+      <!-- ⚠ Bulk, 22 Nov. There is NO wholesale price anywhere - not in the
+           offer, not in rakibni.ts, nowhere. So this answer deliberately
+           promises a CONVERSATION, never a discount. If he wants a real bulk
+           price it is a decision (it eats the 2,000-per-world run), and then
+           this line gets rewritten. Instagram is the only contact channel
+           verified on the live site; the page itself carries none, which is
+           also why «عيّطلنا» in the swap answer above has nothing to call.
+           ⛔ THE 5 IS NOT A ROUND NUMBER - it is the order form's real cap
+           (setQty: Math.max(1, Math.min(5, n))). If that cap ever moves, this
+           sentence is wrong the same day. Change both or neither. -->
+      <details><summary>نحب نشري بزاف؟</summary><p>واعلاه لا. حتى 5 مجموعات تزيدهم ديراكت في الطلب.<br>وإذا تحب أكثر — روضة، مدرسة، ولا كادوات — ابعتلنا في الإنستغرام <a href="https://instagram.com/curio_games_" target="_blank" rel="noopener">@curio_games_</a> وقوللنا شحال تحب، ونوجّدولك الطلب.</p></details>
+      <details><summary>شكون صنعو؟</summary><p>كيوريو، صحاب روبلة ودلالة. ركّبني صمّمناه حنا، وطبعناه هنا في الجزائر.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ⛔ MOVED TO THE END, his call 23 Nov. It used to sit between «علاش»
+     and the gift block, i.e. above the order form. He wants it last, after
+     the questions. What the buyer gets is still said before the button -
+     the spec row under the hero and every plan card carry the counts - so
+     nothing a decision needs moved below the fold with it. -->
+<!-- ===== IN THE BOX ===== -->
+<section class="block" id="box">
+  <div class="wrap">
+    <!-- The three bags used to stand here in a second column. They are the hero
+         picture, so by this point in the page they have already been seen. -->
+    <div>
+        <span class="eyebrow">واش تلقا في كل علبة؟</span>
+        <ul class="box-list" style="margin-top:16px;max-width:680px">
+          <li><b>10</b><span>لوحات من كرتون صحيح 300غ، تقعد واقفة ولا تتعلّق فالاخير.</span></li>
+          <li><b>✓</b><span>ورقات القطع بالأرقام، بفينيل لمّاع.</span></li>
+          <li><b>✓</b><span>على كل لوحة اسمها بالعربية ومستواها.</span></li>
+          <li><b>✓</b><span>كيس بالمقبض يجمع كلش.</span></li>
+          <!-- Moved here 17 Nov: it used to be the tail of the gift
+               card's line in «علاش ركّبني؟», which lost its body text
+               when that card became a mini. Without this line the claim
+               survived only in the <meta> description, where no visitor
+               reads it. Wording is the meta tag's own, unchanged. -->
+          <li><b>✓</b><span>كلش مصنوع 100% في الجزائر.</span></li>
+        </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>ركّبني من <a href="/">Curio</a> · نشاطات بعيد على الشاشة</div>
+</footer>
+
+<!-- sticky buy bar (phone) -->
+<div class="mbar" id="mbar">
+  <div class="mp"><span id="mb-label">المجموعة الكاملة</span><b><span id="mb-price">4,400</span> دج</b></div>
+  <button type="button" data-go="order">اطلب</button>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  /* ===== where the store lives ===== */
+  var API = window.CURIO_API || (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? 'http://localhost:5522' : 'https://stirring-marigold-3dd8e9.netlify.app');
+  var RK = window.CURIO_RK || {t:'rakibni-launch', v:'A', id:''};
+  var V = RK.v === 'B' ? 'B' : 'A';
+  var COUNTED = RK.t === 'rakibni-launch' || RK.t === 'rakibni-warm';
+  var loadedAt = Date.now();
+  var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n){ return Number(n).toLocaleString('en'); };
+
+  /* ===== the worlds and their 10 pictures (names exactly as printed on the boards) ===== */
+  var WORLDS = [
+    {key:'algeria', name:'عالم الجزائر', short:'الجزائر', line:'10 معالم حقيقية من بلادنا، من مقام الشهيد حتى جامع الجزائر. فيهم 3 تراث عالمي: القصبة، الطاسيلي وغرداية.',
+     pics:['مقام الشهيد','مئذنة المنصورة','جبال الهقار','غرداية','طاسيلي ناجر','تيكجدة','قصبة الجزائر','جسر قسنطينة','قصر المشور','جامع الجزائر']},
+    {key:'animals', name:'عالم الحيوانات', short:'الحيوانات', line:'من الفيل للببغاء: 10 حيوانات، كل وحدة أصعب شوية من لي قبلها.',
+     pics:['فيل','ثعلب','أرنب','سلحفاة','باندا','قرد','أسد','جمل','زرافة','ببغاء']},
+    {key:'vehicles', name:'عالم المركبات', short:'المركبات', line:'من الـ4×4 للمروحية… وحتى الترامواي تاع الدزاير!',
+     pics:['سيارة رباعية الدفع','قارب صيد','سيارة شرطة','شاحنة إطفاء','دراجة نارية','طائرة','سيارة إسعاف','ترامواي','حفارة','مروحية']}
+  ];
+  var ORDER = ['algeria','animals','vehicles'];
+  // the worlds section runs from its own file and uses these same names,
+  // so the ten picture titles per world keep exactly one home
+  window.RK_WORLDS = {worlds: WORLDS, order: ORDER};
+
+  // The three side-swipe rows that used to be built here are gone.
+  // The section is now /products/rakibni/worlds.js - one world at a
+  // time, built piece by piece from the real print files.
+
+  // The 6 gift sheets
+  (function(){
+    var alts=['متاهة سيارة الإسعاف','متاهة القرد','حوس ولقى: عالم الحيوانات','حوس ولقى: عالم المركبات','اكتشف الفروق السبعة: الغابة','اكتشف الفروق السبعة: المدينة'];
+    var h=''; for(var i=1;i<=6;i++) h+='<img src="/products/rakibni/gifts/'+i+'.webp" width="560" height="490" loading="lazy" alt="'+alts[i-1]+'">';
+    $('gift-strip').innerHTML = h;
+  })();
+
+  /* ===== prices =====
+     Defaults below = the store's prices when this page was built. They are
+     refreshed from /api/pricing on load, and the SERVER charges its own price
+     whatever this page says — so a price changed in the admin changes here too. */
+  var PRICE = {'rakibni-algeria':2200,'rakibni-animals':2200,'rakibni-vehicles':2200,
+    'rakibni-set-gift':4400,'rakibni-set':4900,
+    'rakibni-duo-algeria-animals':3900,'rakibni-duo-algeria-vehicles':3900,'rakibni-duo-animals-vehicles':3900};
+  var ACTIVE = {};
+  var SET = V === 'A' ? 'rakibni-set-gift' : 'rakibni-set';
+  var state = {plan:'set', one:'algeria', two:['algeria','animals'], qty:1, delivery:'home'};
+
+  function duoSlug(ws){ var a = ws.slice().sort(function(x,y){ return ORDER.indexOf(x)-ORDER.indexOf(y); }); return 'rakibni-duo-'+a[0]+'-'+a[1]; }
+  function slugOf(plan){ return plan==='set' ? SET : plan==='two' ? duoSlug(state.two) : 'rakibni-'+state.one; }
+  function worldPrice(){ return PRICE['rakibni-algeria']; }
+  function labelOf(plan){
+    if(plan==='set') return 'المجموعة الكاملة (3 عوالم)';
+    if(plan==='two') return 'زوج عوالم: '+state.two.slice().sort(function(x,y){return ORDER.indexOf(x)-ORDER.indexOf(y);}).map(function(k){return WORLDS[ORDER.indexOf(k)].short;}).join(' + ');
+    return WORLDS[ORDER.indexOf(state.one)].name;
+  }
+
+  function paintPrices(){
+    var one = worldPrice(), two = PRICE[duoSlug(state.two)] || PRICE['rakibni-duo-algeria-animals'], set = PRICE[SET];
+    var setals = {one:one, two:two, set:set, 'rakibni-set-gift':PRICE['rakibni-set-gift'], 'rakibni-set':PRICE['rakibni-set']};
+    document.querySelectorAll('[data-price]').forEach(function(el){ var k=el.getAttribute('data-price'); if(setals[k]!=null) el.textContent = fmt(setals[k]); });
+    var cmp = {two: one*2, set: one*3, 'rakibni-set-gift': one*3, 'rakibni-set': one*3};
+    document.querySelectorAll('[data-compare]').forEach(function(el){ var k=el.getAttribute('data-compare'); if(cmp[k]!=null) el.textContent = fmt(cmp[k]); });
+    var save = {two: one*2 - two, set: one*3 - set};
+    document.querySelectorAll('[data-save]').forEach(function(el){ var k=el.getAttribute('data-save'); if(save[k]!=null) el.textContent = fmt(save[k]); });
+  }
+
+  /* ===== the plan cards ===== */
+  var plans = Array.prototype.slice.call(document.querySelectorAll('.plan'));
+  function chipHtml(kind){
+    return WORLDS.map(function(w){
+      return '<button type="button" class="chip" data-w="'+w.key+'" data-kind="'+kind+'" aria-pressed="false"><img src="/products/rakibni/pouch-'+w.key+'.webp" width="622" height="640" loading="lazy" alt="">'+w.short+'</button>';
+    }).join('');
+  }
+  document.querySelectorAll('.chips').forEach(function(c){ c.innerHTML = chipHtml(c.getAttribute('data-pick')); });
+
+  function paintChips(){
+    document.querySelectorAll('.chip').forEach(function(ch){
+      var w = ch.getAttribute('data-w'), kind = ch.getAttribute('data-kind');
+      var on = kind==='one' ? state.one===w : state.two.indexOf(w)!==-1;
+      ch.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+  function select(plan){
+    // never select a card the visitor cannot see (page A has no "two worlds")
+    if(plan==='two' && V!=='B') plan='set';
+    if(ACTIVE[slugOf(plan)] === false) return;
+    state.plan = plan;
+    plans.forEach(function(p){ p.setAttribute('aria-checked', p.getAttribute('data-plan')===plan ? 'true' : 'false'); });
+    recalc();
+  }
+  plans.forEach(function(p){
+    p.addEventListener('click', function(e){ if(!e.target.closest('.chip')) select(p.getAttribute('data-plan')); });
+    p.addEventListener('keydown', function(e){ if((e.key==='Enter'||e.key===' ') && e.target===p){ e.preventDefault(); select(p.getAttribute('data-plan')); } });
+  });
+  document.addEventListener('click', function(e){
+    var ch = e.target.closest('.chip'); if(!ch) return;
+    var w = ch.getAttribute('data-w'), kind = ch.getAttribute('data-kind');
+    if(kind==='one'){ state.one = w; }
+    else{
+      var i = state.two.indexOf(w), msg = $('two-msg');
+      if(i!==-1){ if(state.two.length>1) state.two.splice(i,1); }
+      else{ state.two.push(w); if(state.two.length>2) state.two.shift(); }
+      msg.textContent = state.two.length<2 ? 'اختار عالم آخر باش يكمّلو زوج.' : '';
+    }
+    paintChips(); select(kind); paintPrices(); recalc();
+  });
+
+  /* ===== quantity ===== */
+  function setQty(n){ state.qty = Math.max(1, Math.min(5, n)); $('q-val').textContent = state.qty; recalc(); }
+  $('q-minus').addEventListener('click', function(){ setQty(state.qty-1); });
+  $('q-plus').addEventListener('click', function(){ setQty(state.qty+1); });
+
+  /* ===== delivery: live Ecotrack wilaya → commune / stop-desk (same source as Roubla and Dlala) ===== */
+  var DELIVERY = [], byCode = {};
+  var wsel = $('f-wilaya'), csel = $('f-commune');
+  function wcode(c){ return String(c).padStart(2,'0'); }      // the store wants "01".."58"
+  function deliverable(w){ return !!(w.home || w.stopdesk); }   // no price = the store refuses it
+  function fee(){ var w = byCode[wsel.value]; if(!w) return null; var f = state.delivery==='home' ? w.home : w.stopdesk; return (f==null||f==='') ? null : +f; }
+  function fillWilayas(){
+    wsel.innerHTML = '<option value="">اختار الولاية…</option>';
+    DELIVERY.filter(deliverable).forEach(function(w){ var o=document.createElement('option'); o.value=wcode(w.code); o.textContent=wcode(w.code)+' - '+w.ar; wsel.appendChild(o); });
+  }
+  function fillCommunes(){
+    var w = byCode[wsel.value]; csel.innerHTML='';
+    if(!w){ csel.disabled=true; csel.innerHTML='<option value="">اختار الولاية أولاً…</option>'; return; }
+    var list = w.communes || [];
+    if(state.delivery==='office') list = list.filter(function(c){ return c.desk; });
+    var ph = document.createElement('option'); ph.value='';
+    ph.textContent = list.length ? (state.delivery==='office' ? 'اختار مكتب ستوب ديسك…' : 'اختار البلدية…') : (state.delivery==='office' ? 'ماكانش مكتب في هاذ الولاية' : 'ماكانش توصيل لهاذ الولاية');
+    csel.appendChild(ph);
+    list.forEach(function(c){ var o=document.createElement('option'); o.value=c.name; o.textContent=c.name; csel.appendChild(o); });
+    csel.disabled = list.length===0;
+  }
+  /* Nothing is on screen before it can be answered: the delivery choice and
+     the baladiya wait for a wilaya, and the address waits for «للدار». */
+  function syncReveal(){
+    var hasWilaya = !!wsel.value;
+    $('rv-where').classList.toggle('on', hasWilaya);
+    $('rv-addr').classList.toggle('on', hasWilaya && state.delivery === 'home');
+  }
+  function setDelivery(t){
+    state.delivery = t;
+    $('d-home').classList.toggle('on', t==='home'); $('d-office').classList.toggle('on', t==='office');
+    $('commune-label').textContent = t==='home' ? 'البلدية' : 'مكتب ستوب ديسك';
+    syncReveal();
+    fillCommunes(); recalc();
+  }
+  $('d-home').addEventListener('click', function(){ setDelivery('home'); });
+  $('d-office').addEventListener('click', function(){ setDelivery('office'); });
+  wsel.addEventListener('change', function(){ wsel.classList.remove('bad'); syncReveal(); fillCommunes(); recalc(); });
+  syncReveal();   // start closed
+  csel.addEventListener('change', function(){ csel.classList.remove('bad'); recalc(); });
+  function getJSON(u, tries){
+    return fetch(u, {cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .catch(function(){ if(tries>0) return new Promise(function(z){ setTimeout(z,700); }).then(function(){ return getJSON(u, tries-1); }); return null; });
+  }
+  getJSON(API+'/api/delivery', 4).then(function(d){
+    if(!d || !d.wilayas){ wsel.innerHTML='<option value="">ما قدرناش نحمّلو الولايات — عاود حمّل الصفحة</option>'; return; }
+    DELIVERY = d.wilayas; byCode = {}; DELIVERY.forEach(function(w){ byCode[wcode(w.code)] = w; });
+    fillWilayas(); fillCommunes();
+  });
+
+  /* ===== live prices + which offers are switched on ===== */
+  getJSON(API+'/api/pricing', 3).then(function(p){
+    if(!p) return;
+    Object.keys(PRICE).forEach(function(s){ if(p[s] && p[s].price>0){ PRICE[s] = p[s].price; ACTIVE[s] = p[s].active !== false; } });
+    // An offer switched off in the admin disappears from the page instead of failing at checkout.
+    if(ACTIVE[SET] === false){ var c = document.querySelector('.plan[data-plan="set"]'); if(c) c.style.display='none'; if(state.plan==='set') select('one'); }
+    paintPrices(); recalc();
+  });
+
+  /* ===== totals ===== */
+  function recalc(){
+    var slug = slugOf(state.plan), unit = PRICE[slug] || 0, sub = unit * state.qty, f = fee();
+    $('s-label').textContent = labelOf(state.plan) + (state.qty>1 ? ' × '+state.qty : '');
+    $('s-sub').textContent = fmt(sub)+' دج';
+    $('s-ship').textContent = f==null ? 'حسب الولاية' : fmt(f)+' دج';
+    $('s-total').textContent = f==null ? '—' : fmt(sub+f)+' دج';
+    $('mb-label').textContent = labelOf(state.plan);
+    $('mb-price').textContent = fmt(unit);
+  }
+
+  /* ===== count this visitor (once per page load; the store dedupes by browser) ===== */
+  document.addEventListener('DOMContentLoaded', function(){
+    if(!COUNTED || !RK.id) return;
+    var body = {test:RK.t, variant:RK.v, visitorId:RK.id, landing:location.pathname};
+    try{ var src = window.curioSource ? window.curioSource() : {}; ['utm_source','utm_campaign','utm_content','referrer'].forEach(function(k){ if(src[k]) body[k]=src[k]; }); }catch(e){}
+    try{ fetch(API+'/api/split/visit', {method:'POST', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(body), keepalive:true, credentials:'omit'}).catch(function(){}); }catch(e){}
+  });
+
+  /* ===== order ===== */
+  function showErr(msg){ var e=$('cerr'); e.textContent = msg; e.classList.add('on'); }
+  function clearErr(){ $('cerr').classList.remove('on'); }
+  // A field fixed = its red mark and the old message go away.
+  ['input','change'].forEach(function(ev){
+    $('cform').addEventListener(ev, function(e){ if(e.target.classList) e.target.classList.remove('bad'); clearErr(); });
+  });
+  function validate(){
+    var n=$('f-name'), p=$('f-phone'), a=$('f-addr');
+    [n,p,wsel,csel,a].forEach(function(el){ el.classList.remove('bad'); });
+    if(n.value.trim().length<2){ n.classList.add('bad'); n.focus(); return 'اكتب اسمك.'; }
+    /* Mirror the store's normalizeDzPhone exactly: ten digits starting 05, 06
+       or 07, and a bare national number is only missing its leading zero. The
+       old check passed anything 9 digits or longer, so a wrong number got
+       through here and was refused by the server AFTER the button - the worst
+       possible moment to tell someone. */
+    var digits = p.value.replace(/\D/g,'');
+    if(digits.length===9 && /^[567]/.test(digits)) digits = '0' + digits;
+    if(!/^0[567]\d{8}$/.test(digits)){ p.classList.add('bad'); p.focus(); return 'اكتب رقم هاتف صحيح (05 / 06 / 07).'; }
+    if(!wsel.value || fee()==null){ wsel.classList.add('bad'); wsel.focus(); return 'اختار الولاية.'; }
+    if(!csel.value){ csel.classList.add('bad'); csel.focus(); return state.delivery==='home' ? 'اختار البلدية.' : 'اختار المكتب.'; }
+    if(state.delivery==='home' && a.value.trim().length<5){ a.classList.add('bad'); a.focus(); return 'اكتب العنوان بالتفصيل.'; }
+    if(state.plan==='two' && state.two.length<2) return 'اختار زوج عوالم.';
+    return '';
+  }
+
+  var placed = null, busy = false;
+  $('confirm').addEventListener('click', function(){
+    if(busy) return; clearErr();
+    var bad = validate(); if(bad){ showErr(bad); return; }
+    busy = true; var btn = $('confirm'); btn.disabled = true;
+    var slug = slugOf(state.plan);
+    var payload = {
+      customerName: $('f-name').value.trim(),
+      customerPhone: $('f-phone').value.trim(),
+      wilayaCode: wsel.value,
+      deliveryType: state.delivery==='home' ? 'HOME' : 'OFFICE',
+      items: [{slug:slug, quantity:state.qty}],
+      _t: loadedAt
+    };
+    if(state.delivery==='home'){ payload.commune = csel.value; payload.address = $('f-addr').value.trim(); }
+    else { payload.officeCommune = csel.value; }
+    if(COUNTED){ payload.splitTest = RK.t; payload.splitVariant = RK.v; }
+    if(window.curioSource) try{ Object.assign(payload, window.curioSource()); }catch(e){}
+    fetch(API+'/api/orders', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok && j.success, j:j}; }); })
+      .then(function(res){
+        busy = false; btn.disabled = false;
+        if(!res.ok){ showErr(res.j.error || 'صار مشكل، عاود جرّب.'); return; }
+        var j = res.j;
+        // Meta Purchase: once ever per order (refresh-proof), eventID matches the server's event.
+        try{ var k='fbq-o'+j.orderNumber; if(typeof fbq==='function' && !localStorage.getItem(k)){ fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',content_ids:[slug],order_id:j.orderNumber},{eventID:'order-'+j.orderNumber}); localStorage.setItem(k,'1'); } }catch(e){}
+        placed = {n:j.orderNumber, token:j.upsellToken, slug:slug, total:j.total};
+        showDone();
+      })
+      .catch(function(){ busy = false; btn.disabled = false; showErr('مشكل في الشبكة، عاود جرّب.'); });
+  });
+
+  /* ===== thank-you + the one upgrade offer ===== */
+  function showDone(){
+    // The order is saved: the offer cards and the form are history now.
+    $('cform').style.display = 'none';
+    document.querySelector('.plans').style.display = 'none';
+    $('d-num').textContent = '#'+placed.n;
+    $('done').classList.add('on');
+    var canUp = placed.token && state.qty===1 && ACTIVE[SET] !== false &&
+      (state.plan==='one' || (state.plan==='two' && V==='B'));
+    if(canUp){
+      var add = PRICE[SET] - PRICE[placed.slug];
+      var head = state.plan==='one'
+        ? (V==='A' ? 'زيد '+fmt(add)+' دج برك، وخوذ العالمين الآخرين' : 'زيد '+fmt(add)+' دج، وخوذ المجموعة الكاملة (30 لوحة)')
+        : 'زيد '+fmt(add)+' دج برك، وخوذ العالم الثالث';
+      $('up-head').textContent = head;
+      $('up').classList.add('on');
+    }
+    $('done').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  $('up-no').addEventListener('click', function(){ $('up').classList.remove('on'); });
+  $('up-yes').addEventListener('click', function(){
+    var b = $('up-yes'); if(b.disabled) return; b.disabled = true; b.style.opacity = '.6';
+    fetch(API+'/api/orders/'+placed.n+'/upgrade', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:placed.token})})
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok && j.success, j:j}; }); })
+      .then(function(res){
+        if(!res.ok){ b.disabled = false; b.style.opacity = '1'; $('up-res').textContent = res.j.error || 'ما قدرناش نبدّلوه — طلبك راه مسجّل كيما هو.'; return; }
+        document.querySelector('#up .up-btns').style.display = 'none';
+        $('up-res').textContent = '✓ تبدّل للمجموعة الكاملة. الإجمالي الجديد: '+fmt(res.j.total)+' دج';
+      })
+      .catch(function(){ b.disabled = false; b.style.opacity = '1'; $('up-res').textContent = 'مشكل في الشبكة — طلبك راه مسجّل كيما هو.'; });
+  });
+
+  /* ===== small things ===== */
+  document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click', function(){ $(b.getAttribute('data-go')).scrollIntoView({behavior:'smooth', block:'start'}); }); });
+  // the demo plays only while it is on screen (and only loads then)
+  var vid = $('demo');
+  if(vid && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ var p = vid.play(); if(p && p.catch) p.catch(function(){}); } else vid.pause(); }); }, {threshold:.35}).observe(vid);
+  }
+  // sticky phone bar: after the hero, hidden while the order form is on screen
+  var mbar = $('mbar'), orderSec = $('order'), pastHero = false, inOrder = false;
+  function paintBar(){ mbar.classList.toggle('show', pastHero && !inOrder); }
+  if('IntersectionObserver' in window){
+    // "past" = the hero button has gone off the TOP of the screen, not merely
+    // below the fold (on a phone it starts below the fold).
+    new IntersectionObserver(function(es){ var en = es[0]; pastHero = !en.isIntersecting && en.boundingClientRect.top < 0; paintBar(); }).observe(document.querySelector('.hero .order-btn'));
+    new IntersectionObserver(function(es){ inOrder = es[0].isIntersecting; paintBar(); }, {threshold:.05}).observe(orderSec);
+  }
+
+  paintChips(); paintPrices(); select('set'); setDelivery('home');
+})();
+</script>
+<!-- The page furniture the prototype never had. The header is sticky and the order bar
+     floats over the bottom, so the pinned stage is squeezed to the gap between them.
+     Measured rather than guessed: both change height between a phone and a desktop, and
+     the order bar only appears once the reader is past the hero. -->
+<script>
+(function () {
+  if (!document.getElementById('rk-stage')) return;
+  var hdr = document.querySelector('header'), bar = document.getElementById('mbar');
+  function px(el, prop) { return parseFloat(getComputedStyle(el)[prop]) || 0; }
+  function fit() {
+    var top = hdr ? Math.round(px(hdr, 'top') + hdr.offsetHeight + 6) : 10;
+    var bot = bar ? Math.round(px(bar, 'bottom') + bar.offsetHeight + 8) : 12;
+    var r = document.documentElement.style;
+    r.setProperty('--rk-top', top + 'px');
+    r.setProperty('--rk-bot', bot + 'px');
+  }
+  fit();
+  addEventListener('resize', fit);
+  addEventListener('orientationchange', function () { setTimeout(fit, 220); });
+})();
+</script>
+<!-- The scrolling build. pieces.js carries the 17 pieces' geometry straight out of the
+     print files and registers itself as window.RAKIBNI["A02-Elephant"]; build.js is generated
+     from the prototype (scroll-demo/demo.js) - do not hand-edit it, rebuild it.
+     Both are deferred: the hero must never wait for them. -->
+<script src="/products/rakibni/build/A02-Elephant/pieces.js" defer></script>
+<script src="/products/rakibni/build/build.js" defer></script>
+<!-- Review notes: click anywhere on the page and leave a note, then one button copies
+     the lot. Runs ONLY on localhost, on a file:// copy, or on the live site when the
+     address ends in #notes - a customer can never see it. Delete this one line if you
+     would rather it never reached the live site at all. -->
+<script src="/products/rakibni/worlds.js" defer></script>
+<script src="/products/rakibni/review.js" defer></script>
+</body>
+</html>

@@ -63,6 +63,21 @@
   to = "/dlala/?launch=DLALA-LAUNCH"
   status = 302
 
+# ركّبني warm launch (WhatsApp to past buyers): always offer A ("pay 2, the
+# 3rd world is a gift"), remembered in their browser and counted APART from
+# the A/B split test. 302 like /vip so the sent messages keep working if we
+# later repoint or retire the offer. The page itself lives at /rakibni/.
+[[redirects]]
+  from = "/rakibni/family"
+  to = "/rakibni/?door=family"
+  status = 302
+
+# The video files spell it RAKEBNI; anyone typing that lands on the page.
+[[redirects]]
+  from = "/rakebni"
+  to = "/rakibni/"
+  status = 302
+
 # Netlify doesn't recognise the .webmanifest extension and serves it as
 # application/octet-stream. Because X-Content-Type-Options=nosniff is set
 # below, browsers then refuse to parse it and silently ignore the home-screen
