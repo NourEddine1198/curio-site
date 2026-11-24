@@ -709,6 +709,44 @@
     .agents-bar { padding: 0 24px 8px; }
     .agents-panel { display: none; padding: 14px 0 0; }
     .agents-panel.open { display: block; }
+    /* --- Courier switch --- */
+    .carrier-bar { padding: 0 24px 8px; }
+    .carrier-panel { display: none; padding: 14px 0 0; }
+    .carrier-panel.open { display: block; }
+    .carrier-now {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: 10px; padding: 14px 16px; font-size: 14px; line-height: 1.75;
+    }
+    .carrier-live { display:inline-block; padding:2px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+    .carrier-live.eco { background:#e9f5ee; color:#1f7a4d; }
+    .carrier-live.zr  { background:#fdf3dc; color:#a9730a; }
+    .carrier-warn {
+      margin-top:10px; background:#fdeeec; border:1px solid #f2cdc7; color:#8c2718;
+      border-radius:8px; padding:10px 12px; font-size:13.5px; line-height:1.7;
+    }
+    .carrier-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+    .btn-brake {
+      background:#b3301f; color:#fff; border:0; border-radius:8px; padding:12px 20px;
+      font-family:'Changa',sans-serif; font-size:15px; font-weight:700; cursor:pointer;
+    }
+    .btn-brake:hover { background:#942817; }
+    .btn-brake[disabled] { opacity:.5; cursor:default; }
+    .carrier-caption { margin-top:16px; font-size:12.5px; color:var(--ink-soft); }
+    .carrier-wilayas { margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; }
+    /* ZR off: the saved list is still drawn, but must not read as live. */
+    .carrier-wilayas.paused .cw.on { opacity:.5; }
+    .cw {
+      display:flex; align-items:center; gap:7px; padding:7px 11px; border-radius:8px;
+      border:1px solid var(--line); background:var(--surface); font-size:13px; cursor:pointer;
+    }
+    .cw.on { border-color:#e0b53f; background:#fdf3dc; color:#4a3608; }
+    .cw.on small { color:#8a6b1f; }
+    .cw.off-limits { opacity:.45; cursor:not-allowed; }
+    .cw small { color:var(--ink-soft); font-size:11px; }
+    .carrier-note {
+      margin-top:14px; font-size:13px; line-height:1.8; color:var(--ink-soft);
+      border-right:3px solid var(--line); padding-right:12px;
+    }
     .agents-grid {
       display: flex;
       gap: 12px;
@@ -1002,6 +1040,21 @@
     </div>
   </div>
 
+  <!-- Which courier takes NEW orders. Every value on this panel comes from
+       the shop (GET /api/carrier/state); nothing is decided here. -->
+  <div class="carrier-bar">
+    <div class="stock-toggle" id="carrierToggle" onclick="toggleCarrierPanel()">
+      <h3>الموصّل <span style="font-weight:500;font-size:13px;color:var(--ink-soft)" id="carrierToggleHint"></span></h3>
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="carrier-panel" id="carrierPanel">
+      <div class="carrier-now" id="carrierNow">نحمّلو…</div>
+      <div class="carrier-caption" id="carrierCaption"></div>
+      <div class="carrier-wilayas" id="carrierWilayas"></div>
+      <div class="carrier-note" id="carrierNote"></div>
+    </div>
+  </div>
+
   <!-- Search & refresh -->
   <div class="toolbar">
     <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رقم الهاتف..." oninput="debounceSearch()">
@@ -1120,6 +1173,7 @@ function tryLogin() {
       document.getElementById('dashboard').classList.add('active');
       loadOrders();
       loadAgents();
+      loadCarrier();
       // Initialize auto-refresh after login
       setTimeout(function() { initAutoRefreshAfterLogin(); }, 3000);
     })
@@ -1147,6 +1201,7 @@ function logout() {
     document.getElementById('dashboard').classList.add('active');
     loadOrders();
     loadAgents();
+    loadCarrier();
   }
   // Enter key on login
   document.getElementById('loginKey').addEventListener('keydown', function(e) {
@@ -1316,6 +1371,175 @@ function loadAgents() {
 function toggleAgentsPanel() {
   document.getElementById('agentsToggle').classList.toggle('open');
   document.getElementById('agentsPanel').classList.toggle('open');
+}
+
+/* ── The courier switch ───────────────────────────────────────────────
+   Nothing on this panel is decided here. What is live, which wilayas ZR
+   can even serve, and how long a change takes all come from
+   GET /api/carrier/state. A screen that keeps its own copy of those is a
+   screen that will one day show the brake as pulled while the parcels
+   keep going to ZR. */
+var carrierState = null;
+var carrierBusy = false;
+
+function toggleCarrierPanel() {
+  document.getElementById('carrierToggle').classList.toggle('open');
+  document.getElementById('carrierPanel').classList.toggle('open');
+}
+
+function loadCarrier() {
+  fetch(API + '/api/carrier/state', { headers: { 'X-Admin-Key': adminKey } })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || d.error) throw new Error((d && d.error) || 'failed');
+      carrierState = d;
+      renderCarrier();
+    })
+    .catch(function () {
+      carrierState = null;
+      document.getElementById('carrierNow').textContent =
+        'ما قدرناش نقراو واش راه خدّام دروك. عاود حمّل الصفحة قبل ما تبدّل حاجة.';
+      document.getElementById('carrierToggleHint').textContent = '— ما عرفناش';
+      document.getElementById('carrierWilayas').innerHTML = '';
+      document.getElementById('carrierNote').innerHTML = '';
+    });
+}
+
+function carrierSelected() {
+  return Array.prototype.slice.call(document.querySelectorAll('#carrierWilayas .cw.on'))
+    .map(function (el) { return el.getAttribute('data-code'); });
+}
+
+function renderCarrier() {
+  var d = carrierState;
+  var all = d.wilayas === 'all';
+  var count = all ? -1 : (d.wilayas || []).length;
+
+  document.getElementById('carrierToggleHint').textContent = !d.enabled
+    ? '— كلش على Ecotrack'
+    : (all ? '— ZR Express في كل الولايات' : '— ZR Express في ' + count + ' ولاية');
+
+  var badge = d.enabled
+    ? '<span class="carrier-live zr">ZR Express</span>'
+    : '<span class="carrier-live eco">Ecotrack</span>';
+
+  // d.scope is the shop's own English sentence - it belongs in the logs, not
+  // on a screen his wife reads. Same facts, said here, in the page's language.
+  var scope;
+  if (!d.enabled) {
+    scope = 'كل طلب جديد يروح لـ Ecotrack.';
+  } else if (all) {
+    scope = 'كل الولايات على ZR Express، ما عدا لي ZR ما تخدمش فيهم.';
+  } else if (!count) {
+    scope = 'ZR محلول بصح ما فمّاش ولاية مختارة — كلش مازال يروح لـ Ecotrack.';
+  } else {
+    scope = 'ZR Express في ' + count + ' ولاية (' + (d.wilayas || []).join('، ') + ').'
+      + ' الباقي على Ecotrack.';
+  }
+
+  var html = '<div>الطلبات الجديدة دروك: ' + badge + '</div>' +
+    '<div style="margin-top:6px;color:var(--ink-soft)">' + escapeHtml(scope) + '</div>';
+
+  // The number the brake will NOT help, said plainly right next to the
+  // button. The one thing a brake must never do is imply more than it does.
+  var pend = (d.pendingZr && d.pendingZr.total) || 0;
+  if (pend > 0) {
+    var desk = (d.pendingZr && d.pendingZr.stopDesk) || 0;
+    html += '<div class="carrier-warn">' + pend + ' طلب مسجّلين على ZR و مازال ما تبعثوش' +
+      (desk ? ' (منهم ' + desk + ' ستوب ديسك)' : '') +
+      '. هادو يبقاو يروحو لـ ZR حتى كي تحبس — هكذا درناها، على خاطر العنوان تاعهم هو عنوان ZR.</div>';
+  }
+
+  html += '<div class="carrier-actions">' +
+    '<button class="btn-brake" id="brakeBtn" onclick="pullBrake()"' + (d.enabled ? '' : ' disabled') + '>' +
+      'رجّع كلش لـ Ecotrack' +
+    '</button>' +
+    '<button class="btn-mini good" onclick="saveCarrierWilayas()">حفظ الولايات</button>' +
+    '<button class="btn-mini" onclick="loadCarrier()">تحديث</button>' +
+  '</div>';
+  document.getElementById('carrierNow').innerHTML = html;
+
+  // With ZR off the saved list is still shown - that is what comes back if
+  // it is switched on again - but it must never read as "these are live now".
+  document.getElementById('carrierCaption').textContent = d.enabled
+    ? 'الولايات لي معلّمين راهم على ZR Express. كليكي باش تبدّل، من بعد «حفظ الولايات».'
+    : 'ZR محبوس دروك. الولايات لي معلّمين محفوظين غير — ما يخدموش حتى تحفظ.';
+  document.getElementById('carrierWilayas').classList.toggle('paused', !d.enabled);
+
+  var picked = {};
+  if (!all) (d.wilayas || []).forEach(function (c) { picked[c] = 1; });
+  var rows = (d.allWilayas || []).slice().sort(function (a, b) { return a.code < b.code ? -1 : 1; });
+  document.getElementById('carrierWilayas').innerHTML = rows.map(function (w) {
+    var on = w.zrPossible && (all || picked[w.code]);
+    var cls = !w.zrPossible ? 'cw off-limits' : (on ? 'cw on' : 'cw');
+    // The shop sends a reason CODE; the wording lives here, where the rest
+    // of the screen's Darija lives.
+    var why = w.zrPossible
+      ? (w.zrDesk === null ? 'بلا مكتب' : w.zrOffices + ' مكاتب')
+      : (w.blockedBecause === 'never' ? 'ZR ما عندهاش هنا' : 'بلا تعريفة ZR');
+    var click = w.zrPossible ? ' onclick="this.classList.toggle(\'on\')"' : '';
+    return '<div class="' + cls + '" data-code="' + w.code + '"' + click + '>' +
+      '<b>' + w.code + '</b> ' + escapeHtml(w.ar || '') + ' <small>' + why + '</small></div>';
+  }).join('');
+
+  var t = d.timing || {};
+  document.getElementById('carrierNote').innerHTML =
+    'الكوليات لي راهم ديجا عند ZR ما يتحركوش من هنا — هادا يديروه غير هما.<br>' +
+    'الطلبات الجديدة تتبدّل في ' + Math.round((t.newParcelsSeconds || 60) / 60) + ' دقيقة تقريبا.<br>' +
+    'الموقع يقدر يدي حتى ' + Math.round((t.websiteSeconds || 600) / 60) + ' دقايق باش يلحق، و صفحة محلولة من قبل تقدر ما تتبدّلش حتى يعاود يحمّلها.';
+}
+
+function postCarrier(payload, okMsg) {
+  if (carrierBusy) return;
+  carrierBusy = true;
+  var btn = document.getElementById('brakeBtn');
+  if (btn) btn.disabled = true;
+  fetch(API + '/api/carrier/state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': adminKey },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      carrierBusy = false;
+      if (!d || d.error) { showToast((d && d.error) || 'ما تسجّلش', true); loadCarrier(); return; }
+      carrierState = d;
+      renderCarrier();
+      // d.confirmed is the shop saying it read its own change back out of the
+      // database. A 200 on its own is not enough to tell him it is done.
+      showToast(
+        d.confirmed ? okMsg : 'تبعثت بصح ما تأكّدناش منّها — عاود حمّل و شوف',
+        !d.confirmed
+      );
+    })
+    .catch(function () {
+      carrierBusy = false;
+      showToast('ما وصلناش للمخزن — ما نعرفوش واش صرا. عاود حمّل و شوف.', true);
+      loadCarrier();
+    });
+}
+
+function pullBrake() {
+  if (!carrierState || !carrierState.enabled) return;
+  var pend = (carrierState.pendingZr && carrierState.pendingZr.total) || 0;
+  var msg = 'كل طلب جديد يولي يروح لـ Ecotrack.\n\n'
+    + 'الكوليات لي راهم ديجا عند ZR ما يتبدلوش.'
+    + (pend ? '\n' + pend + ' طلب مسجّلين على ZR و مازال ما تبعثوش — هادو تاني يبقاو على ZR.' : '')
+    + '\n\nنكملو؟';
+  if (!confirm(msg)) return;
+  postCarrier({ enabled: false }, 'رجّعنا كلش لـ Ecotrack');
+}
+
+function saveCarrierWilayas() {
+  if (!carrierState) return;
+  var codes = carrierSelected();
+  if (!codes.length) {
+    if (!confirm('ما خترت حتى ولاية. هذا يرجّع كلش لـ Ecotrack. نكملو؟')) return;
+    postCarrier({ enabled: false, wilayas: [] }, 'رجّعنا كلش لـ Ecotrack');
+    return;
+  }
+  if (!confirm(codes.length + ' ولاية توليو على ZR Express.\nالباقي يبقى على Ecotrack.\n\nنكملو؟')) return;
+  postCarrier({ enabled: true, wilayas: codes }, codes.length + ' ولاية ولّات على ZR');
 }
 
 function renderAgents(unassignedCount) {
