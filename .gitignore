@@ -1,2 +1,5 @@
 # Local Netlify folder
 .netlify
+
+# Editor backups of a page, kept locally while reworking it
+*.bak-*
