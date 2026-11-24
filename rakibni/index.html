@@ -1425,12 +1425,39 @@ fbq('track', 'PageView');
     fillWilayas(); fillCommunes();
   });
 
+  /* Take off the page every offer the shop cannot actually sell, and if that
+     is all of them, say so plainly rather than leaving a confirm button that
+     can only ever fail. */
+  function syncOffers(){
+    var live = [];
+    plans.forEach(function(c){
+      var plan = c.getAttribute('data-plan');
+      var ok = !(plan==='two' && V!=='B') && ACTIVE[slugOf(plan)] !== false;
+      c.style.display = ok ? '' : 'none';
+      if(ok) live.push(plan);
+    });
+    var btn = document.getElementById('confirm');
+    if(!live.length){
+      if(btn){ btn.disabled = true; btn.textContent = 'قريب إن شاء الله'; }
+    } else if(live.indexOf(state.plan) === -1){
+      select(live[0]);
+    }
+  }
+
   /* ===== live prices + which offers are switched on ===== */
   getJSON(API+'/api/pricing', 3).then(function(p){
     if(!p) return;
-    Object.keys(PRICE).forEach(function(s){ if(p[s] && p[s].price>0){ PRICE[s] = p[s].price; ACTIVE[s] = p[s].active !== false; } });
-    // An offer switched off in the admin disappears from the page instead of failing at checkout.
-    if(ACTIVE[SET] === false){ var c = document.querySelector('.plan[data-plan="set"]'); if(c) c.style.display='none'; if(state.plan==='set') select('one'); }
+    Object.keys(PRICE).forEach(function(s){
+      if(p[s] && p[s].price>0){ PRICE[s] = p[s].price; ACTIVE[s] = p[s].active !== false; }
+      /* A slug the shop did not answer for is one it has never heard of, and
+         that is NOT the same as "switched off". It used to leave the entry
+         undefined — which is not === false — so the offer stayed on screen at
+         the price written in this file, walked the customer through name,
+         phone, wilaya and address, and only THEN was refused by the server
+         with «واحد من المنتجات غير متوفر». Unknown means not for sale. */
+      else { ACTIVE[s] = false; }
+    });
+    syncOffers();
     paintPrices(); recalc();
   });
 
@@ -1483,6 +1510,10 @@ fbq('track', 'PageView');
   $('confirm').addEventListener('click', function(){
     if(busy) return; clearErr();
     var bad = validate(); if(bad){ showErr(bad); return; }
+    // Belt and braces behind syncOffers(): never POST an offer the shop has
+    // no row for. Better a plain sentence here than the server's refusal
+    // after everything has been typed in.
+    if(ACTIVE[slugOf(state.plan)] === false){ showErr('هاد العرض مازال ما حلّيناهش. راسلنا في الانستغرام و نعلموك.'); return; }
     busy = true; var btn = $('confirm'); btn.disabled = true;
     var slug = slugOf(state.plan);
     var payload = {
