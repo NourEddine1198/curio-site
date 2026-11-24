@@ -1464,12 +1464,19 @@ fbq('track', 'PageView');
   /* ===== totals ===== */
   function recalc(){
     var slug = slugOf(state.plan), unit = PRICE[slug] || 0, sub = unit * state.qty, f = fee();
+    /* A half-picked pair is not a product. Tapping one of the two worlds back
+       off leaves state.two with a single entry, duoSlug() builds a slug that
+       does not exist, and `PRICE[slug] || 0` used to print «0 دج» — in the
+       summary AND in the sticky bar, while the card right above still showed
+       3,900. Two prices for the same offer, on the page whose whole job is
+       testing price. Unknown shows a dash, the way the delivery fee does. */
+    var priced = unit > 0 && !(state.plan==='two' && state.two.length < 2);
     $('s-label').textContent = labelOf(state.plan) + (state.qty>1 ? ' × '+state.qty : '');
-    $('s-sub').textContent = fmt(sub)+' دج';
+    $('s-sub').textContent = priced ? fmt(sub)+' دج' : '—';
     $('s-ship').textContent = f==null ? 'حسب الولاية' : fmt(f)+' دج';
-    $('s-total').textContent = f==null ? '—' : fmt(sub+f)+' دج';
+    $('s-total').textContent = (priced && f!=null) ? fmt(sub+f)+' دج' : '—';
     $('mb-label').textContent = labelOf(state.plan);
-    $('mb-price').textContent = fmt(unit);
+    $('mb-price').textContent = priced ? fmt(unit) : '—';
   }
 
   /* ===== count this visitor (once per page load; the store dedupes by browser) ===== */
@@ -1499,7 +1506,16 @@ fbq('track', 'PageView');
     var digits = p.value.replace(/\D/g,'');
     if(digits.length===9 && /^[567]/.test(digits)) digits = '0' + digits;
     if(!/^0[567]\d{8}$/.test(digits)){ p.classList.add('bad'); p.focus(); return 'اكتب رقم هاتف صحيح (05 / 06 / 07).'; }
-    if(!wsel.value || fee()==null){ wsel.classList.add('bad'); wsel.focus(); return 'اختار الولاية.'; }
+    if(!wsel.value){ wsel.classList.add('bad'); wsel.focus(); return 'اختار الولاية.'; }
+    /* A wilaya we DO deliver to, just not the way they picked: the courier
+       has a home rate and no counter in 54 and 57. The old check lumped this
+       in with "no wilaya chosen", so it threw them back to the one field they
+       had got right, with no hint that the answer was to switch to «للدار». */
+    if(fee()==null){
+      return state.delivery==='office'
+        ? 'ماكانش مكتب ستوب ديسك في هاذ الولاية. اختار «للدار».'
+        : 'ماكانش توصيل للدار في هاذ الولاية. اختار «مكتب».';
+    }
     if(!csel.value){ csel.classList.add('bad'); csel.focus(); return state.delivery==='home' ? 'اختار البلدية.' : 'اختار المكتب.'; }
     if(state.delivery==='home' && a.value.trim().length<5){ a.classList.add('bad'); a.focus(); return 'اكتب العنوان بالتفصيل.'; }
     if(state.plan==='two' && state.two.length<2) return 'اختار زوج عوالم.';
