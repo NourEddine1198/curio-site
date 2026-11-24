@@ -673,6 +673,7 @@ fbq('track', 'PageView');
 }
 </script>
 <!-- End Meta Pixel Code -->
+<script src="/assets/office-picker.js"></script>
 <script src="/assets/source-tracking.js" defer></script>
 </head>
 <body>
@@ -1380,6 +1381,13 @@ fbq('track', 'PageView');
   function fillCommunes(){
     var w = byCode[wsel.value]; csel.innerHTML='';
     if(!w){ csel.disabled=true; csel.innerHTML='<option value="">اختار الولاية أولاً…</option>'; return; }
+    /* Where the courier gives us a real office list, offer the OFFICES
+       themselves: "Oran" alone cannot say which of its three counters.
+       On a wilaya we have no list for this fill() declines, and the
+       baladiya list below runs exactly as it always did. */
+    if(state.delivery==='office' && window.curioOffices &&
+        window.curioOffices.fill(csel, w, 'اختار مكتب ستوب ديسك…')) return;
+
     var list = w.communes || [];
     if(state.delivery==='office') list = list.filter(function(c){ return c.desk; });
     var ph = document.createElement('option'); ph.value='';
@@ -1486,7 +1494,13 @@ fbq('track', 'PageView');
       _t: loadedAt
     };
     if(state.delivery==='home'){ payload.commune = csel.value; payload.address = $('f-addr').value.trim(); }
-    else { payload.officeCommune = csel.value; }
+    else {
+      /* The office name, its commune and the courier's own id for it,
+         always together - they used to be able to drift apart. */
+      var off = window.curioOffices ? window.curioOffices.read(csel, byCode[wsel.value]) : null;
+      payload.officeCommune = off ? off.officeCommune : csel.value;
+      if(off){ payload.officeName = off.officeName; payload.officeHubId = off.officeHubId; }
+    }
     if(COUNTED){ payload.splitTest = RK.t; payload.splitVariant = RK.v; }
     if(window.curioSource) try{ Object.assign(payload, window.curioSource()); }catch(e){}
     fetch(API+'/api/orders', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})

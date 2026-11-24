@@ -29,6 +29,20 @@
   to = "/salon/index.html"
   status = 200
 
+# The ebook gift QR printed on the rakibni spot-the-difference sheets. A 200
+# REWRITE (like /salon above), not a 302: the address stays
+# curiodz.com/rakibni/hadiya, so there is no redirect loop with the trailing
+# slash. This path is PRINTED ON CARDBOARD: never rename or remove it.
+#
+# The page carries its own safety net. The ebook PDF does not exist yet; it
+# HEAD-checks /rakibni/hadiya/rakibni-activities.pdf and, while that 404s,
+# hides the download button and lets WhatsApp take the request instead. Drop
+# the PDF in with that exact name and the button appears by itself.
+[[redirects]]
+  from = "/rakibni/hadiya"
+  to = "/rakibni/hadiya/index.html"
+  status = 200
+
 # The influencer door. One short link per influencer — curiodz.com/i/sara —
 # rewritten (200, address stays put) onto one static page that asks the store
 # where that name should go. A splat rule means adding an influencer is a row

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ركّبني — الهدية نتاعك</title>
+<meta name="robots" content="noindex">
+<!-- Reached by scanning the QR printed on the 2 Rakibni "spot the difference" bonus sheets
+     (curiodz.com/rakibni/hadiya — printed forever, never rename this path). A thank-you page:
+     the free 50+ activities ebook + an optional WhatsApp opt-in. noindex: it's a door for
+     people who own the box, not a public page. -->
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel (same pixel as the rest of curiodz.com) -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '587121070888027');
+  fbq('track', 'PageView');
+</script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--navy:#1c2b6a;--red:#ff2433;--cream:#fdf0d1;--gold:#caa26b;--yellow:#ffd11f;
+        --blue:#00a6e6;--green:#25a244;--wa:#1fa855;
+        --f:"Baloo Bhaijaan 2","Noto Sans Arabic","Segoe UI",Tahoma,sans-serif}
+  body{font-family:var(--f);color:var(--navy);min-height:100vh;
+       background:linear-gradient(180deg,#cfeafb 0%,#e3f3f9 45%,#e4f3d8 100%);
+       padding:22px 16px 40px;display:flex;flex-direction:column;align-items:center}
+  .wrap{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center}
+  .logo{width:190px;height:auto;display:block}
+  .pill{margin-top:12px;background:var(--red);color:#fff;font-weight:800;font-size:16px;
+        padding:5px 18px 8px;border-radius:99px;box-shadow:0 4px 0 #c01020}
+  h1{margin-top:14px;font-size:30px;line-height:1.2;font-weight:800;text-align:center}
+  .lead{margin-top:8px;font-size:17px;line-height:1.6;text-align:center;font-weight:600;max-width:34ch}
+  .lead b{color:var(--red)}
+
+  /* the book (a drawn cover until the real ebook cover exists) */
+  .book{margin-top:22px;width:250px;aspect-ratio:3/4;position:relative;border-radius:6px 14px 14px 6px;
+        background:var(--cream);border:3px solid var(--gold);box-shadow:-10px 14px 0 rgba(28,43,106,.12),0 14px 30px rgba(28,43,106,.18);
+        display:flex;flex-direction:column;align-items:center;padding:16px 14px 12px;transform:rotate(-2deg)}
+  .book::before{content:"";position:absolute;right:-3px;top:-3px;bottom:-3px;width:14px;border-radius:0 14px 14px 0;
+        background:var(--blue)}
+  .book .t{font-weight:800;font-size:19px;line-height:1.1;text-align:center}
+  .book .n{margin-top:4px;background:var(--yellow);border-radius:10px;padding:0 12px 3px;font-weight:800;font-size:26px;line-height:1.25}
+  .book .pics{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%}
+  .book .pics img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;border:2px solid #fff}
+  .book .pics img:first-child{grid-column:1/3;aspect-ratio:2/1}
+  .book .s{margin-top:auto;font-size:13px;font-weight:600;opacity:.8}
+
+  .btn{margin-top:24px;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+       text-decoration:none;font-weight:800;border-radius:16px;font-size:21px;padding:13px 16px 16px;
+       border:0;cursor:pointer;font-family:var(--f)}
+  .btn:active{transform:translateY(2px)}
+  .btn.dl{background:var(--red);color:#fff;box-shadow:0 5px 0 #c01020}
+  .btn small{display:block;font-size:13px;font-weight:600;opacity:.9;line-height:1}
+  .btn svg{width:24px;height:24px;flex:none}
+
+  .steps{margin-top:22px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .step{background:#fff;border-radius:14px;padding:10px 6px 12px;text-align:center;box-shadow:0 3px 0 rgba(28,43,106,.08)}
+  .step .k{width:30px;height:30px;margin:0 auto;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:17px;
+           display:flex;align-items:center;justify-content:center;line-height:1}
+  .step p{margin-top:6px;font-size:14.5px;font-weight:800;line-height:1.3}
+  .tip{margin-top:10px;font-size:14px;text-align:center;font-weight:600;opacity:.85;max-width:36ch}
+
+  .card{margin-top:26px;width:100%;background:var(--cream);border:3px solid var(--gold);border-radius:18px;padding:16px 16px 18px;text-align:center}
+  .card h2{font-size:20px;font-weight:800;line-height:1.3}
+  .card p{margin-top:4px;font-size:15px;font-weight:600;line-height:1.55}
+  .btn.wa{margin-top:12px;background:var(--wa);color:#fff;box-shadow:0 5px 0 #13803e;font-size:18px}
+
+  .soon{display:none;margin-top:24px;width:100%;background:#fff;border:3px dashed var(--gold);border-radius:16px;padding:14px;text-align:center;font-weight:800;font-size:17px;line-height:1.5}
+  body.no-book .dl,body.no-book .steps,body.no-book .tip{display:none}
+  body.no-book .soon{display:block}
+
+  footer{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;opacity:.75}
+  footer img{height:30px;border-radius:6px}
+</style></head>
+<body>
+<div class="wrap">
+
+  <img class="logo" src="/rakibni/hadiya/rakibni-logo.png" alt="ركّبني" width="190" height="128">
+  <div class="pill">الهدية نتاعك</div>
+  <h1>شكرا على ثقتك فينا!</h1>
+  <p class="lead">كيما وعدناك: <b>كتاب فيه أكثر من 50 نشاط</b> بلاش، باش يكمّل اللعب بعيد على الشاشة.</p>
+
+  <div class="book" aria-hidden="true">
+    <div class="t">أنشطة ركّبني</div>
+    <div class="n">+50</div>
+    <div class="pics">
+      <img src="/rakibni/hadiya/animals.jpg" alt="">
+      <img src="/rakibni/hadiya/vehicles.jpg" alt="">
+      <img src="/rakibni/hadiya/algeria.jpg" alt="">
+    </div>
+    <div class="s">هدية من كيوريو</div>
+  </div>
+
+  <a class="btn dl" id="dl" href="/rakibni/hadiya/rakibni-activities.pdf" download>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+    <span>حمّل الكتاب<small>PDF · بلاش</small></span>
+  </a>
+
+  <div class="soon">الكتاب راهو يتوجّد... ابعثلنا على واتساب ونبعثوهولك أول ما يكمل</div>
+
+  <div class="steps">
+    <div class="step"><div class="k">1</div><p>حمّل الكتاب</p></div>
+    <div class="step"><div class="k">2</div><p>اطبع الصفحات لي تحب</p></div>
+    <div class="step"><div class="k">3</div><p>العب وعاود</p></div>
+  </div>
+  <p class="tip">تقدر تطبع نفس الصفحة كل ما يحب الطفل يعاود.</p>
+
+  <div class="card">
+    <h2>حاب تجيك صفحات جديدة بلاش؟</h2>
+    <p>ابعثلنا ميساج، وكي تخرج صفحات جديدة نبعثوهملك.</p>
+    <a class="btn wa" id="wa" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3Z"/></svg>
+      <span>ابعثلي على واتساب</span>
+    </a>
+  </div>
+
+  <footer>
+    <img src="/curio-logo.jpg" alt="Curio">
+    <span>منتج حصري من كيوريو</span>
+  </footer>
+</div>
+
+<script>
+  // ---- the only 2 settings of this page ----------------------------------------------
+  var EBOOK = '/rakibni/hadiya/rakibni-activities.pdf';   // drop the ebook here with this exact name
+  var WHATSAPP = '213553749689';                         // Curio's WhatsApp Business number
+  // -------------------------------------------------------------------------------------
+  var dl = document.getElementById('dl'), wa = document.getElementById('wa');
+  dl.href = EBOOK;
+
+  function setWhatsApp(text){ wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text); }
+  setWhatsApp('سلام كيوريو! سكانيت الكود تاع ركّبني، حاب تبعثولي الصفحات الجديدة كي يخرجو.');
+
+  // Safety net: if the ebook file isn't online (yet), never show a broken download —
+  // switch to the "coming soon" message and let WhatsApp collect the request instead.
+  fetch(EBOOK, {method:'HEAD', cache:'no-store'}).then(function(r){
+    if (!r.ok) throw 0;
+  }).catch(function(){
+    document.body.classList.add('no-book');
+    setWhatsApp('سلام كيوريو! سكانيت الكود تاع ركّبني، ابعثولي الكتاب تاع الأنشطة كي يكمل.');
+  });
+
+  dl.addEventListener('click', function(){ try{ fbq('trackCustom','RakibniEbookDownload'); }catch(e){} });
+  wa.addEventListener('click', function(){ try{ fbq('track','Contact',{content_name:'rakibni-ebook-optin'}); }catch(e){} });
+</script>
+</body></html>
