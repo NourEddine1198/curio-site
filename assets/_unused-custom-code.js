@@ -1,3 +1,22 @@
+/* ⛔ NOTHING LOADS THIS FILE. ⛔
+ *
+ * Renamed from custom-code.js on 24 Nov 2026. No page on curiodz.com has a
+ * <script src> for it — check for yourself:
+ *
+ *     grep -rn "custom-code" --include=*.html .
+ *
+ * The real checkout is written inline inside index.html, roubla/index.html,
+ * dlala/index.html and pack/index.html, four hand-written copies of the same
+ * form. This file is an older, tidier version of that code that was never
+ * wired up.
+ *
+ * It has cost two days of work across two sessions: twice, someone (me) read
+ * it, recognised working checkout code, and changed it believing the site
+ * would pick the change up. It did not. The site never ran a line of it.
+ *
+ * Keep it as a reference if it is useful, or delete it. Do not edit it
+ * expecting anything to happen.
+ */
 ﻿document.addEventListener('DOMContentLoaded', function () {
   // ─── API Configuration ─────────────────────────────────────
   // Points to the Next.js store API. Change this URL after deploying.
@@ -204,6 +223,13 @@
   var COMMUNES_BY_CODE = {};
   var communesLoadFailed = false;
   var communesReadyCallbacks = [];
+  // The office list below is only a seed. We are moving courier from Ecotrack
+  // to ZR Express one wilaya at a time, and the two have almost different
+  // office networks — in Constantine not one office is on both. So the page
+  // must never show offices it merely remembers: it shows them only after the
+  // store has told it which courier is live for that wilaya and which offices
+  // that courier actually has. Until then, home delivery only.
+  var officesAreLive = false;
   var PRODUCT_BY_ID = {};
   var CP1252_EXTRA_BYTES = {
     8364: 128,
@@ -547,6 +573,7 @@
             label: repairText(office.label),
             station: repairText(office.station || office.label),
             commune: repairText(office.commune || ''),
+            hubId: null,
             phone: Array.isArray(office.phone) ? office.phone : office.phone ? [office.phone] : []
           };
         })
@@ -829,6 +856,15 @@
       return;
     }
 
+    // Never offer an office we have not confirmed with the store this page
+    // load. A stale list sends someone to a counter that will not have their
+    // parcel; an empty list simply sends them to home delivery. The second is
+    // recoverable, the first is not.
+    if (!officesAreLive) {
+      select.disabled = true;
+      return;
+    }
+
     record.offices.forEach(function (office) {
       var option = document.createElement('option');
       option.value = office.value;
@@ -841,6 +877,17 @@
     if (selectedValue) {
       select.value = selectedValue;
     }
+  }
+
+  // Both the product-page panel and the main checkout form need this data,
+  // and a page can have either, both, or one of each. Fetch it once.
+  var deliveryLoadStarted = false;
+  function ensureDeliveryLoaded() {
+    if (deliveryLoadStarted) {
+      return;
+    }
+    deliveryLoadStarted = true;
+    loadCommuneDirectory(4);
   }
 
   function loadCommuneDirectory(attemptsLeft) {
@@ -859,7 +906,53 @@
           COMMUNES_BY_CODE[String(wilaya.code)] = (wilaya.communes || []).map(function (communeEntry) {
             return communeEntry.name;
           }).filter(Boolean);
+
+          var record = DELIVERY_BY_CODE[String(wilaya.code)];
+          if (!record) {
+            return;
+          }
+
+          // Prices come from the store, not from this file. The store knows
+          // which courier is carrying this wilaya today and quotes that
+          // courier's rate — otherwise the customer is shown one price and
+          // charged another.
+          if (typeof wilaya.home === 'number') {
+            record.home = wilaya.home;
+          }
+          record.office = typeof wilaya.stopdesk === 'number' ? wilaya.stopdesk : null;
+          record.hasFees = typeof record.home === 'number' && typeof record.office === 'number';
+          record.carrier = wilaya.carrier || null;
+
+          // Offices, likewise. A null stopdesk means this wilaya has no pickup
+          // point at all with the live courier, so the list is empty and the
+          // customer is pushed to home delivery.
+          if (Array.isArray(wilaya.offices)) {
+            record.offices = wilaya.offices
+              .filter(function (office) { return office && office.name; })
+              .map(function (office) {
+                var shown = office.nameAr || office.name;
+                if (office.commune && office.commune !== shown) {
+                  shown += ' — ' + office.commune;
+                }
+                return {
+                  // ZR addresses a parcel by hub id; Ecotrack by office name.
+                  // Whichever it is, this value identifies the exact office
+                  // the customer chose.
+                  value: office.hubId || office.name,
+                  label: shown,
+                  station: office.name,
+                  commune: office.commune || '',
+                  hubId: office.hubId || null,
+                  phone: Array.isArray(office.phone) ? office.phone : []
+                };
+              })
+              .sort(function (left, right) {
+                return left.label.localeCompare(right.label, 'ar');
+              });
+          }
         });
+
+        officesAreLive = true;
         communesReadyCallbacks.forEach(function (callback) { callback(); });
       })
       .catch(function () {
@@ -1427,6 +1520,11 @@
     }
 
     citySelect.addEventListener('change', updateProductPageState);
+    // A product page may carry this panel without the main checkout form. It
+    // must start the fetch itself and redraw when the offices arrive, or stop
+    // desk is quietly dead on that page.
+    communesReadyCallbacks.push(updateProductPageState);
+    ensureDeliveryLoaded();
     panel.querySelectorAll('input[name="delivery_mode"]').forEach(function (radio) {
       radio.addEventListener('change', updateProductPageState);
     });
@@ -1527,7 +1625,12 @@
     }
 
     communesReadyCallbacks.push(refreshCommuneField);
-    loadCommuneDirectory(4);
+    // The office list and the prices arrive with the same fetch, so this form
+    // has to redraw itself when they land — not just the commune field.
+    // Without it, anyone who picked their wilaya before the fetch finished is
+    // left looking at a dead stop-desk dropdown.
+    communesReadyCallbacks.push(updateHomeState);
+    ensureDeliveryLoaded();
 
     function getSelectedHomeProduct() {
       return getProductByKey(productSelect.value);
@@ -1824,6 +1927,10 @@
         commune: mode === 'home' ? getCommuneValue() : null,
         officeName: selectedOffice ? selectedOffice.station : null,
         officeCommune: selectedOffice ? selectedOffice.commune : null,
+        // ZR's own id for the exact office. Null on Ecotrack, which has no
+        // such thing. The store rejects the order if this office is not on
+        // the live courier's list — the net for a page opened before a switch.
+        officeHubId: selectedOffice ? selectedOffice.hubId : null,
         couponCode: couponInput && couponInput.value ? couponInput.value.trim() : null,
         website: honeypotInput ? honeypotInput.value : '',
         _t: tsInput ? Number(tsInput.value) : 0

@@ -378,6 +378,8 @@ fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
+<script src="/assets/coupon-memory.js"></script>
+<script src="/assets/office-picker.js"></script>
 <script src="/assets/source-tracking.js" defer></script>
 </head>
 <body data-cms-page="roubla">
@@ -806,25 +808,30 @@ fbq('track', 'PageView');
   // The SERVER re-validates and applies the real discount on submit; these
   // numbers are display only. One code per order: the gift card already IS
   // a code, so this field is hidden in gift mode (CSS) and skipped here.
+    // The code memory (assets/coupon-memory.js): remembers a code that came
+  // from somebody's link for 7 days, so a buyer who comes back later still
+  // carries it. The inline fallback keeps checkout alive if that file ever
+  // fails to load - a missing asset must never cost us an order.
+  const CC=window.curioCoupon||{remember:function(c){try{sessionStorage.setItem('curio-code',c);}catch(e){}},forget:function(){try{sessionStorage.removeItem('curio-code');}catch(e){}},recall:function(){try{return (new URLSearchParams(location.search).get('code')||sessionStorage.getItem('curio-code')||'').trim().toUpperCase();}catch(e){return '';}}};
   let COUPON_CODE='', COUPON_OFF=0;
   async function curioApplyCoupon(silent){
     const inp=document.getElementById('f-coupon'), msg=document.getElementById('coupon-msg'), row=document.getElementById('coupon-row');
     const code=(inp.value||'').trim().toUpperCase();
     COUPON_CODE='';COUPON_OFF=0;row.classList.remove('on');msg.classList.remove('bad');msg.textContent='';
-    if(!code){try{sessionStorage.removeItem('curio-code');}catch(e){} recalc();return;}
+    if(!code){CC.forget(); recalc();return;}
     msg.textContent='نتأكدو من الكود…';
     try{
       const r=await fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,slugs:[PRODUCT_SLUG]})});
       const j=await r.json();
       if(j&&j.valid){
         COUPON_CODE=code;COUPON_OFF=(+j.discount||0);
-        try{sessionStorage.setItem('curio-code',code);}catch(e){}
+        CC.remember(code);
         msg.textContent='';
         document.getElementById('coupon-row-label').textContent='كود التخفيض: '+code;
         document.getElementById('coupon-row-off').textContent=COUPON_OFF>0?('−'+COUPON_OFF.toLocaleString('en')+' دج'):'✓ محسوب';
         row.classList.add('on');
       }else{
-        try{sessionStorage.removeItem('curio-code');}catch(e){}
+        CC.forget();
         if(!silent){msg.textContent=(j&&j.reason==='products')?'هاذ الكود ما يخدمش مع هاذ المنتج':'الكود ما هوش صحيح، تأكد منّو';msg.classList.add('bad');}
       }
     }catch(e){ if(!silent){msg.textContent='ما قدرناش نتأكدو من الكود — عاود جرب';msg.classList.add('bad');} }
@@ -833,8 +840,7 @@ fbq('track', 'PageView');
   document.getElementById('f-coupon').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();curioApplyCoupon();}});
   (function(){try{
     if(GIFT_CODE) return;
-    const q=new URLSearchParams(location.search).get('code');
-    const saved=q||sessionStorage.getItem('curio-code')||'';
+    const saved=CC.recall();
     if(saved){document.getElementById('f-coupon').value=saved;curioApplyCoupon(true);}
   }catch(e){}})();
   window.curioApplyCoupon=curioApplyCoupon;
@@ -867,6 +873,10 @@ fbq('track', 'PageView');
     const w=byCode[wsel.value];
     csel.innerHTML='';
     if(!w){csel.disabled=true;csel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}
+    // Where the courier gives us a real office list, offer the OFFICES:
+    // "Oran" alone cannot say which of its three counters. Declines on a
+    // wilaya we have no list for, leaving the commune list below untouched.
+    if(delType==='office' && window.curioOffices && window.curioOffices.fill(csel,w,'اختر مكتب ستوب ديسك…')) return;
     let list=w.communes||[];
     if(delType==='office') list=list.filter(c=>c.desk);
     const ph=document.createElement('option');ph.value='';
@@ -878,12 +888,24 @@ fbq('track', 'PageView');
   function setDelivery(t){delType=t;
     document.getElementById('d-home').classList.toggle('on',t==='home');
     document.getElementById('d-office').classList.toggle('on',t==='office');
-    document.getElementById('commune-label').textContent = t==='home' ? 'البلدية' : 'مكتب ستوب ديسك (Anderson)';
+    document.getElementById('commune-label').textContent = t==='home' ? 'البلدية' : officeFieldLabel();
     addrWrap.style.display = t==='home' ? '' : 'none';
     populateCommunes();
     recalc();
   }
-  wsel.addEventListener('change',()=>{populateCommunes();recalc();});
+  // Which company's sign the customer will be looking for. It changes with
+  // the wilaya now, so the label is rebuilt whenever the wilaya changes and
+  // not only when the delivery type is switched.
+  function officeFieldLabel(){
+    var cn = (window.curioOffices && window.curioOffices.courier)
+      ? window.curioOffices.courier(byCode[wsel.value]) : null;
+    return 'مكتب ستوب ديسك (' + (cn || 'Anderson') + ')';
+  }
+  wsel.addEventListener('change',()=>{
+    populateCommunes();
+    if(delType==='office'){ var lb=document.getElementById('commune-label'); if(lb) lb.textContent=officeFieldLabel(); }
+    recalc();
+  });
   csel.addEventListener('change',recalc);
   recalc();
 
@@ -906,7 +928,13 @@ fbq('track', 'PageView');
       items, _t:loadedAt
     };
     if(delType==='home'){ payload.commune=csel.value; payload.address=(document.getElementById('f-addr').value||'').trim(); }
-    else { payload.officeCommune=csel.value; }
+    else {
+      // The office name, its commune and the courier's own id for it, always
+      // together — they used to be able to drift apart.
+      const off = window.curioOffices ? window.curioOffices.read(csel,byCode[wsel.value]) : null;
+      payload.officeCommune = off ? off.officeCommune : csel.value;
+      if(off){ payload.officeName=off.officeName; payload.officeHubId=off.officeHubId; }
+    }
     if(COUPON_CODE) payload.couponCode=COUPON_CODE; else if(GIFT_CODE&&!GIFT_DEAD) payload.couponCode=GIFT_CODE;
     // Where this visitor came from — captured on their first page, not this one.
     if(window.curioSource) Object.assign(payload, window.curioSource());
@@ -965,14 +993,66 @@ fbq('track', 'PageView');
   addEventListener('message',e=>{if(e.data&&e.data.roublaH){const f=document.getElementById('roublaFrame');if(f)f.style.height=e.data.roublaH+'px';}});
 </script>
 <script src="/cms.js" defer></script>
-<script src="/lib/gsap/gsap.min.js"></script>
-<script src="/lib/gsap/SplitText.min.js"></script>
-<script src="/lib/gsap/MorphSVGPlugin.min.js"></script>
+<script src="/lib/gsap/gsap.min.js" defer></script>
+<script src="/lib/gsap/SplitText.min.js" defer></script>
+<script src="/lib/gsap/MorphSVGPlugin.min.js" defer></script>
 <script>
   // ===== Gooey upsell checkout (lock + spinner → split into cross-sell) =====
-  window.addEventListener('load',function(){
-    if(typeof gsap==='undefined')return;
-    const stage=document.getElementById('splitwrap'); if(!stage)return;
+
+  // Make a rejected field impossible to miss. The old code only called
+  // .focus(), which on iOS Safari frequently shows nothing at all — so a
+  // missing field looked exactly like a broken button.
+  function curioFlagField(f){
+    try{
+      f.focus({preventScroll:true});
+      f.scrollIntoView({behavior:'smooth',block:'center'});
+      f.style.outline='2px solid #c0392b'; f.style.outlineOffset='2px';
+      setTimeout(function(){ f.style.outline=''; f.style.outlineOffset=''; },2200);
+    }catch(e){ try{ f.focus(); }catch(_){} }
+    return false;
+  }
+
+  // Animation-free submit, used only when GSAP is missing. Selling a box must
+  // never depend on a decorative library loading.
+  function curioPlainCheckout(){
+    var btn=document.getElementById('btnConfirm'); if(!btn||btn.__wired)return; btn.__wired=1;
+    var txt=document.getElementById('confirmText'), busy=false;
+    btn.addEventListener('click',async function(){
+      if(busy)return;
+      var ids=['f-name','f-phone','f-wilaya','f-commune'];
+      for(var i=0;i<ids.length;i++){
+        var f=document.getElementById(ids[i]);
+        if(f&&!String(f.value||'').trim()) return curioFlagField(f);
+      }
+      var addrWrap=document.getElementById('addr-wrap'), addr=document.getElementById('f-addr');
+      if(addrWrap&&addrWrap.style.display!=='none'&&addr&&!addr.value.trim()) return curioFlagField(addr);
+      busy=true;
+      var old=txt?txt.textContent:''; if(txt)txt.textContent='قاعدين نسجّلو الطلب…'; btn.style.opacity='.75';
+      var r;
+      try{ r=await window.curioPlaceOrder('single'); }
+      catch(e){ r={ok:false,error:'مشكل في الشبكة، عاود حاول'}; }
+      if(!r||!r.ok){ busy=false; if(txt)txt.textContent=old; btn.style.opacity=''; alert(r&&r.error?r.error:'صار مشكل، عاود حاول'); return; }
+      var done=document.getElementById('cdone'), form=document.getElementById('cform'), num=document.getElementById('ordernum');
+      if(num)num.textContent='#'+r.orderNumber;
+      if(form)form.style.display='none';
+      if(done){ done.style.display='block'; done.scrollIntoView({behavior:'smooth',block:'center'}); }
+    });
+  }
+
+  // Runs on DOMContentLoaded, NOT window 'load'.
+  //
+  // It used to wait for 'load', which fires only after EVERY image and the
+  // embedded game iframe have finished. Measured on a warm desktop cache that
+  // was 20.9s — and for all of it the confirm button had no click handler at
+  // all, so tapping it did nothing: no error, no spinner, no request. On a
+  // phone on Algerian mobile data it is worse. That is what a customer means
+  // by "I clicked and nothing happened".
+  document.addEventListener('DOMContentLoaded',function(){
+    // If GSAP never arrived (flaky connection, blocked CDN), the checkout must
+    // still work. Wire a plain, animation-free submit rather than returning
+    // and leaving a dead button behind.
+    if(typeof gsap==='undefined'){ curioPlainCheckout(); return; }
+    const stage=document.getElementById('splitwrap'); if(!stage){ curioPlainCheckout(); return; }
     try{gsap.registerPlugin(MorphSVGPlugin,SplitText);}catch(e){}
     const SEND="M2 21 Q12 19 22 12 Q12 5 2 3 Q4 8 3 10 Q10 11 16 12 Q10 13 3 14 Q4 16 2 21Z";
     const CHECK="M4.5 12.5 Q6.5 15 9 18.5 Q15 10 20.5 6.5 Q21 8 19.5 9 Q14 15 9 20 Q5 16 3 14 Q3.5 12 4.5 12.5Z";
@@ -989,12 +1069,12 @@ fbq('track', 'PageView');
     el.mainP.setAttribute('d',SEND);el.dotP.setAttribute('d',DOT);applyMain();applyDot();
     function validate(){
       const n=document.getElementById('f-name'),p=document.getElementById('f-phone'),a=document.getElementById('f-addr'),w=document.getElementById('f-wilaya'),c=document.getElementById('f-commune');
-      if(!n.value.trim()){n.focus();return false;}
-      if(!p.value.trim()){p.focus();return false;}
-      if(!w.value||(typeof window.curFee==='function'&&window.curFee()==null)){w.focus();return false;}
-      if(!c.value){c.focus();return false;}
+      if(!n.value.trim())return curioFlagField(n);
+      if(!p.value.trim())return curioFlagField(p);
+      if(!w.value||(typeof window.curFee==='function'&&window.curFee()==null))return curioFlagField(w);
+      if(!c.value)return curioFlagField(c);
       const homeVisible=document.getElementById('addr-wrap').style.display!=='none';
-      if(homeVisible && !a.value.trim()){a.focus();return false;}
+      if(homeVisible && !a.value.trim())return curioFlagField(a);
       return true;
     }
     // The order is saved BEFORE the cross-sell is shown, so this only reveals
@@ -1072,12 +1152,25 @@ fbq('track', 'PageView');
     // no name, no phone, nothing ever reached the server.
     el.confirm.addEventListener('click',async ()=>{
       if(busy)return; if(!validate())return;
-      busy=true; loading();
+      busy=true;
+      // Feedback that does NOT depend on GSAP. The customer must see the tap
+      // land even if the animation library is still downloading or failed.
+      el.confirm.setAttribute('aria-busy','true'); el.confirm.style.opacity='.75';
+      // loading() is pure GSAP/SplitText/MorphSVG. It used to sit OUTSIDE the
+      // try: if a plugin was missing it threw here, the order was never sent,
+      // and busy stayed true — so every later tap hit `if(busy)return` and the
+      // button was dead until reload, silently.
+      try{ loading(); }catch(e){}
       const started=Date.now();
       let r;
       try{ r=await window.curioPlaceOrder('single'); }
       catch(e){ r={ok:false,error:'مشكل في الشبكة، عاود حاول'}; }
-      if(!r||!r.ok){ busy=false; resetLoading(); alert(r&&r.error?r.error:'صار مشكل، عاود حاول'); return; }
+      if(!r||!r.ok){
+        busy=false;
+        el.confirm.removeAttribute('aria-busy'); el.confirm.style.opacity='';
+        try{ resetLoading(); }catch(e){}
+        alert(r&&r.error?r.error:'صار مشكل، عاود حاول'); return;
+      }
       placed=r;
       // Keep the spinner up long enough for the animation to read, even when
       // the API answers instantly.

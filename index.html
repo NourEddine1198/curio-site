@@ -299,6 +299,8 @@ fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=587121070888027&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
+<script src="/assets/coupon-memory.js"></script>
+<script src="/assets/office-picker.js"></script>
 <script src="/assets/source-tracking.js" defer></script>
 </head>
 <body data-cms-page="home">
@@ -627,25 +629,30 @@ fbq('track', 'PageView');
   // Typed (or arrives via ?code= in the URL, like an influencer's link) —
   // checked live against the store so the shown total drops immediately.
   // The SERVER re-validates and applies the real discount on submit.
+    // The code memory (assets/coupon-memory.js): remembers a code that came
+  // from somebody's link for 7 days, so a buyer who comes back later still
+  // carries it. The inline fallback keeps checkout alive if that file ever
+  // fails to load — a missing asset must never cost us an order.
+  const CC=window.curioCoupon||{remember:function(c){try{sessionStorage.setItem('curio-code',c);}catch(e){}},forget:function(){try{sessionStorage.removeItem('curio-code');}catch(e){}},recall:function(){try{return (new URLSearchParams(location.search).get('code')||sessionStorage.getItem('curio-code')||'').trim().toUpperCase();}catch(e){return '';}}};
   let P_COUPON_CODE='', P_COUPON_OFF=0;
   async function pApplyCoupon(silent){
     const inp=document.getElementById('p-coupon'), msg=document.getElementById('p-coupon-msg'), row=document.getElementById('p-coupon-row');
     const code=(inp.value||'').trim().toUpperCase();
     P_COUPON_CODE='';P_COUPON_OFF=0;row.classList.remove('on');msg.classList.remove('bad');msg.textContent='';
-    if(!code){try{sessionStorage.removeItem('curio-code');}catch(e){} pRecalc();return;}
+    if(!code){CC.forget(); pRecalc();return;}
     msg.textContent='نتأكدو من الكود…';
     try{
       const r=await fetch(API+'/api/coupons/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,slugs:[PACK_SLUG]})});
       const j=await r.json();
       if(j&&j.valid){
         P_COUPON_CODE=code;P_COUPON_OFF=(+j.discount||0);
-        try{sessionStorage.setItem('curio-code',code);}catch(e){}
+        CC.remember(code);
         msg.textContent='';
         document.getElementById('p-coupon-row-label').textContent='كود التخفيض: '+code;
         document.getElementById('p-coupon-row-off').textContent=P_COUPON_OFF>0?('−'+P_COUPON_OFF.toLocaleString('en')+' دج'):'✓ محسوب';
         row.classList.add('on');
       }else{
-        try{sessionStorage.removeItem('curio-code');}catch(e){}
+        CC.forget();
         if(!silent){msg.textContent=(j&&j.reason==='products')?'هاذ الكود ما يخدمش مع الباك':'الكود ما هوش صحيح، تأكد منّو';msg.classList.add('bad');}
       }
     }catch(e){ if(!silent){msg.textContent='ما قدرناش نتأكدو من الكود — عاود جرب';msg.classList.add('bad');} }
@@ -653,8 +660,7 @@ fbq('track', 'PageView');
   }
   document.getElementById('p-coupon').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();pApplyCoupon();}});
   (function(){try{
-    const q=new URLSearchParams(location.search).get('code');
-    const saved=q||sessionStorage.getItem('curio-code')||'';
+    const saved=CC.recall();
     if(saved){document.getElementById('p-coupon').value=saved;pApplyCoupon(true);}
   }catch(e){}})();
   window.pApplyCoupon=pApplyCoupon;
@@ -677,11 +683,11 @@ fbq('track', 'PageView');
      so don't offer them and make the customer fill the form for nothing. */
   function pWDeliverable(w){return !!(w.home||w.stopdesk);}
   function pPopulateWilayas(){pWsel.innerHTML='<option value="">اختر الولاية…</option>';DELIVERY.filter(pWDeliverable).forEach(w=>{const o=document.createElement('option');o.value=pWcode(w.code);o.textContent=pWcode(w.code)+' - '+w.ar;pWsel.appendChild(o);});}
-  function pPopulateCommunes(){const w=pByCode[pWsel.value];pCsel.innerHTML='';if(!w){pCsel.disabled=true;pCsel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}let list=w.communes||[];if(pdel==='office')list=list.filter(c=>c.desk);const ph=document.createElement('option');ph.value='';ph.textContent=list.length?(pdel==='office'?'اختر مكتب ستوب ديسك…':'اختر البلدية…'):'ماكانش '+(pdel==='office'?'مكتب':'توصيل')+' لهاذ الولاية';pCsel.appendChild(ph);list.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;pCsel.appendChild(o);});pCsel.disabled=list.length===0;}
+  function pPopulateCommunes(){const w=pByCode[pWsel.value];pCsel.innerHTML='';if(!w){pCsel.disabled=true;pCsel.innerHTML='<option value="">اختر الولاية أولاً…</option>';return;}if(pdel==='office'&&window.curioOffices&&window.curioOffices.fill(pCsel,w,'اختر مكتب ستوب ديسك…'))return;let list=w.communes||[];if(pdel==='office')list=list.filter(c=>c.desk);const ph=document.createElement('option');ph.value='';ph.textContent=list.length?(pdel==='office'?'اختر مكتب ستوب ديسك…':'اختر البلدية…'):'ماكانش '+(pdel==='office'?'مكتب':'توصيل')+' لهاذ الولاية';pCsel.appendChild(ph);list.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;pCsel.appendChild(o);});pCsel.disabled=list.length===0;}
   function setPDel(t){pdel=t;
     document.getElementById('pd-home').classList.toggle('on',t==='home');
     document.getElementById('pd-office').classList.toggle('on',t==='office');
-    document.getElementById('p-commune-label').textContent=t==='home'?'البلدية':'مكتب ستوب ديسك (Anderson)';
+    document.getElementById('p-commune-label').textContent=t==='home'?'البلدية':pOfficeFieldLabel();
     pAddrWrap.style.display=t==='home'?'':'none';
     pPopulateCommunes();pRecalc();}
   async function submitPack(e){e.preventDefault();
@@ -690,7 +696,7 @@ fbq('track', 'PageView');
     if(pdel==='home' && !document.getElementById('p-addr').value.trim()){document.getElementById('p-addr').focus();return false;}
     const btn=document.querySelector('.msubmit'); if(btn){if(btn.__busy)return false;btn.__busy=true;}
     const payload={customerName:document.getElementById('p-name').value.trim(),customerPhone:document.getElementById('p-phone').value.trim(),wilayaCode:pWsel.value,deliveryType:pdel==='home'?'HOME':'OFFICE',items:[{slug:PACK_SLUG,quantity:pqv}],_t:loadedAtP};
-    if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{payload.officeCommune=pCsel.value;}
+    if(pdel==='home'){payload.commune=pCsel.value;payload.address=document.getElementById('p-addr').value.trim();}else{const off=window.curioOffices?window.curioOffices.read(pCsel,pByCode[pWsel.value]):null;payload.officeCommune=off?off.officeCommune:pCsel.value;if(off){payload.officeName=off.officeName;payload.officeHubId=off.officeHubId;}}
     if(P_COUPON_CODE)payload.couponCode=P_COUPON_CODE;
     // Where this visitor came from + Meta's own cookies. Every other checkout
     // does this; this one did not, so the highest-value path in the shop was
@@ -706,7 +712,17 @@ fbq('track', 'PageView');
       try{const _fk='fbq-o'+j.orderNumber;if(typeof fbq==='function'&&!localStorage.getItem(_fk)){fbq('track','Purchase',{value:j.total,currency:'DZD',content_type:'product',order_id:j.orderNumber},{eventID:'order-'+j.orderNumber});localStorage.setItem(_fk,'1');}}catch(e){}
     }catch(err){if(btn)btn.__busy=false;alert('مشكل في الشبكة، عاود حاول');}
     return false;}
-  pWsel.addEventListener('change',()=>{pPopulateCommunes();pRecalc();});
+  // The sign above the shop changes with the wilaya now, so rebuild the
+  // label on a wilaya change too, not only when the type is switched.
+  function pOfficeFieldLabel(){
+    var cn=(window.curioOffices&&window.curioOffices.courier)?window.curioOffices.courier(pByCode[pWsel.value]):null;
+    return 'مكتب ستوب ديسك ('+(cn||'Anderson')+')';
+  }
+  pWsel.addEventListener('change',()=>{
+    pPopulateCommunes();
+    if(pdel==='office'){var lb=document.getElementById('p-commune-label');if(lb)lb.textContent=pOfficeFieldLabel();}
+    pRecalc();
+  });
   pCsel.addEventListener('change',pRecalc);
   pRecalc();
   // Resilient JSON loader: retries a few times (the big delivery payload can
